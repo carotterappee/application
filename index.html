@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>HP+ - Apprentissage de langues</title>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=blur2" />
+  <link rel="stylesheet" href="css/style.css?v=guest-pills-1" />
   <noscript><style>#loader{display:none!important}.fade{opacity:1!important;transform:none!important}</style></noscript>
 </head>
 <body class="preload">
@@ -119,10 +119,9 @@
             </style>
           </defs>
           <ellipse cx="110" cy="198" rx="44" ry="10" fill="#e9eefc"/>
-          <!-- queue -->
+          <!-- queue à droite -->
           <path d="M150,160 q20,10 10,30 q-15,18 -30,6"
                 fill="none" stroke="#0b0b0e" stroke-width="16" stroke-linecap="round"/>
-          <!-- corps + tête -->
           <g transform="translate(0,6)">
             <ellipse class="fur" cx="110" cy="142" rx="50" ry="58"/>
             <g transform="translate(0,-10)">
@@ -150,13 +149,11 @@
               <path d="M110,96 q-5,4 -9,0" stroke="#2b2b2b" stroke-width="2" fill="none"/>
               <path d="M110,96 q5,4 9,0" stroke="#2b2b2b" stroke-width="2" fill="none"/>
             </g>
-            <!-- écharpe -->
             <g>
               <path class="scarf" d="M78,116 q32,-10 64,0 q-8,12 -32,12 q-24,0 -32,-12z"/>
               <path class="scarf2" d="M142,118 q10,12 -4,26 q-10,12 -16,2"
                     style="transform-origin:140px 118px; animation: scarfFloat 2.4s ease-in-out infinite;"/>
             </g>
-            <!-- pattes -->
             <g transform="translate(82,150)">
               <ellipse class="fur" cx="0" cy="18" rx="10" ry="18"/>
               <circle class="pad" cx="0" cy="34" r="5"/>
@@ -186,7 +183,7 @@
   <section id="panel-login" class="panel">
     <div class="panel-card">
       <h2>Connexion</h2>
-      <p class="helper">Ravi de te revoir </p>
+      <p class="helper">Ravi de te revoir</p>
       <div class="form">
         <input type="email" placeholder="Email" autocomplete="email" />
         <input type="password" placeholder="Mot de passe" autocomplete="current-password" />
@@ -222,24 +219,34 @@
     <div class="panel-card">
       <h2>Choisis tes langues</h2>
       <p class="helper">Tu peux commencer en mode invité. Ton avancée restera locale.</p>
+
       <div class="form">
         <label>Langue(s) parlée(s)</label>
-        <select multiple>
-          <option>Français</option>
-          <option>English</option>
-          <option>Español</option>
-          <option>Deutsch</option>
-        </select>
+        <!-- Pills cliquables -->
+        <div class="lang-pills" role="group" aria-label="Langue(s) parlée(s)">
+          <input class="pill-input" type="checkbox" id="lp-fr" value="Français"><label class="pill" for="lp-fr">Français</label>
+          <input class="pill-input" type="checkbox" id="lp-en" value="English"><label class="pill" for="lp-en">English</label>
+          <input class="pill-input" type="checkbox" id="lp-es" value="Español"><label class="pill" for="lp-es">Español</label>
+          <input class="pill-input" type="checkbox" id="lp-de" value="Deutsch"><label class="pill" for="lp-de">Deutsch</label>
+          <input class="pill-input" type="checkbox" id="lp-it" value="Italiano"><label class="pill" for="lp-it">Italiano</label>
+          <input class="pill-input" type="checkbox" id="lp-pt" value="Português"><label class="pill" for="lp-pt">Português</label>
+        </div>
+
         <label>Langue à apprendre</label>
-        <select>
-          <option>Français</option>
-          <option>English</option>
-          <option>Español</option>
-          <option>Deutsch</option>
-        </select>
+        <div class="select">
+          <select id="learn-lang">
+            <option>Français</option>
+            <option>English</option>
+            <option>Español</option>
+            <option>Deutsch</option>
+            <option>Italiano</option>
+            <option>Português</option>
+          </select>
+        </div>
       </div>
+
       <div class="actions">
-        <button onclick="openPanel('panel-level')">Continuer</button>
+        <button onclick="saveGuestLanguages()">Continuer</button>
         <span class="spacer"></span>
         <button class="ghost" onclick="closePanel()">← Retour</button>
       </div>
@@ -261,14 +268,18 @@
 
   <!-- JS -->
   <script>
+    // Loader -> Hero
     function showHero(){
-      document.getElementById('loader').classList.add('hide');
+      const loader = document.getElementById('loader');
+      const hero = document.getElementById('heroCenter');
+      if (loader) loader.classList.add('hide');
       document.body.classList.remove('preload');
-      document.getElementById('heroCenter').classList.add('show');
+      if (hero) hero.classList.add('show');
     }
-    window.addEventListener('load', ()=> setTimeout(showHero,1800));
-    setTimeout(showHero,3500);
+    window.addEventListener('load', ()=> setTimeout(showHero, 1800));
+    setTimeout(showHero, 3500); // filet de sécurité
 
+    // Panneaux
     function openPanel(id){
       document.body.classList.add('panel-open');
       document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
@@ -281,12 +292,31 @@
       const hero = document.getElementById('heroCenter');
       requestAnimationFrame(()=> hero.classList.add('show'));
     }
+
+    // Compat boutons accueil
     function goToPage(id){
       if(id==='login'){ openPanel('panel-login'); return; }
       if(id==='signup'){ openPanel('panel-signup'); return; }
       if(id==='languages'){ openPanel('panel-guest'); return; }
     }
     function guestMode(){ openPanel('panel-guest'); }
+
+    // Récupération langues invité
+    function saveGuestLanguages(){
+      const spoken = [...document.querySelectorAll('.lang-pills .pill-input:checked')].map(i=>i.value);
+      const learning = document.getElementById('learn-lang').value;
+
+      if(spoken.length === 0){
+        alert("Choisis au moins une langue parlée 🙂");
+        return;
+      }
+
+      // TODO: persister (localStorage / backend)
+      console.log('Langues parlées:', spoken);
+      console.log('Langue à apprendre:', learning);
+
+      openPanel('panel-level');
+    }
   </script>
 </body>
 </html>
