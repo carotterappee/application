@@ -4,10 +4,6 @@ async function initI18n() {
   const inferred = navigator.language?.toLowerCase().startsWith("fr") ? "fr" : "en";
   const lang = manual || inferred;
 
-  // Mettre le select au bon état
-  const sel = document.getElementById("ui-lang");
-  if (sel) sel.value = lang;
-
   // Charger le JSON
   let data;
   try {
