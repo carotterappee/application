@@ -1,88 +1,124 @@
-:root {
-  --primary: #0077cc;
-  --primary-700: #005fa3;
-  --bg: #f0f8ff;
-  --text: #0f172a;
-  --muted: #475569;
-  --card: #ffffff;
+/* Palette pastel */
+:root{
+  --bg: #F6F7FB;          /* fond très clair bleuté */
+  --card: #FFFFFF;
+  --text: #1F2430;        /* texte principal */
+  --muted:#667085;        /* texte secondaire */
+
+  --primary: #9AA8FF;     /* pervenche pastel */
+  --primary-700:#7F8FFF;  /* hover un poil plus soutenu */
+  --accent:  #FFB3CF;     /* rose pastel */
+  --mint:    #BFE6DB;     /* vert d’eau */
+  --outline: #E6E9F5;
 }
 
-* { box-sizing: border-box; }
-html, body { height: 100%; margin: 0; }
-body {
-  font-family: system-ui, Arial, sans-serif;
+*{ box-sizing:border-box; }
+html,body{ height:100%; margin:0; }
+body{
+  font-family: "Nunito", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   background: var(--bg);
   color: var(--text);
 }
 
-/* Topbar */
-.topbar {
-  display: flex;
-  align-items: center;
+/* Barre haute */
+.topbar{
+  display:flex; align-items:center; gap:12px;
   padding: 12px 16px;
-  background: #e6f2ff;
-  border-bottom: 1px solid #dbeafe;
+  background: #EEF2FF; /* pervenche très clair */
+  border-bottom:1px solid var(--outline);
 }
-.brand { font-weight: bold; color: var(--primary); }
-
-/* Layout */
-#app {
-  max-width: 980px;
-  margin: 0 auto;
-  padding: 24px 16px;
+.brand{
+  font-family: "Syne", system-ui, sans-serif;
+  font-weight: 800;
+  letter-spacing: .3px;
+  color:#4958FF;
 }
-.page { display: none; }
-.page.active { display: block; }
 
-/* Hero accueil */
-.hero {
-  display: grid;
+/* Conteneur app */
+#app{ max-width: 980px; margin:0 auto; padding:24px 16px; }
+.page{ display:none; }
+.page.active{ display:block; }
+
+/* HERO */
+.hero{
+  display:grid;
   grid-template-columns: 1fr 1fr;
-  align-items: center;
-  gap: 24px;
+  align-items:center;
+  gap:28px;
 }
-@media (max-width: 768px) {
-  .hero { grid-template-columns: 1fr; }
-  .hero-mascot { text-align: center; }
+@media (max-width: 768px){
+  .hero{ grid-template-columns:1fr; }
+  .hero-mascot{ text-align:center; }
 }
-.hero-text h1 { color: var(--primary); margin: 0 0 12px; }
-.hero-text p { color: var(--muted); margin: 0 0 20px; }
+.hero-text h1{
+  font-family: "Syne", system-ui, sans-serif;
+  font-weight: 800;
+  font-size: clamp(28px, 5vw, 44px);
+  line-height: 1.05;
+  margin:0 0 10px;
+  color:#3366CC; /* bleu doux */
+}
+.hero-text p{
+  margin:0 0 18px;
+  color: var(--muted);
+  font-size: clamp(16px, 2.5vw, 18px);
+}
 
-/* Chat mascotte */
-.mascot-svg {
-  width: 170px;
-  height: 170px;
-  display: block;
-  margin: 0 auto;
+/* Mascotte (taille maîtrisée) */
+.mascot-svg{
+  width: 170px; height:170px; display:block; margin:0 auto;
+  filter: drop-shadow(0 8px 16px rgba(0,0,0,0.06));
 }
-@media (max-width: 768px) {
-  .mascot-svg { width: 150px; height: 150px; }
-}
+@media (max-width:768px){ .mascot-svg{ width:150px; height:150px; } }
 
 /* Boutons */
-button {
-  border: none;
-  background: var(--primary);
-  color: white;
-  padding: 10px 20px;
-  border-radius: 8px;
-  cursor: pointer;
-  margin: 4px;
-  font-weight: 600;
+.btn-row{ display:flex; flex-wrap:wrap; gap:10px; }
+button{
+  border:none;
+  padding:10px 18px;
+  border-radius: 12px;
+  cursor:pointer;
+  font-weight:700;
+  font-family: inherit;
+  color:#0F172A;
+  background: linear-gradient(135deg, var(--primary), #C4CEFF);
+  box-shadow: 0 4px 14px rgba(122, 134, 255, 0.24);
 }
-button:hover { background: var(--primary-700); }
-button.link {
-  background: transparent;
-  color: var(--primary);
-  padding: 6px 8px;
-  margin-top: 12px;
+button:hover{ background: linear-gradient(135deg, var(--primary-700), #B7C2FF); }
+button:active{ transform: translateY(1px); }
+button.ghost{
+  background: #FFFFFF;
+  color:#3F51B5;
+  border:1px solid var(--outline);
+  box-shadow: none;
 }
 
-/* Formulaires */
-input, select {
-  width: 100%;
-  padding: 10px;
-  margin: 6px 0;
-  border: 1px solid #cbd5e1;
-  border-radius: 6px;
+/* Liens-boutons */
+button.link{
+  background: transparent;
+  color:#3F51B5;
+  border: none;
+  padding:6px 8px;
+  margin-top: 10px;
+  box-shadow:none;
+}
+
+/* Form inputs */
+input, select{
+  width:100%;
+  padding:10px 12px;
+  margin:6px 0;
+  border:1px solid var(--outline);
+  border-radius: 10px;
+  background:#FFFFFF;
+  font-family: inherit;
+}
+
+/* Petites cartes/formulaires (si tu en ajoutes) */
+.form{
+  display:grid; gap:12px; max-width:520px; margin: 16px 0;
+  background: var(--card);
+  border:1px solid var(--outline);
+  border-radius: 16px;
+  padding:16px;
 }

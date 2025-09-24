@@ -4,6 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>HP+ - Apprentissage de langues</title>
+
+  <!-- Polices Google : Syne (titres, look géométrique) + Nunito (texte doux) -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -12,12 +16,11 @@
   </header>
 
   <div id="app">
-    <!-- Page Accueil avec mascotte -->
+    <!-- Page Accueil -->
     <section id="welcome" class="page active">
       <div class="hero">
-        <!-- Mascotte -->
+        <!-- Mascotte (chat kawaii + nœud rose) -->
         <div class="hero-mascot">
-          <!-- Chat kawaii + petit nœud rose -->
           <svg class="mascot-svg" viewBox="0 0 220 220" role="img" aria-label="Chat noir kawaii avec nœud rose">
             <defs>
               <style>
@@ -40,31 +43,20 @@
               </style>
             </defs>
 
-            <!-- ombre -->
             <ellipse cx="110" cy="198" rx="42" ry="10" fill="#e9eefc"/>
-
-            <!-- corps -->
             <g transform="translate(0,6)">
-              <!-- queue -->
               <path class="fur" d="M150,150c18,6 18,18 10,24c-7,6-20,3-20,-5c0,-7 5,-9 10,-14z"/>
-
-              <!-- buste -->
               <ellipse class="fur" cx="110" cy="142" rx="48" ry="56"/>
               <ellipse class="shade" cx="110" cy="152" rx="30" ry="36"/>
-
-              <!-- tête -->
               <g transform="translate(0,-10)">
                 <circle class="fur" cx="110" cy="78" r="46"/>
-                <!-- oreilles -->
                 <path class="fur" d="M80,56 l-15,-16 a6,6 0 0 1 8,-8 l18,12z"/>
                 <path class="fur" d="M140,56 l15,-16 a6,6 0 0 0 -8,-8 l-18,12z"/>
-                <!-- nœud rose -->
                 <g transform="translate(122,38) rotate(-8)">
                   <ellipse class="bow" cx="0" cy="0" rx="7" ry="5"/>
                   <path class="bow-dark" d="M-7,0 C-16,-6,-15,8,-7,5 C-12,10,-10,16,-3,8 Z"/>
                   <path class="bow-dark" d="M7,0 C16,-6,15,8,7,5 C12,10,10,16,3,8 Z"/>
                 </g>
-                <!-- yeux -->
                 <g transform="translate(86,78)">
                   <g style="transform-origin:0 0; animation: blink 4.2s infinite;">
                     <circle class="eye" cx="0" cy="0" r="10"/>
@@ -77,23 +69,18 @@
                   </g>
                   <circle class="pupil" cx="0" cy="0" r="4"/>
                 </g>
-                <!-- nez + bouche -->
                 <ellipse class="nose" cx="110" cy="92" rx="4" ry="3"/>
                 <path d="M110,96 q-5,4 -9,0" stroke="#2b2b2b" stroke-width="2" fill="none"/>
                 <path d="M110,96 q5,4 9,0" stroke="#2b2b2b" stroke-width="2" fill="none"/>
-                <!-- moustaches -->
                 <path d="M92,90 h-16" stroke="#232323" stroke-width="2" />
                 <path d="M94,95 h-18" stroke="#232323" stroke-width="2" />
                 <path d="M128,90 h16"  stroke="#232323" stroke-width="2" />
                 <path d="M126,95 h18"  stroke="#232323" stroke-width="2" />
               </g>
-
-              <!-- pattes -->
               <g transform="translate(82,150)">
                 <ellipse class="fur" cx="0" cy="18" rx="10" ry="18"/>
                 <circle class="pad" cx="0" cy="34" r="5"/>
               </g>
-              <!-- patte coucou -->
               <g transform="translate(138,150)">
                 <g style="transform-origin:0 0; animation: wave 1.8s ease-in-out infinite;">
                   <ellipse class="fur" cx="0" cy="18" rx="10" ry="18"/>
@@ -106,12 +93,12 @@
 
         <!-- Texte accueil -->
         <div class="hero-text">
-          <h1 id="welcome-title">Bonjour 👋 Bienvenue sur HP+</h1>
+          <h1 id="welcome-title">Bonjour, bienvenue sur HP+</h1>
           <p id="welcome-subtitle">Apprends les langues pas à pas.</p>
           <div class="btn-row">
             <button onclick="goToPage('login')" id="btn-login">Se connecter</button>
             <button onclick="goToPage('signup')" id="btn-signup">Créer un compte</button>
-            <button onclick="guestMode()" id="btn-guest">Continuer en invité</button>
+            <button onclick="guestMode()" id="btn-guest" class="ghost">Continuer en invité</button>
           </div>
         </div>
       </div>
@@ -170,6 +157,7 @@
     </section>
   </div>
 
+  <!-- Ton JS existant gère la navigation -->
   <script src="js/main.js"></script>
 </body>
 </html>
