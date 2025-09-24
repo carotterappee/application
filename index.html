@@ -7,7 +7,6 @@
 
   <!-- Polices -->
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
-
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -21,7 +20,6 @@
       <div class="hero">
         <!-- Mascotte -->
         <div class="hero-mascot">
-          <!-- Chat kawaii interactif -->
           <svg id="catSvg" class="mascot-svg" viewBox="0 0 260 260" role="img" aria-label="Chat noir kawaii avec nœud rose">
             <defs>
               <style>
@@ -34,24 +32,10 @@
                 .bow-dark { fill:#ff4d98; }
                 .pad  { fill:#f3d3da; }
                 .line { stroke:#232323; stroke-width:2; fill:none; }
-
-                /* Tail wave */
                 @keyframes tailWave {
                   0%,100% { transform: rotate(12deg); }
                   50%     { transform: rotate(-18deg); }
                 }
-                /* Petite respiration corps/tête lors du "pet" */
-                @keyframes purr {
-                  0%   { transform: translateY(0) scale(1); }
-                  50%  { transform: translateY(1px) scale(0.99); }
-                  100% { transform: translateY(0) scale(1); }
-                }
-                /* Oreille twitch (très léger, optionnel lors du pet) */
-                @keyframes earTwitch {
-                  0%,100% { transform: rotate(0deg); }
-                  50%     { transform: rotate(-4deg); }
-                }
-                /* Coeurs qui montent */
                 @keyframes heartFly {
                   0%   { opacity:0; transform: translateY(0) scale(0.8); }
                   10%  { opacity:1; }
@@ -60,18 +44,16 @@
               </style>
             </defs>
 
-            <!-- Ombre au sol -->
+            <!-- Ombre sol -->
             <ellipse cx="130" cy="224" rx="52" ry="12" fill="#e9eefc"/>
 
-            <!-- Groupe global du chat -->
             <g id="cat" transform="translate(0,6)">
-              <!-- QUEUE (ancrée sur la hanche droite) -->
-              <g id="tail" transform="translate(186,154)" style="transform-origin: 0px 0px; animation: tailWave 1.7s ease-in-out infinite;">
+              <!-- QUEUE -->
+              <g id="tail" transform="translate(180,154)" style="transform-origin: 0px 20px; animation: tailWave 1.7s ease-in-out infinite;">
                 <path class="fur" d="M0,0 q36,12 44,28 q8,16 -4,26 q-12,10 -28,4 q-16,-6 -12,-20 q3,-10 16,-18 q-7,2 -16,0 q-8,-2 -14,-10 q-6,-8 0,-10 q8,-3 14,0 z" opacity="0.95"/>
               </g>
 
               <!-- CORPS sablier -->
-              <!-- Forme sablier (plus étroit à la taille) -->
               <path id="body" class="fur" d="M130,92
                    c-38,0 -64,30 -64,66
                    c0,36 28,66 64,66
@@ -83,28 +65,18 @@
                    c0,6 -18,0 -48,0
                    c-30,0 -48,6 -48,0
                    c0,-30 20,-54 48,-54 z"/>
-              <!-- ventre ombré léger -->
               <ellipse class="shade" cx="130" cy="168" rx="30" ry="38"/>
 
               <!-- TETE -->
               <g id="head" transform="translate(0,-12)">
                 <circle class="fur" cx="130" cy="82" r="46"/>
-                <!-- oreilles -->
-                <g id="earL" transform="translate(94,62)">
-                  <path class="fur" d="M0,0 l-16,-18 a6,6 0 0 1 8,-8 l18,12z"/>
-                </g>
-                <g id="earR" transform="translate(166,62)">
-                  <path class="fur" d="M0,0 l16,-18 a6,6 0 0 0 -8,-8 l-18,12z"/>
-                </g>
-
-                <!-- noeud rose -->
+                <path class="fur" d="M94,62 l-16,-18 a6,6 0 0 1 8,-8 l18,12z"/>
+                <path class="fur" d="M166,62 l16,-18 a6,6 0 0 0 -8,-8 l-18,12z"/>
                 <g transform="translate(142,42) rotate(-10)">
                   <ellipse class="bow" cx="0" cy="0" rx="7" ry="5"/>
                   <path class="bow-dark" d="M-7,0 C-16,-6,-15,8,-7,5 C-12,10,-10,16,-3,8 Z"/>
                   <path class="bow-dark" d="M7,0 C16,-6,15,8,7,5 C12,10,10,16,3,8 Z"/>
                 </g>
-
-                <!-- yeux + pupilles -->
                 <g id="eyeL" transform="translate(106,82)">
                   <circle class="eye" cx="0" cy="0" r="11"/>
                   <circle id="pupilL" class="pupil" cx="0" cy="0" r="4"/>
@@ -113,34 +85,28 @@
                   <circle class="eye" cx="0" cy="0" r="11"/>
                   <circle id="pupilR" class="pupil" cx="0" cy="0" r="4"/>
                 </g>
-
-                <!-- paupières (pour clignement) -->
                 <rect id="lidL" x="95" y="70" width="22" height="0" fill="#0b0b0e" rx="10" />
                 <rect id="lidR" x="143" y="70" width="22" height="0" fill="#0b0b0e" rx="10" />
-
-                <!-- nez + bouche -->
                 <ellipse class="nose" cx="130" cy="96" rx="4" ry="3"/>
                 <path class="line" d="M130,100 q-6,4 -11,0"/>
                 <path class="line" d="M130,100 q6,4 11,0"/>
-                <!-- moustaches -->
                 <path class="line" d="M108,92 h-16"/>
                 <path class="line" d="M110,97 h-18"/>
                 <path class="line" d="M152,92 h16"/>
                 <path class="line" d="M150,97 h18"/>
               </g>
 
-              <!-- PATTES avant -->
+              <!-- PATTES -->
               <g transform="translate(96,154)">
                 <ellipse class="fur" cx="0" cy="18" rx="10" ry="18"/>
                 <circle class="pad" cx="0" cy="34" r="5"/>
               </g>
-              <!-- patte droite (coucou léger quand pet) -->
-              <g id="pawR" transform="translate(162,154)">
+              <g transform="translate(162,154)">
                 <ellipse class="fur" cx="0" cy="18" rx="10" ry="18"/>
                 <circle class="pad" cx="0" cy="34" r="5"/>
               </g>
 
-              <!-- Coeurs générés au pet -->
+              <!-- Coeurs -->
               <g id="hearts"></g>
             </g>
           </svg>
@@ -159,7 +125,7 @@
       </div>
     </section>
 
-    <!-- Autres pages (inchangé) -->
+    <!-- Autres pages (inchangées) -->
     <section id="login" class="page">
       <h2>Connexion</h2>
       <input type="email" placeholder="Email" />
@@ -221,22 +187,15 @@
       const pupilR = document.getElementById('pupilR');
       const lidL = document.getElementById('lidL');
       const lidR = document.getElementById('lidR');
-      const head = document.getElementById('head');
-      const body = document.getElementById('body');
-      const earL = document.getElementById('earL');
-      const earR = document.getElementById('earR');
-      const pawR = document.getElementById('pawR');
       const hearts = document.getElementById('hearts');
 
-      // limites de déplacement des pupilles
-      const eyeRadius = 11;
-      const pupilMax = 3.8; // px
+      const pupilMax = 3.8;
       const eyeLPos = { x:106, y:82 };
       const eyeRPos = { x:154, y:82 };
 
       function clamp(v, min, max){ return Math.max(min, Math.min(max, v)); }
 
-      // Yeux qui suivent la souris
+      // Yeux suivent la souris
       svg.addEventListener('mousemove', (e)=>{
         const rect = svg.getBoundingClientRect();
         const mx = e.clientX - rect.left;
@@ -247,7 +206,6 @@
         const dxR = mx - eyeRPos.x;
         const dyR = my - eyeRPos.y;
 
-        // normaliser et limiter
         const lenL = Math.hypot(dxL, dyL) || 1;
         const lenR = Math.hypot(dxR, dyR) || 1;
 
@@ -262,19 +220,17 @@
         pupilR.setAttribute('cy', offRY);
       });
 
-      // Clignements variés (random)
+      // Clignements variés
       function blinkOnce(){
-        // fermer (hauteur des paupières)
         lidL.setAttribute('height', 22);
         lidR.setAttribute('height', 22);
-        // ouvrir après un court délai
         setTimeout(()=>{
           lidL.setAttribute('height', 0);
           lidR.setAttribute('height', 0);
-        }, 110);
+        }, 120);
       }
       function scheduleBlink(){
-        const next = 1200 + Math.random()*3000; // 1.2s à 4.2s
+        const next = 1200 + Math.random()*3000;
         setTimeout(()=>{
           blinkOnce();
           scheduleBlink();
@@ -282,29 +238,8 @@
       }
       scheduleBlink();
 
-      // Caresse (click) => purr + petits coeurs
-      function pet(){
-        head.style.animation = 'purr 240ms ease-in-out 2';
-        body.style.animation = 'purr 240ms ease-in-out 2';
-        earL.style.animation = 'earTwitch 200ms ease-in-out 1';
-        earR.style.animation = 'earTwitch 200ms ease-in-out 1';
-        pawR.style.transformOrigin = '0px 0px';
-        pawR.style.animation = 'earTwitch 200ms ease-in-out 1';
-
-        // coeur qui s’envole (3 coeurs)
-        spawnHeart(130, 66, 0);
-        spawnHeart(120, 70, 80);
-        spawnHeart(140, 72, 140);
-        // reset animations pour pouvoir rejouer
-        setTimeout(()=>{
-          head.style.animation = '';
-          body.style.animation = '';
-          earL.style.animation = '';
-          earR.style.animation = '';
-          pawR.style.animation = '';
-        }, 700);
-      }
-      svg.addEventListener('click', pet);
+      // Clic = petits coeurs
+      svg.addEventListener('click', ()=>{ spawnHeart(130, 66, 0); });
 
       function spawnHeart(x,y,delay=0){
         const h = document.createElementNS('http://www.w3.org/2000/svg','path');
@@ -316,16 +251,10 @@
         hearts.appendChild(h);
         setTimeout(()=> hearts.removeChild(h), 1200+delay);
       }
-      // petit coeur
       function heartPath(cx,cy,r){
-        const d = [
-          `M ${cx} ${cy}`,
-          `m 0 ${-r/3}`,
-          `c ${-r} ${-r} ${-2*r} ${r/3} 0 ${r*1.2}`,
-          `c ${2*r} ${-r/3} ${r} ${-r} 0 ${-r*1.2}`,
-          'z'
-        ].join(' ');
-        return d;
+        return `M ${cx} ${cy} m 0 ${-r/3}
+                c ${-r} ${-r} ${-2*r} ${r/3} 0 ${r*1.2}
+                c ${2*r} ${-r/3} ${r} ${-r} 0 ${-r*1.2} z`;
       }
     })();
   </script>

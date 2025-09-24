@@ -70,10 +70,15 @@ body{
 
 /* Mascotte */
 .mascot-svg{
-  width: 190px; height:190px; display:block; margin:0 auto;
+  width: 190px;
+  height:190px;
+  display:block;
+  margin:0 auto;
   filter: drop-shadow(0 8px 16px rgba(0,0,0,0.06));
 }
-@media (max-width:768px){ .mascot-svg{ width:160px; height:160px; } }
+@media (max-width:768px){
+  .mascot-svg{ width:160px; height:160px; }
+}
 
 /* Boutons */
 .btn-row{ display:flex; flex-wrap:wrap; gap:10px; }
@@ -120,7 +125,10 @@ input, select{
 
 /* Forms */
 .form{
-  display:grid; gap:12px; max-width:520px; margin: 16px 0;
+  display:grid;
+  gap:12px;
+  max-width:520px;
+  margin: 16px 0;
   background: var(--card);
   border:1px solid var(--outline);
   border-radius: 16px;
