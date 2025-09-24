@@ -30,10 +30,31 @@
         <rect x="0" y="140" width="420" height="40" fill="#eef5ff"/>
         <ellipse class="sled-shadow" cx="200" cy="148" rx="80" ry="12" fill="url(#shadowGrad)"/>
         <g class="sled">
-          <g transform="translate(60,0)">
-            <rect x="0" y="116" width="210" height="6" rx="3" fill="#a9b6cc" opacity=".6"/>
-            <rect x="0" y="126" width="210" height="6" rx="3" fill="#a9b6cc" opacity=".6"/>
-          </g>
+          <!-- Patins métal -->
+<g transform="translate(40,0)">
+  <path d="M40,138 q40,0 80,-6 q38,-6 76,0 q6,2 8,6 q-18,4 -32,4 q-46,0 -92,8 q-10,2 -22,2 q-14,0 -24,-4 q-8,-3 -12,-7 q10,-3 18,-3z" fill="url(#metalGrad)"/>
+  <path d="M40,130 q76,-12 152,0 q10,2 16,8 q-10,6 -24,8 q-64,10 -128,10 q-18,0 -30,-4 q14,-8 24,-10z" fill="url(#metalGrad)"/>
+  <circle cx="210" cy="136" r="6" fill="#c6cfde"/>
+  <circle cx="210" cy="146" r="6" fill="#c6cfde"/>
+</g>
+
+<!-- Lattes bois -->
+<g transform="translate(60,0)">
+  <rect x="0" y="116" width="210" height="6" rx="3" fill="#a9b6cc" opacity=".6"/>
+  <rect x="0" y="126" width="210" height="6" rx="3" fill="#a9b6cc" opacity=".6"/>
+  <g>
+    <rect x="2"   y="100" width="38" height="12" rx="6" fill="url(#woodGrad)"/>
+    <rect x="44"  y="98"  width="38" height="14" rx="7" fill="url(#woodGrad)"/>
+    <rect x="86"  y="96"  width="38" height="16" rx="8" fill="url(#woodGrad)"/>
+    <rect x="128" y="98"  width="38" height="14" rx="7" fill="url(#woodGrad)"/>
+    <rect x="170" y="100" width="38" height="12" rx="6" fill="url(#woodGrad)"/>
+  </g>
+</g>
+
+<!-- Cordon -->
+<g transform="translate(256,92)">
+  <path d="M0,0 q26,-10 36,10 q8,16 -8,22 q-14,6 -20,-4" stroke="#c6cfde" stroke-width="3" fill="none"/>
+</g>
           <g transform="translate(120,40)">
             <ellipse cx="40" cy="60" rx="26" ry="32" fill="#0b0b0e"/>
             <circle cx="40" cy="36" r="20" fill="#0b0b0e"/>
@@ -91,7 +112,7 @@
                 <!-- Oreilles -->
   <path class="fur" d="M80,56 l-15,-16 a6,6 0 0 1 8,-8 l18,12z"/>
   <path class="fur" d="M140,56 l15,-16 a6,6 0 0 0 -8,-8 l-18,12z"/>
-  
+
               <g transform="translate(122,38) rotate(-8)">
                 <ellipse class="bow" cx="0" cy="0" rx="7" ry="5"/>
                 <path class="bow-dark" d="M-7,0 C-16,-6,-15,8,-7,5 C-12,10,-10,16,-3,8 Z"/>
