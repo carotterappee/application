@@ -41,16 +41,14 @@ body{
 }
 
 /* =========================
-   BLOC ACCUEIL CENTRÉ
+   ACCUEIL CENTRÉ (sans cadre)
    ========================= */
 #heroCenter{
-  min-height: calc(100vh - 86px); /* viewport - header approx */
+  min-height: calc(100vh - 86px);
   display:grid; place-items:center;
   position: relative;
   overflow:hidden;
 }
-
-/* >>> Aucune délimitation (pas de cadre, pas d’ombre) */
 .welcome-card{
   display:grid;
   grid-template-columns: 1fr 1fr;
@@ -88,7 +86,6 @@ body{
 /* Boutons */
 .btn-row{ display:flex; flex-wrap:wrap; gap:12px; justify-content:flex-start; }
 @media (max-width:860px){ .btn-row{ justify-content:center; } }
-
 button{
   border:none;
   padding:12px 20px;
@@ -111,30 +108,12 @@ button.ghost{
   background:#fff; color:#3F51B5; border:1px solid var(--outline); box-shadow:none;
 }
 
-/* Fade-in du contenu après loader */
+/* Fade-in après loader */
 .fade{ opacity:0; transform: translateY(8px); transition: opacity .5s ease, transform .5s ease; }
 .fade.show{ opacity:1; transform:none; }
 
-/* Courants d’air */
-.wind{
-  position:absolute; left:-30%; right:-30%;
-  height:2px; border-radius:2px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,.9), transparent);
-  opacity:0;
-  animation: windFlow 6s linear infinite;
-}
-.wind-1{ top:14%; animation-delay: .2s; }
-.wind-2{ top:44%; animation-delay: 1.4s; }
-.wind-3{ top:72%; animation-delay: 2.8s; }
-@keyframes windFlow{
-  0%   { transform: translateX(-20%); opacity:0; }
-  10%  { opacity:1; }
-  60%  { opacity:.9; }
-  100% { transform: translateX(120%); opacity:0; }
-}
-
 /* =========================
-   LOADER — LUGE PREMIUM
+   LOADER — LUGE
    ========================= */
 #loader{
   position: fixed; inset:0; z-index:9999;
@@ -148,7 +127,6 @@ body.preload{ overflow:hidden; }
 .loader-track{ width:min(640px, 95vw); height:180px; position:relative; }
 .sled-svg{ width:100%; height:100%; }
 
-/* animation luge qui traverse */
 .sled{
   animation: sledMove 2s ease-in-out infinite;
   transform-origin: center;
@@ -159,7 +137,6 @@ body.preload{ overflow:hidden; }
   100% { transform: translateX(480px) translateY(0) rotate(0deg); }
 }
 
-/* label "Loading…" */
 .loading-label{
   margin-top:-14px;
   font-weight:800;
@@ -169,7 +146,7 @@ body.preload{ overflow:hidden; }
 }
 
 /* =========================
-   PAGES INTERNES / FORM
+   PAGES INTERNES
    ========================= */
 #app{ max-width: 980px; margin: 0 auto; padding: 24px 16px; }
 .page{ display:none; }
@@ -180,7 +157,7 @@ input, select{
   font-family: inherit;
 }
 
-/* Accessibilité : réduire les animations si l’utilisateur l’a demandé */
+/* Accessibilité */
 @media (prefers-reduced-motion: reduce){
-  .sled, .wind, .fade{ animation:none !important; transition:none !important; }
+  .sled, .fade{ animation:none !important; transition:none !important; }
 }
