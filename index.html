@@ -8,118 +8,199 @@
   <!-- Polices -->
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="css/style.css?v=reset1" />
+  <link rel="stylesheet" href="css/style.css?v=wintry1" />
 </head>
-<body>
+<body class="preload">
+  <!-- Loader (chat en luge) -->
+  <div id="loader" aria-hidden="true">
+    <div class="loader-track">
+      <svg class="sled-svg" viewBox="0 0 320 120" role="img" aria-label="Chat en luge">
+        <!-- neige au sol -->
+        <rect x="0" y="90" width="320" height="30" fill="url(#snowGrad)"/>
+        <defs>
+          <linearGradient id="snowGrad" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0" stop-color="#ffffff" stop-opacity="0.9"/>
+            <stop offset="1" stop-color="#eaf2ff" stop-opacity="0.9"/>
+          </linearGradient>
+        </defs>
+        <!-- pente -->
+        <path d="M0,90 Q60,80 120,88 T320,88" stroke="#dfe9ff" stroke-width="2" fill="none" />
+        <!-- luge -->
+        <g class="sled" transform="translate(0,0)">
+          <g transform="translate(40,56)">
+            <rect x="-30" y="20" width="110" height="10" rx="5" fill="#6b7280"/>
+            <rect x="-28" y="10" width="110" height="6" rx="3" fill="#94a3b8"/>
+            <path d="M-30,30 q20,18 40,0" stroke="#6b7280" stroke-width="4" fill="none"/>
+            <path d="M60,30 q20,18 40,0" stroke="#6b7280" stroke-width="4" fill="none"/>
+          </g>
+          <!-- chat compact avec écharpe -->
+          <g transform="translate(90,10)">
+            <!-- corps -->
+            <ellipse cx="40" cy="60" rx="26" ry="32" fill="#0b0b0e"/>
+            <!-- tête -->
+            <circle cx="40" cy="36" r="20" fill="#0b0b0e"/>
+            <!-- oreilles -->
+            <path d="M28,24 l-8,-8 a5,5 0 0 1 6,-6 l9,6z" fill="#0b0b0e"/>
+            <path d="M52,24 l8,-8 a5,5 0 0 0 -6,-6 l-9,6z" fill="#0b0b0e"/>
+            <!-- noeud -->
+            <g transform="translate(50,20) rotate(-10)">
+              <ellipse cx="0" cy="0" rx="4" ry="3" fill="#ff66a6"/>
+              <path d="M-4,0 C-9,-4,-8,5,-4,3 C-6,6,-5,9,-2,5 Z" fill="#ff4d98"/>
+              <path d="M4,0 C9,-4,8,5,4,3 C6,6,5,9,2,5 Z" fill="#ff4d98"/>
+            </g>
+            <!-- yeux -->
+            <g transform="translate(31,36)">
+              <circle r="5.6" fill="#ffe0a8"/>
+              <circle r="2.2" fill="#111"/>
+            </g>
+            <g transform="translate(49,36)">
+              <circle r="5.6" fill="#ffe0a8"/>
+              <circle r="2.2" fill="#111"/>
+            </g>
+            <!-- nez+bouche -->
+            <ellipse cx="40" cy="42" rx="1.5" ry="1.2" fill="#2b2b2b"/>
+            <path d="M40,44 q-3,2 -5,0 M40,44 q3,2 5,0" stroke="#2b2b2b" stroke-width="1.3" fill="none"/>
+            <!-- écharpe -->
+            <g>
+              <path d="M24,48 q16,-6 32,0 q-4,6 -16,6 q-12,0 -16,-6z" fill="#ff6fae"/>
+              <!-- pan qui flotte -->
+              <path class="scarf-tail" d="M57,50 q8,8 -2,18 q-8,8 -12,0" fill="#ff5ea2"/>
+            </g>
+          </g>
+        </g>
+      </svg>
+    </div>
+    <div class="loading-label">Loading…</div>
+  </div>
+
+  <!-- Header -->
   <header class="topbar">
     <div class="brand">HP+</div>
   </header>
 
-  <div id="app">
-    <!-- Page Accueil -->
-    <section id="welcome" class="page active">
-      <div class="hero">
-        <!-- Mascotte : chat kawaii (blink + coucou) -->
-        <div class="hero-mascot">
-          <svg class="mascot-svg" viewBox="0 0 220 220" role="img" aria-label="Chat noir kawaii avec nœud rose">
-            <defs>
-              <style>
-                .fur { fill:#0b0b0e; }
-                .shade { fill:#171820; opacity:.15; }
-                .eye { fill:#ffe0a8; }
-                .pupil { fill:#111; }
-                .nose { fill:#2b2b2b; }
-                .bow  { fill:#ff66a6; }
-                .bow-dark { fill:#ff4d98; }
-                .pad  { fill:#f3d3da; }
-                @keyframes blink {
-                  0%, 96%, 100% { transform: scaleY(1); }
-                  97%, 99%      { transform: scaleY(0.08); }
-                }
-                @keyframes wave {
-                  0%, 100% { transform: rotate(0deg); }
-                  50%      { transform: rotate(-12deg); }
-                }
-              </style>
-            </defs>
+  <!-- Contenu centré plein écran -->
+  <main id="heroCenter" class="fade">
+    <!-- Wind trails -->
+    <div class="wind wind-1"></div>
+    <div class="wind wind-2"></div>
+    <div class="wind wind-3"></div>
 
-            <!-- ombre -->
-            <ellipse cx="110" cy="198" rx="42" ry="10" fill="#e9eefc"/>
+    <section id="welcome" class="welcome-card">
+      <!-- Mascotte -->
+      <div class="hero-mascot">
+        <!-- Chat plus grand + écharpe, blink + coucou -->
+        <svg class="mascot-svg" viewBox="0 0 220 220" role="img" aria-label="Chat noir kawaii avec écharpe rose">
+          <defs>
+            <style>
+              .fur { fill:#0b0b0e; }
+              .shade { fill:#171820; opacity:.15; }
+              .eye { fill:#ffe0a8; }
+              .pupil { fill:#111; }
+              .nose { fill:#2b2b2b; }
+              .bow  { fill:#ff66a6; }
+              .bow-dark { fill:#ff4d98; }
+              .pad  { fill:#f3d3da; }
+              .scarf { fill:#ff6fae; }
+              .scarf2{ fill:#ff5ea2; }
+              @keyframes blink {
+                0%, 96%, 100% { transform: scaleY(1); }
+                97%, 99%      { transform: scaleY(0.08); }
+              }
+              @keyframes wave {
+                0%, 100% { transform: rotate(0deg); }
+                50%      { transform: rotate(-12deg); }
+              }
+              @keyframes scarfFloat {
+                0%,100% { transform: rotate(4deg); }
+                50%     { transform: rotate(-6deg); }
+              }
+            </style>
+          </defs>
 
-            <!-- corps compact (sans queue) -->
-            <g transform="translate(0,6)">
-              <ellipse class="fur" cx="110" cy="142" rx="48" ry="56"/>
-              <ellipse class="shade" cx="110" cy="152" rx="30" ry="36"/>
+          <!-- ombre -->
+          <ellipse cx="110" cy="198" rx="44" ry="10" fill="#e9eefc"/>
 
-              <!-- tête -->
-              <g transform="translate(0,-10)">
-                <circle class="fur" cx="110" cy="78" r="46"/>
-                <!-- oreilles -->
-                <path class="fur" d="M80,56 l-15,-16 a6,6 0 0 1 8,-8 l18,12z"/>
-                <path class="fur" d="M140,56 l15,-16 a6,6 0 0 0 -8,-8 l-18,12z"/>
+          <!-- corps -->
+          <g transform="translate(0,6)">
+            <ellipse class="fur" cx="110" cy="142" rx="50" ry="58"/>
+            <ellipse class="shade" cx="110" cy="152" rx="30" ry="36"/>
 
-                <!-- nœud rose -->
-                <g transform="translate(122,38) rotate(-8)">
-                  <ellipse class="bow" cx="0" cy="0" rx="7" ry="5"/>
-                  <path class="bow-dark" d="M-7,0 C-16,-6,-15,8,-7,5 C-12,10,-10,16,-3,8 Z"/>
-                  <path class="bow-dark" d="M7,0 C16,-6,15,8,7,5 C12,10,10,16,3,8 Z"/>
-                </g>
+            <!-- tête -->
+            <g transform="translate(0,-10)">
+              <circle class="fur" cx="110" cy="78" r="46"/>
+              <!-- oreilles -->
+              <path class="fur" d="M80,56 l-15,-16 a6,6 0 0 1 8,-8 l18,12z"/>
+              <path class="fur" d="M140,56 l15,-16 a6,6 0 0 0 -8,-8 l-18,12z"/>
 
-                <!-- yeux -->
-                <g transform="translate(86,78)">
-                  <g style="transform-origin:0 0; animation: blink 4.2s infinite;">
-                    <circle class="eye" cx="0" cy="0" r="10"/>
-                  </g>
-                  <circle class="pupil" cx="0" cy="0" r="4"/>
-                </g>
-                <g transform="translate(134,78)">
-                  <g style="transform-origin:0 0; animation: blink 4.2s infinite .08s;">
-                    <circle class="eye" cx="0" cy="0" r="10"/>
-                  </g>
-                  <circle class="pupil" cx="0" cy="0" r="4"/>
-                </g>
-
-                <!-- nez + bouche -->
-                <ellipse class="nose" cx="110" cy="92" rx="4" ry="3"/>
-                <path d="M110,96 q-5,4 -9,0" stroke="#2b2b2b" stroke-width="2" fill="none"/>
-                <path d="M110,96 q5,4 9,0" stroke="#2b2b2b" stroke-width="2" fill="none"/>
-                <!-- moustaches -->
-                <path d="M92,90 h-16" stroke="#232323" stroke-width="2" />
-                <path d="M94,95 h-18" stroke="#232323" stroke-width="2" />
-                <path d="M128,90 h16"  stroke="#232323" stroke-width="2" />
-                <path d="M126,95 h18"  stroke="#232323" stroke-width="2" />
+              <!-- nœud -->
+              <g transform="translate(122,38) rotate(-8)">
+                <ellipse class="bow" cx="0" cy="0" rx="7" ry="5"/>
+                <path class="bow-dark" d="M-7,0 C-16,-6,-15,8,-7,5 C-12,10,-10,16,-3,8 Z"/>
+                <path class="bow-dark" d="M7,0 C16,-6,15,8,7,5 C12,10,10,16,3,8 Z"/>
               </g>
 
-              <!-- pattes -->
-              <g transform="translate(82,150)">
+              <!-- yeux -->
+              <g transform="translate(86,78)">
+                <g style="transform-origin:0 0; animation: blink 4.6s infinite;">
+                  <circle class="eye" cx="0" cy="0" r="10"/>
+                </g>
+                <circle class="pupil" cx="0" cy="0" r="4"/>
+              </g>
+              <g transform="translate(134,78)">
+                <g style="transform-origin:0 0; animation: blink 5.1s infinite .12s;">
+                  <circle class="eye" cx="0" cy="0" r="10"/>
+                </g>
+                <circle class="pupil" cx="0" cy="0" r="4"/>
+              </g>
+
+              <!-- nez + bouche -->
+              <ellipse class="nose" cx="110" cy="92" rx="4" ry="3"/>
+              <path d="M110,96 q-5,4 -9,0" stroke="#2b2b2b" stroke-width="2" fill="none"/>
+              <path d="M110,96 q5,4 9,0" stroke="#2b2b2b" stroke-width="2" fill="none"/>
+              <!-- moustaches -->
+              <path d="M92,90 h-16" stroke="#232323" stroke-width="2" />
+              <path d="M94,95 h-18" stroke="#232323" stroke-width="2" />
+              <path d="M128,90 h16"  stroke="#232323" stroke-width="2" />
+              <path d="M126,95 h18"  stroke="#232323" stroke-width="2" />
+            </g>
+
+            <!-- écharpe -->
+            <g>
+              <path class="scarf" d="M78,116 q32,-10 64,0 q-8,12 -32,12 q-24,0 -32,-12z"/>
+              <path class="scarf2" d="M142,118 q10,12 -4,26 q-10,12 -16,2" style="transform-origin:140px 118px; animation: scarfFloat 2.4s ease-in-out infinite;"/>
+            </g>
+
+            <!-- pattes -->
+            <g transform="translate(82,150)">
+              <ellipse class="fur" cx="0" cy="18" rx="10" ry="18"/>
+              <circle class="pad" cx="0" cy="34" r="5"/>
+            </g>
+            <!-- patte coucou -->
+            <g transform="translate(138,150)">
+              <g style="transform-origin:0 0; animation: wave 1.9s ease-in-out infinite;">
                 <ellipse class="fur" cx="0" cy="18" rx="10" ry="18"/>
                 <circle class="pad" cx="0" cy="34" r="5"/>
               </g>
-              <!-- patte coucou (animation douce) -->
-              <g transform="translate(138,150)">
-                <g style="transform-origin:0 0; animation: wave 1.8s ease-in-out infinite;">
-                  <ellipse class="fur" cx="0" cy="18" rx="10" ry="18"/>
-                  <circle class="pad" cx="0" cy="34" r="5"/>
-                </g>
-              </g>
             </g>
-          </svg>
-        </div>
+          </g>
+        </svg>
+      </div>
 
-        <!-- Texte accueil -->
-        <div class="hero-text">
-          <h1>Bonjour, bienvenue sur HP+</h1>
-          <p>Apprends les langues pas à pas.</p>
-          <div class="btn-row">
-            <button onclick="goToPage('login')">Se connecter</button>
-            <button onclick="goToPage('signup')">Créer un compte</button>
-            <button class="ghost" onclick="guestMode()">Continuer en invité</button>
-          </div>
+      <!-- Texte + CTA -->
+      <div class="hero-text">
+        <h1>Bonjour, bienvenue sur HP+</h1>
+        <p>Apprends les langues pas à pas.</p>
+        <div class="btn-row">
+          <button onclick="goToPage('login')">Se connecter</button>
+          <button onclick="goToPage('signup')">Créer un compte</button>
+          <button class="ghost" onclick="guestMode()">Continuer en invité</button>
         </div>
       </div>
     </section>
+  </main>
 
-    <!-- Autres pages -->
+  <!-- Pages suivantes (inchangé) -->
+  <div id="app">
     <section id="login" class="page">
       <h2>Connexion</h2>
       <input type="email" placeholder="Email" />
@@ -172,6 +253,31 @@
     </section>
   </div>
 
-  <script src="js/main.js"></script>
+  <script>
+    // Petit orchestrateur de chargement : cache le loader puis fade-in
+    window.addEventListener('load', () => {
+      // Désactive le loader après ~1.8s
+      setTimeout(() => {
+        document.getElementById('loader').classList.add('hide');
+        document.body.classList.remove('preload');
+        document.getElementById('heroCenter').classList.add('show');
+      }, 1800);
+      // 👉 Si tu veux désactiver totalement le loader:
+      // document.getElementById('loader').style.display = 'none';
+      // document.getElementById('heroCenter').classList.add('show');
+      // document.body.classList.remove('preload');
+    });
+
+    // Navigation existante minimale
+    function goToPage(id){
+      document.querySelectorAll('.page').forEach(p => p.style.display='none');
+      const el = document.getElementById(id);
+      if(el) el.style.display = 'block';
+    }
+    function guestMode(){
+      alert('Mode invité : progression locale.');
+      goToPage('languages');
+    }
+  </script>
 </body>
 </html>
