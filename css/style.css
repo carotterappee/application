@@ -1,11 +1,15 @@
-/* Palette pastel */
+/* =========================
+   PALETTE & BASE
+   ========================= */
 :root{
   --bg: #F6F7FB;
   --text: #1F2430;
   --muted:#667085;
+
   --primary: #9AA8FF;
   --primary-700:#7F8FFF;
   --outline: #E6E9F5;
+
   --grad1: #f7f9ff;
   --grad2: #eef3ff;
   --grad3: #fef8ff;
@@ -19,7 +23,9 @@ body{
   background: linear-gradient(180deg, var(--grad1), var(--grad2) 60%, var(--grad3));
 }
 
-/* Header */
+/* =========================
+   HEADER
+   ========================= */
 .topbar{
   display:flex; align-items:center;
   padding: 20px 28px;
@@ -34,9 +40,11 @@ body{
   color:#4958FF;
 }
 
-/* Bloc centré plein écran */
+/* =========================
+   BLOC ACCUEIL CENTRÉ
+   ========================= */
 #heroCenter{
-  min-height: calc(100vh - 86px); /* hauteur viewport - header approx */
+  min-height: calc(100vh - 86px); /* viewport - header approx */
   display:grid; place-items:center;
   position: relative;
   overflow:hidden;
@@ -79,7 +87,6 @@ body{
 /* Boutons */
 .btn-row{ display:flex; flex-wrap:wrap; gap:12px; justify-content:flex-start; }
 @media (max-width:860px){ .btn-row{ justify-content:center; } }
-
 button{
   border:none;
   padding:12px 20px;
@@ -106,7 +113,7 @@ button.ghost{
 .fade{ opacity:0; transform: translateY(8px); transition: opacity .5s ease, transform .5s ease; }
 .fade.show{ opacity:1; transform:none; }
 
-/* Vent (courants d’air) */
+/* Courants d’air */
 .wind{
   position:absolute; left:-30%; right:-30%;
   height:2px; border-radius:2px;
@@ -124,7 +131,9 @@ button.ghost{
   100% { transform: translateX(120%); opacity:0; }
 }
 
-/* Loader plein écran */
+/* =========================
+   LOADER — LUGE AMÉLIORÉE
+   ========================= */
 #loader{
   position: fixed; inset:0; z-index:9999;
   display:grid; place-items:center;
@@ -134,36 +143,35 @@ button.ghost{
 #loader.hide{ opacity:0; visibility:hidden; }
 body.preload{ overflow:hidden; }
 
-.loader-track{ width:min(640px, 90vw); height:160px; position:relative; }
+.loader-track{ width:min(640px, 95vw); height:180px; position:relative; }
 .sled-svg{ width:100%; height:100%; }
+
+/* animation luge qui traverse */
 .sled{
-  animation: sledMove 1.8s ease-in-out infinite;
+  animation: sledMove 2s ease-in-out infinite;
   transform-origin: center;
 }
-.scarf-tail{ animation: sledScarf 1s ease-in-out infinite; transform-origin: 56px 52px; }
-
 @keyframes sledMove{
-  0%   { transform: translateX(-50px) translateY(0) rotate(0deg); }
-  50%  { transform: translateX(220px) translateY(-2px) rotate(-1.5deg); }
-  100% { transform: translateX(490px) translateY(0) rotate(0deg); }
+  0%   { transform: translateX(-60px) translateY(0) rotate(0deg); }
+  50%  { transform: translateX(220px) translateY(-2px) rotate(-2deg); }
+  100% { transform: translateX(480px) translateY(0) rotate(0deg); }
 }
-@keyframes sledScarf{
-  0%,100% { transform: rotate(3deg); }
-  50%     { transform: rotate(-8deg); }
-}
+
+/* label "Loading…" */
 .loading-label{
-  margin-top:-18px;
+  margin-top:-14px;
   font-weight:800;
   font-family: "Syne", system-ui, sans-serif;
   letter-spacing:.5px;
   color:#4b5bff;
 }
 
-/* Pages internes existantes */
+/* =========================
+   PAGES INTERNES / FORM
+   ========================= */
 #app{ max-width: 980px; margin: 0 auto; padding: 24px 16px; }
 .page{ display:none; }
 
-/* Inputs / forms basiques */
 input, select{
   width:100%; padding:10px 12px; margin:6px 0;
   border:1px solid var(--outline); border-radius:10px; background:#fff;
@@ -172,5 +180,5 @@ input, select{
 
 /* Accessibilité : réduit les animations si l’utilisateur a activé “réduire les mouvements” */
 @media (prefers-reduced-motion: reduce){
-  .sled, .scarf-tail, .wind, .welcome-card, .fade{ animation:none !important; transition:none !important; }
+  .sled, .wind, .fade{ animation:none !important; transition:none !important; }
 }
