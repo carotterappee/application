@@ -8,7 +8,9 @@
   <!-- Polices -->
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="css/style.css?v=sled2" />
+  <!-- Cache-bust pour forcer le nouveau CSS -->
+  <link rel="stylesheet" href="css/style.css?v=sled2-fix" />
+  <noscript><style>#loader{display:none!important} .fade{opacity:1!important;transform:none!important}</style></noscript>
 </head>
 <body class="preload">
   <!-- Loader avec luge améliorée -->
@@ -37,9 +39,8 @@
         <!-- ombre -->
         <ellipse class="sled-shadow" cx="200" cy="148" rx="80" ry="12" fill="url(#shadowGrad)"/>
 
-        <!-- groupe luge -->
+        <!-- groupe luge + chat -->
         <g class="sled">
-
           <!-- PATINS -->
           <g class="runners" transform="translate(40,0)">
             <path d="M40,138 q40,0 80,-6 q38,-6 76,0 q6,2 8,6 q-18,4 -32,4 q-46,0 -92,8 q-10,2 -22,2 q-14,0 -24,-4 q-8,-3 -12,-7 q10,-3 18,-3z" fill="url(#metalGrad)"/>
@@ -66,7 +67,7 @@
             <path d="M0,0 q26,-10 36,10 q8,16 -8,22 q-14,6 -20,-4" stroke="#c6cfde" stroke-width="3" fill="none"/>
           </g>
 
-          <!-- CHAT simplifié assis sur la luge -->
+          <!-- CHAT assis -->
           <g transform="translate(120,40)">
             <ellipse cx="40" cy="60" rx="26" ry="32" fill="#0b0b0e"/>
             <circle cx="40" cy="36" r="20" fill="#0b0b0e"/>
@@ -88,7 +89,6 @@
             <ellipse cx="40" cy="42" rx="1.5" ry="1.2" fill="#2b2b2b"/>
             <path d="M40,44 q-3,2 -5,0 M40,44 q3,2 5,0" stroke="#2b2b2b" stroke-width="1.3" fill="none"/>
           </g>
-
         </g>
       </svg>
     </div>
@@ -100,20 +100,213 @@
     <div class="brand">HP+</div>
   </header>
 
-  <!-- Contenu (inchangé, ton chat avec écharpe + accueil) -->
+  <!-- Bloc d’accueil CENTRÉ avec mascotte + écharpe (VISIBLE après loader) -->
   <main id="heroCenter" class="fade">
-    <!-- … ton bloc mascotte + texte d’accueil déjà en place … -->
+    <!-- Courants d’air -->
+    <div class="wind wind-1"></div>
+    <div class="wind wind-2"></div>
+    <div class="wind wind-3"></div>
+
+    <section id="welcome" class="welcome-card">
+      <!-- Mascotte -->
+      <div class="hero-mascot">
+        <!-- Chat plus grand + écharpe, blink + coucou -->
+        <svg class="mascot-svg" viewBox="0 0 220 220" role="img" aria-label="Chat noir kawaii avec écharpe rose">
+          <defs>
+            <style>
+              .fur { fill:#0b0b0e; }
+              .shade { fill:#171820; opacity:.15; }
+              .eye { fill:#ffe0a8; }
+              .pupil { fill:#111; }
+              .nose { fill:#2b2b2b; }
+              .bow  { fill:#ff66a6; }
+              .bow-dark { fill:#ff4d98; }
+              .pad  { fill:#f3d3da; }
+              .scarf { fill:#ff6fae; }
+              .scarf2{ fill:#ff5ea2; }
+              @keyframes blink {
+                0%, 96%, 100% { transform: scaleY(1); }
+                97%, 99%      { transform: scaleY(0.08); }
+              }
+              @keyframes wave {
+                0%, 100% { transform: rotate(0deg); }
+                50%      { transform: rotate(-12deg); }
+              }
+              @keyframes scarfFloat {
+                0%,100% { transform: rotate(4deg); }
+                50%     { transform: rotate(-6deg); }
+              }
+            </style>
+          </defs>
+
+          <!-- ombre -->
+          <ellipse cx="110" cy="198" rx="44" ry="10" fill="#e9eefc"/>
+
+          <!-- corps -->
+          <g transform="translate(0,6)">
+            <ellipse class="fur" cx="110" cy="142" rx="50" ry="58"/>
+            <ellipse class="shade" cx="110" cy="152" rx="30" ry="36"/>
+
+            <!-- tête -->
+            <g transform="translate(0,-10)">
+              <circle class="fur" cx="110" cy="78" r="46"/>
+              <!-- oreilles -->
+              <path class="fur" d="M80,56 l-15,-16 a6,6 0 0 1 8,-8 l18,12z"/>
+              <path class="fur" d="M140,56 l15,-16 a6,6 0 0 0 -8,-8 l-18,12z"/>
+
+              <!-- nœud -->
+              <g transform="translate(122,38) rotate(-8)">
+                <ellipse class="bow" cx="0" cy="0" rx="7" ry="5"/>
+                <path class="bow-dark" d="M-7,0 C-16,-6,-15,8,-7,5 C-12,10,-10,16,-3,8 Z"/>
+                <path class="bow-dark" d="M7,0 C16,-6,15,8,7,5 C12,10,10,16,3,8 Z"/>
+              </g>
+
+              <!-- yeux -->
+              <g transform="translate(86,78)">
+                <g style="transform-origin:0 0; animation: blink 4.6s infinite;">
+                  <circle class="eye" cx="0" cy="0" r="10"/>
+                </g>
+                <circle class="pupil" cx="0" cy="0" r="4"/>
+              </g>
+              <g transform="translate(134,78)">
+                <g style="transform-origin:0 0; animation: blink 5.1s infinite .12s;">
+                  <circle class="eye" cx="0" cy="0" r="10"/>
+                </g>
+                <circle class="pupil" cx="0" cy="0" r="4"/>
+              </g>
+
+              <!-- nez + bouche -->
+              <ellipse class="nose" cx="110" cy="92" rx="4" ry="3"/>
+              <path d="M110,96 q-5,4 -9,0" stroke="#2b2b2b" stroke-width="2" fill="none"/>
+              <path d="M110,96 q5,4 9,0" stroke="#2b2b2b" stroke-width="2" fill="none"/>
+              <!-- moustaches -->
+              <path d="M92,90 h-16" stroke="#232323" stroke-width="2" />
+              <path d="M94,95 h-18" stroke="#232323" stroke-width="2" />
+              <path d="M128,90 h16"  stroke="#232323" stroke-width="2" />
+              <path d="M126,95 h18"  stroke="#232323" stroke-width="2" />
+            </g>
+
+            <!-- écharpe -->
+            <g>
+              <path class="scarf" d="M78,116 q32,-10 64,0 q-8,12 -32,12 q-24,0 -32,-12z"/>
+              <path class="scarf2" d="M142,118 q10,12 -4,26 q-10,12 -16,2" style="transform-origin:140px 118px; animation: scarfFloat 2.4s ease-in-out infinite;"/>
+            </g>
+
+            <!-- pattes -->
+            <g transform="translate(82,150)">
+              <ellipse class="fur" cx="0" cy="18" rx="10" ry="18"/>
+              <circle class="pad" cx="0" cy="34" r="5"/>
+            </g>
+            <!-- patte coucou -->
+            <g transform="translate(138,150)">
+              <g style="transform-origin:0 0; animation: wave 1.9s ease-in-out infinite;">
+                <ellipse class="fur" cx="0" cy="18" rx="10" ry="18"/>
+                <circle class="pad" cx="0" cy="34" r="5"/>
+              </g>
+            </g>
+          </g>
+        </svg>
+      </div>
+
+      <!-- Texte + CTA -->
+      <div class="hero-text">
+        <h1>Bonjour, bienvenue sur HP+</h1>
+        <p>Apprends les langues pas à pas.</p>
+        <div class="btn-row">
+          <button onclick="goToPage('login')">Se connecter</button>
+          <button onclick="goToPage('signup')">Créer un compte</button>
+          <button class="ghost" onclick="guestMode()">Continuer en invité</button>
+        </div>
+      </div>
+    </section>
   </main>
 
+  <!-- PAGES INTERNES -->
+  <div id="app">
+    <section id="login" class="page">
+      <h2>Connexion</h2>
+      <input type="email" placeholder="Email" />
+      <input type="password" placeholder="Mot de passe" />
+      <button>Connexion</button>
+      <button class="link" onclick="goToPage('welcome')">← Retour</button>
+    </section>
+
+    <section id="signup" class="page">
+      <h2>Créer un compte</h2>
+      <input type="text" placeholder="Prénom" />
+      <input type="text" placeholder="Nom" />
+      <input type="text" placeholder="Surnom" />
+      <input type="email" placeholder="Email" />
+      <input type="password" placeholder="Mot de passe" />
+      <button>Créer</button>
+      <button class="link" onclick="goToPage('welcome')">← Retour</button>
+    </section>
+
+    <section id="languages" class="page">
+      <h2>Choisis tes langues</h2>
+      <label>Langue(s) parlée(s)</label>
+      <select multiple>
+        <option>Français</option>
+        <option>English</option>
+        <option>Español</option>
+        <option>Deutsch</option>
+      </select>
+      <label>Langue à apprendre</label>
+      <select>
+        <option>Français</option>
+        <option>English</option>
+        <option>Español</option>
+        <option>Deutsch</option>
+      </select>
+      <button onclick="goToPage('level')">Continuer</button>
+    </section>
+
+    <section id="level" class="page">
+      <h2>Choisis ton point de départ</h2>
+      <button onclick="startBeginner()">Je suis totalement débutant(e)</button>
+      <button onclick="startPlacement()">J’ai déjà des bases</button>
+      <button class="link" onclick="goToPage('languages')">← Retour</button>
+    </section>
+
+    <section id="dashboard" class="page">
+      <h2>Bienvenue dans tes cours</h2>
+      <p>Reprise et progression arrivent bientôt…</p>
+      <button class="link" onclick="goToPage('welcome')">← Accueil</button>
+    </section>
+  </div>
+
+  <!-- Script: masque le loader et affiche le bloc -->
   <script>
-    // Loader orchestrator
+    // helper
+    function showHero(){
+      const loader = document.getElementById('loader');
+      const hero = document.getElementById('heroCenter');
+      if(loader) loader.classList.add('hide');
+      document.body.classList.remove('preload');
+      if(hero) hero.classList.add('show');
+    }
+
+    // 1) au chargement réseau
     window.addEventListener('load', () => {
-      setTimeout(() => {
-        document.getElementById('loader').classList.add('hide');
-        document.body.classList.remove('preload');
-        document.getElementById('heroCenter').classList.add('show');
-      }, 2000);
+      // petite attente pour laisser passer une traversée de luge
+      setTimeout(showHero, 1800);
     });
+
+    // 2) filet de sécurité si 'load' tarde / PWA / cache
+    setTimeout(showHero, 3500);
+
+    // Nav minimale
+    function goToPage(id){
+      document.querySelectorAll('.page').forEach(p => p.style.display='none');
+      const el = document.getElementById(id);
+      if(el) el.style.display = 'block';
+      // on reste en haut
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+    function guestMode(){
+      alert('Mode invité : progression locale.');
+      goToPage('languages');
+    }
   </script>
 </body>
 </html>
