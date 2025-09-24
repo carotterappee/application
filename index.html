@@ -7,7 +7,8 @@
 
   <!-- Polices -->
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css" />
+
+  <link rel="stylesheet" href="css/style.css?v=reset1" />
 </head>
 <body>
   <header class="topbar">
@@ -18,9 +19,9 @@
     <!-- Page Accueil -->
     <section id="welcome" class="page active">
       <div class="hero">
-        <!-- Mascotte -->
+        <!-- Mascotte : chat kawaii (blink + coucou) -->
         <div class="hero-mascot">
-          <svg id="catSvg" class="mascot-svg" viewBox="0 0 260 260" role="img" aria-label="Chat noir kawaii avec nœud rose">
+          <svg class="mascot-svg" viewBox="0 0 220 220" role="img" aria-label="Chat noir kawaii avec nœud rose">
             <defs>
               <style>
                 .fur { fill:#0b0b0e; }
@@ -31,83 +32,76 @@
                 .bow  { fill:#ff66a6; }
                 .bow-dark { fill:#ff4d98; }
                 .pad  { fill:#f3d3da; }
-                .line { stroke:#232323; stroke-width:2; fill:none; }
-                @keyframes tailWave {
-                  0%,100% { transform: rotate(12deg); }
-                  50%     { transform: rotate(-18deg); }
+                @keyframes blink {
+                  0%, 96%, 100% { transform: scaleY(1); }
+                  97%, 99%      { transform: scaleY(0.08); }
                 }
-                @keyframes heartFly {
-                  0%   { opacity:0; transform: translateY(0) scale(0.8); }
-                  10%  { opacity:1; }
-                  100% { opacity:0; transform: translateY(-40px) scale(1.1); }
+                @keyframes wave {
+                  0%, 100% { transform: rotate(0deg); }
+                  50%      { transform: rotate(-12deg); }
                 }
               </style>
             </defs>
 
-            <!-- Ombre sol -->
-            <ellipse cx="130" cy="224" rx="52" ry="12" fill="#e9eefc"/>
+            <!-- ombre -->
+            <ellipse cx="110" cy="198" rx="42" ry="10" fill="#e9eefc"/>
 
-            <g id="cat" transform="translate(0,6)">
-              <!-- QUEUE -->
-              <g id="tail" transform="translate(180,154)" style="transform-origin: 0px 20px; animation: tailWave 1.7s ease-in-out infinite;">
-                <path class="fur" d="M0,0 q36,12 44,28 q8,16 -4,26 q-12,10 -28,4 q-16,-6 -12,-20 q3,-10 16,-18 q-7,2 -16,0 q-8,-2 -14,-10 q-6,-8 0,-10 q8,-3 14,0 z" opacity="0.95"/>
-              </g>
+            <!-- corps compact (sans queue) -->
+            <g transform="translate(0,6)">
+              <ellipse class="fur" cx="110" cy="142" rx="48" ry="56"/>
+              <ellipse class="shade" cx="110" cy="152" rx="30" ry="36"/>
 
-              <!-- CORPS sablier -->
-              <path id="body" class="fur" d="M130,92
-                   c-38,0 -64,30 -64,66
-                   c0,36 28,66 64,66
-                   c36,0 64,-30 64,-66
-                   c0,-36 -26,-66 -64,-66
-                   z
-                   M130,100
-                   c28,0 48,24 48,54
-                   c0,6 -18,0 -48,0
-                   c-30,0 -48,6 -48,0
-                   c0,-30 20,-54 48,-54 z"/>
-              <ellipse class="shade" cx="130" cy="168" rx="30" ry="38"/>
+              <!-- tête -->
+              <g transform="translate(0,-10)">
+                <circle class="fur" cx="110" cy="78" r="46"/>
+                <!-- oreilles -->
+                <path class="fur" d="M80,56 l-15,-16 a6,6 0 0 1 8,-8 l18,12z"/>
+                <path class="fur" d="M140,56 l15,-16 a6,6 0 0 0 -8,-8 l-18,12z"/>
 
-              <!-- TETE -->
-              <g id="head" transform="translate(0,-12)">
-                <circle class="fur" cx="130" cy="82" r="46"/>
-                <path class="fur" d="M94,62 l-16,-18 a6,6 0 0 1 8,-8 l18,12z"/>
-                <path class="fur" d="M166,62 l16,-18 a6,6 0 0 0 -8,-8 l-18,12z"/>
-                <g transform="translate(142,42) rotate(-10)">
+                <!-- nœud rose -->
+                <g transform="translate(122,38) rotate(-8)">
                   <ellipse class="bow" cx="0" cy="0" rx="7" ry="5"/>
                   <path class="bow-dark" d="M-7,0 C-16,-6,-15,8,-7,5 C-12,10,-10,16,-3,8 Z"/>
                   <path class="bow-dark" d="M7,0 C16,-6,15,8,7,5 C12,10,10,16,3,8 Z"/>
                 </g>
-                <g id="eyeL" transform="translate(106,82)">
-                  <circle class="eye" cx="0" cy="0" r="11"/>
-                  <circle id="pupilL" class="pupil" cx="0" cy="0" r="4"/>
+
+                <!-- yeux -->
+                <g transform="translate(86,78)">
+                  <g style="transform-origin:0 0; animation: blink 4.2s infinite;">
+                    <circle class="eye" cx="0" cy="0" r="10"/>
+                  </g>
+                  <circle class="pupil" cx="0" cy="0" r="4"/>
                 </g>
-                <g id="eyeR" transform="translate(154,82)">
-                  <circle class="eye" cx="0" cy="0" r="11"/>
-                  <circle id="pupilR" class="pupil" cx="0" cy="0" r="4"/>
+                <g transform="translate(134,78)">
+                  <g style="transform-origin:0 0; animation: blink 4.2s infinite .08s;">
+                    <circle class="eye" cx="0" cy="0" r="10"/>
+                  </g>
+                  <circle class="pupil" cx="0" cy="0" r="4"/>
                 </g>
-                <rect id="lidL" x="95" y="70" width="22" height="0" fill="#0b0b0e" rx="10" />
-                <rect id="lidR" x="143" y="70" width="22" height="0" fill="#0b0b0e" rx="10" />
-                <ellipse class="nose" cx="130" cy="96" rx="4" ry="3"/>
-                <path class="line" d="M130,100 q-6,4 -11,0"/>
-                <path class="line" d="M130,100 q6,4 11,0"/>
-                <path class="line" d="M108,92 h-16"/>
-                <path class="line" d="M110,97 h-18"/>
-                <path class="line" d="M152,92 h16"/>
-                <path class="line" d="M150,97 h18"/>
+
+                <!-- nez + bouche -->
+                <ellipse class="nose" cx="110" cy="92" rx="4" ry="3"/>
+                <path d="M110,96 q-5,4 -9,0" stroke="#2b2b2b" stroke-width="2" fill="none"/>
+                <path d="M110,96 q5,4 9,0" stroke="#2b2b2b" stroke-width="2" fill="none"/>
+                <!-- moustaches -->
+                <path d="M92,90 h-16" stroke="#232323" stroke-width="2" />
+                <path d="M94,95 h-18" stroke="#232323" stroke-width="2" />
+                <path d="M128,90 h16"  stroke="#232323" stroke-width="2" />
+                <path d="M126,95 h18"  stroke="#232323" stroke-width="2" />
               </g>
 
-              <!-- PATTES -->
-              <g transform="translate(96,154)">
+              <!-- pattes -->
+              <g transform="translate(82,150)">
                 <ellipse class="fur" cx="0" cy="18" rx="10" ry="18"/>
                 <circle class="pad" cx="0" cy="34" r="5"/>
               </g>
-              <g transform="translate(162,154)">
-                <ellipse class="fur" cx="0" cy="18" rx="10" ry="18"/>
-                <circle class="pad" cx="0" cy="34" r="5"/>
+              <!-- patte coucou (animation douce) -->
+              <g transform="translate(138,150)">
+                <g style="transform-origin:0 0; animation: wave 1.8s ease-in-out infinite;">
+                  <ellipse class="fur" cx="0" cy="18" rx="10" ry="18"/>
+                  <circle class="pad" cx="0" cy="34" r="5"/>
+                </g>
               </g>
-
-              <!-- Coeurs -->
-              <g id="hearts"></g>
             </g>
           </svg>
         </div>
@@ -125,7 +119,7 @@
       </div>
     </section>
 
-    <!-- Autres pages (inchangées) -->
+    <!-- Autres pages -->
     <section id="login" class="page">
       <h2>Connexion</h2>
       <input type="email" placeholder="Email" />
@@ -179,84 +173,5 @@
   </div>
 
   <script src="js/main.js"></script>
-  <script>
-    // --------- CHAT INTERACTIF ---------
-    (function(){
-      const svg = document.getElementById('catSvg');
-      const pupilL = document.getElementById('pupilL');
-      const pupilR = document.getElementById('pupilR');
-      const lidL = document.getElementById('lidL');
-      const lidR = document.getElementById('lidR');
-      const hearts = document.getElementById('hearts');
-
-      const pupilMax = 3.8;
-      const eyeLPos = { x:106, y:82 };
-      const eyeRPos = { x:154, y:82 };
-
-      function clamp(v, min, max){ return Math.max(min, Math.min(max, v)); }
-
-      // Yeux suivent la souris
-      svg.addEventListener('mousemove', (e)=>{
-        const rect = svg.getBoundingClientRect();
-        const mx = e.clientX - rect.left;
-        const my = e.clientY - rect.top;
-
-        const dxL = mx - eyeLPos.x;
-        const dyL = my - eyeLPos.y;
-        const dxR = mx - eyeRPos.x;
-        const dyR = my - eyeRPos.y;
-
-        const lenL = Math.hypot(dxL, dyL) || 1;
-        const lenR = Math.hypot(dxR, dyR) || 1;
-
-        const offLX = clamp((dxL/lenL) * pupilMax, -pupilMax, pupilMax);
-        const offLY = clamp((dyL/lenL) * pupilMax, -pupilMax, pupilMax);
-        const offRX = clamp((dxR/lenR) * pupilMax, -pupilMax, pupilMax);
-        const offRY = clamp((dyR/lenR) * pupilMax, -pupilMax, pupilMax);
-
-        pupilL.setAttribute('cx', offLX);
-        pupilL.setAttribute('cy', offLY);
-        pupilR.setAttribute('cx', offRX);
-        pupilR.setAttribute('cy', offRY);
-      });
-
-      // Clignements variés
-      function blinkOnce(){
-        lidL.setAttribute('height', 22);
-        lidR.setAttribute('height', 22);
-        setTimeout(()=>{
-          lidL.setAttribute('height', 0);
-          lidR.setAttribute('height', 0);
-        }, 120);
-      }
-      function scheduleBlink(){
-        const next = 1200 + Math.random()*3000;
-        setTimeout(()=>{
-          blinkOnce();
-          scheduleBlink();
-        }, next);
-      }
-      scheduleBlink();
-
-      // Clic = petits coeurs
-      svg.addEventListener('click', ()=>{ spawnHeart(130, 66, 0); });
-
-      function spawnHeart(x,y,delay=0){
-        const h = document.createElementNS('http://www.w3.org/2000/svg','path');
-        h.setAttribute('fill', '#ff79b0');
-        h.setAttribute('d', heartPath(0,0,6));
-        h.setAttribute('transform', `translate(${x},${y})`);
-        h.style.opacity = '0';
-        h.style.animation = `heartFly 900ms ${delay}ms ease-out forwards`;
-        hearts.appendChild(h);
-        setTimeout(()=> hearts.removeChild(h), 1200+delay);
-      }
-      function heartPath(cx,cy,r){
-        return `M ${cx} ${cy} m 0 ${-r/3}
-                c ${-r} ${-r} ${-2*r} ${r/3} 0 ${r*1.2}
-                c ${2*r} ${-r/3} ${r} ${-r} 0 ${-r*1.2} z`;
-      }
-    })();
-  </script>
 </body>
 </html>
