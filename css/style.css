@@ -20,17 +20,21 @@ body{
   color: var(--text);
 }
 
-/* Barre haute */
-.topbar{
-  display:flex; align-items:center; gap:12px;
-  padding: 12px 16px;
-  background: #EEF2FF; /* pervenche très clair */
-  border-bottom:1px solid var(--outline);
+/* Barre haute (header) */
+.topbar {
+  display: flex;
+  align-items: center;
+  padding: 20px 28px;            /* plus de hauteur + largeur */
+  background: #EEF2FF;          /* bleu pastel clair */
+  border-bottom: none;          /* on enlève la séparation */
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04); /* ombre douce */
+  border-radius: 0 0 16px 16px; /* coins arrondis bas */
 }
-.brand{
+.brand {
   font-family: "Syne", system-ui, sans-serif;
   font-weight: 800;
-  letter-spacing: .3px;
+  font-size: 1.8rem;            /* plus grand */
+  letter-spacing: 0.5px;
   color:#4958FF;
 }
 
@@ -114,7 +118,7 @@ input, select{
   font-family: inherit;
 }
 
-/* Petites cartes/formulaires (si tu en ajoutes) */
+/* Petites cartes/formulaires */
 .form{
   display:grid; gap:12px; max-width:520px; margin: 16px 0;
   background: var(--card);
