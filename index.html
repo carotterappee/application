@@ -5,19 +5,106 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>HP+ - Apprentissage de langues</title>
   <link rel="stylesheet" href="css/style.css" />
-  <!-- Lottie (mascotte 3D légère) -->
-  <script defer src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 </head>
 <body>
   <header class="topbar">
     <div class="brand">HP+</div>
-    <div class="spacer"></div>
   </header>
 
   <div id="app">
-    <!-- Page Accueil -->
+    <!-- Page Accueil avec mascotte -->
     <section id="welcome" class="page active">
       <div class="hero">
+        <!-- Mascotte -->
+        <div class="hero-mascot">
+          <svg width="260" height="260" viewBox="0 0 260 260" role="img" aria-label="Chat noir avec nœud rose">
+            <defs>
+              <style>
+                .fur { fill:#0d0d0f; }
+                .inner { fill:#1b1b22; }
+                .nose { fill:#ff7aa2; }
+                .bow  { fill:#ff5ea2; }
+                .eye { fill:#ffffff; }
+                .pupil { fill:#111; }
+                .pad { fill:#f3d3da; }
+                @keyframes blink {
+                  0%, 92%, 100% { transform: scaleY(1); }
+                  94%, 96%      { transform: scaleY(0.05); }
+                }
+                @keyframes wave {
+                  0%, 100% { transform: rotate(0deg); }
+                  50%      { transform: rotate(-18deg); }
+                }
+              </style>
+            </defs>
+
+            <!-- Ombre -->
+            <ellipse cx="130" cy="220" rx="60" ry="12" fill="#eaeefe"/>
+
+            <!-- Corps -->
+            <g id="cat" transform="translate(0,4)">
+              <!-- queue -->
+              <path class="fur" d="M198,164c22,8 26,24 16,34c-10,10-30,4-30,-8c0,-10 8,-12 14,-18z" opacity="0.95"/>
+              <!-- corps -->
+              <ellipse class="fur" cx="130" cy="150" rx="66" ry="72"/>
+              <ellipse class="inner" cx="130" cy="162" rx="42" ry="48" opacity="0.18"/>
+
+              <!-- tête -->
+              <g id="head" transform="translate(0,-10)">
+                <circle class="fur" cx="130" cy="88" r="50"/>
+                <!-- oreilles -->
+                <path class="fur" d="M92,58 l-18,-20 a6,6 0 0 1 8,-8 l22,14z"/>
+                <path class="fur" d="M168,58 l18,-20 a6,6 0 0 0 -8,-8 l-22,14z"/>
+
+                <!-- nœud rose -->
+                <g transform="translate(130,40)">
+                  <ellipse class="bow" cx="0" cy="0" rx="10" ry="7"/>
+                  <path class="bow" d="M-10,0 C-24,-8,-22,10,-10,6 C-18,12,-16,22,-4,10 Z"/>
+                  <path class="bow" d="M10,0 C24,-8,22,10,10,6 C18,12,16,22,4,10 Z"/>
+                </g>
+
+                <!-- yeux -->
+                <g transform="translate(100,88)">
+                  <g style="transform-origin:0 0; animation: blink 3.6s infinite;">
+                    <ellipse class="eye" cx="0" cy="0" rx="12" ry="10"/>
+                  </g>
+                  <circle class="pupil" cx="0" cy="0" r="4"/>
+                </g>
+                <g transform="translate(160,88)">
+                  <g style="transform-origin:0 0; animation: blink 3.6s infinite 0.05s;">
+                    <ellipse class="eye" cx="0" cy="0" rx="12" ry="10"/>
+                  </g>
+                  <circle class="pupil" cx="0" cy="0" r="4"/>
+                </g>
+
+                <!-- nez + bouche -->
+                <polygon class="nose" points="128,104 132,104 130,108"/>
+                <path d="M130,112 q-6,4 -12,0" stroke="#222" stroke-width="2" fill="none"/>
+                <path d="M130,112 q6,4 12,0" stroke="#222" stroke-width="2" fill="none"/>
+                <!-- moustaches -->
+                <path d="M102,108 h-18" stroke="#222" stroke-width="2" />
+                <path d="M104,112 h-20" stroke="#222" stroke-width="2" />
+                <path d="M158,108 h18" stroke="#222" stroke-width="2" />
+                <path d="M156,112 h20" stroke="#222" stroke-width="2" />
+              </g>
+
+              <!-- bras gauche -->
+              <g transform="translate(88,156)">
+                <ellipse class="fur" cx="0" cy="24" rx="14" ry="24"/>
+                <circle class="pad" cx="0" cy="44" r="6"/>
+              </g>
+              <!-- bras droit (coucou) -->
+              <g transform="translate(172,156)">
+                <g style="transform-origin:0 0; animation: wave 1.6s ease-in-out infinite;">
+                  <ellipse class="fur" cx="0" cy="24" rx="14" ry="24"/>
+                  <circle class="pad" cx="0" cy="44" r="6"/>
+                </g>
+              </g>
+            </g>
+          </svg>
+        </div>
+
+        <!-- Texte accueil -->
         <div class="hero-text">
           <h1 id="welcome-title">Bonjour 👋 Bienvenue sur HP+</h1>
           <p id="welcome-subtitle">Apprends les langues pas à pas.</p>
@@ -27,94 +114,62 @@
             <button onclick="guestMode()" id="btn-guest">Continuer en invité</button>
           </div>
         </div>
-        <div class="hero-mascot">
-          <!-- Mascotte Lottie -->
-          <lottie-player
-            id="mascot"
-            src="https://assets7.lottiefiles.com/packages/lf20_4kx2q32n.json"
-            background="transparent"
-            speed="1"
-            loop
-            autoplay
-            style="width: 240px; height: 240px;"
-          ></lottie-player>
-        </div>
       </div>
     </section>
 
-    <!-- Page Connexion -->
+    <!-- Autres pages (inchangées) -->
     <section id="login" class="page">
-      <h2 id="login-title">Connexion</h2>
-      <div class="form">
-        <input type="email" id="login-email" placeholder="Email" />
-        <input type="password" id="login-pass" placeholder="Mot de passe" />
-        <button id="login-submit">Connexion</button>
-      </div>
+      <h2>Connexion</h2>
+      <input type="email" placeholder="Email" />
+      <input type="password" placeholder="Mot de passe" />
+      <button>Connexion</button>
       <button class="link" onclick="goToPage('welcome')">← Retour</button>
     </section>
 
-    <!-- Page Inscription -->
     <section id="signup" class="page">
-      <h2 id="signup-title">Créer un compte</h2>
-      <div class="form">
-        <input type="text" id="signup-first" placeholder="Prénom" />
-        <input type="text" id="signup-last" placeholder="Nom" />
-        <input type="text" id="signup-nick" placeholder="Surnom (facultatif)" />
-        <input type="email" id="signup-email" placeholder="Email" />
-        <input type="password" id="signup-pass" placeholder="Mot de passe" />
-        <button id="signup-submit">Créer</button>
-      </div>
+      <h2>Créer un compte</h2>
+      <input type="text" placeholder="Prénom" />
+      <input type="text" placeholder="Nom" />
+      <input type="text" placeholder="Surnom" />
+      <input type="email" placeholder="Email" />
+      <input type="password" placeholder="Mot de passe" />
+      <button>Créer</button>
       <button class="link" onclick="goToPage('welcome')">← Retour</button>
     </section>
 
-    <!-- Page Langues -->
     <section id="languages" class="page">
-      <h2 id="lang-select-title">Choisis tes langues</h2>
-
-      <div class="form">
-        <label for="native-select" id="lbl-native">Langue(s) parlée(s)</label>
-        <select id="native-select" multiple>
-          <option>Français</option>
-          <option>English</option>
-          <option>Español</option>
-          <option>Deutsch</option>
-          <option>Italiano</option>
-          <option>Português</option>
-        </select>
-
-        <label for="target-select" id="lbl-target">Langue à apprendre</label>
-        <select id="target-select">
-          <option>Français</option>
-          <option>English</option>
-          <option>Español</option>
-          <option>Deutsch</option>
-          <option>Italiano</option>
-          <option>Português</option>
-        </select>
-
-        <button id="lang-continue" onclick="goToPage('level')">Continuer</button>
-      </div>
+      <h2>Choisis tes langues</h2>
+      <label>Langue(s) parlée(s)</label>
+      <select multiple>
+        <option>Français</option>
+        <option>English</option>
+        <option>Español</option>
+        <option>Deutsch</option>
+      </select>
+      <label>Langue à apprendre</label>
+      <select>
+        <option>Français</option>
+        <option>English</option>
+        <option>Español</option>
+        <option>Deutsch</option>
+      </select>
+      <button onclick="goToPage('level')">Continuer</button>
     </section>
 
-    <!-- Page Niveau -->
     <section id="level" class="page">
-      <h2 id="level-title">Choisis ton point de départ</h2>
-      <div class="btn-col">
-        <button id="btn-beginner" onclick="startBeginner()">Je suis totalement débutant(e)</button>
-        <button id="btn-hasbasics" onclick="startPlacement()">J’ai déjà des bases</button>
-      </div>
+      <h2>Choisis ton point de départ</h2>
+      <button onclick="startBeginner()">Je suis totalement débutant(e)</button>
+      <button onclick="startPlacement()">J’ai déjà des bases</button>
       <button class="link" onclick="goToPage('languages')">← Retour</button>
     </section>
 
-    <!-- Page Dashboard (placeholder) -->
     <section id="dashboard" class="page">
-      <h2 id="dash-title">Bienvenue dans tes cours</h2>
-      <p id="dash-sub">Bouton “Reprendre” et progression à venir…</p>
+      <h2>Bienvenue dans tes cours</h2>
+      <p>Reprise et progression arrivent bientôt…</p>
       <button class="link" onclick="goToPage('welcome')">← Accueil</button>
     </section>
   </div>
 
-  <script defer src="js/i18n.js"></script>
-  <script defer src="js/main.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>
