@@ -5,61 +5,121 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>HP+ - Apprentissage de langues</title>
   <link rel="stylesheet" href="css/style.css" />
+  <!-- Lottie (mascotte 3D légère) -->
+  <script defer src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 </head>
 <body>
+  <header class="topbar">
+    <div class="brand">HP+</div>
+    <div class="spacer"></div>
+    <label for="ui-lang" class="sr-only">Langue de l’interface</label>
+    <select id="ui-lang" onchange="changeUiLang(this.value)">
+      <option value="fr">Français</option>
+      <option value="en">English</option>
+    </select>
+  </header>
+
   <div id="app">
     <!-- Page Accueil -->
     <section id="welcome" class="page active">
-      <h1 id="welcome-title"></h1>
-      <p id="welcome-subtitle"></p>
-      <button onclick="goToPage('login')">Se connecter</button>
-      <button onclick="goToPage('signup')">Créer un compte</button>
-      <button onclick="guestMode()">Continuer en invité</button>
+      <div class="hero">
+        <div class="hero-text">
+          <h1 id="welcome-title">Bonjour 👋 Bienvenue sur HP+</h1>
+          <p id="welcome-subtitle">Apprends les langues pas à pas.</p>
+          <div class="btn-row">
+            <button onclick="goToPage('login')" id="btn-login">Se connecter</button>
+            <button onclick="goToPage('signup')" id="btn-signup">Créer un compte</button>
+            <button onclick="guestMode()" id="btn-guest">Continuer en invité</button>
+          </div>
+        </div>
+        <div class="hero-mascot">
+          <!-- Mascotte Lottie -->
+          <lottie-player
+            id="mascot"
+            src="https://assets7.lottiefiles.com/packages/lf20_4kx2q32n.json"
+            background="transparent"
+            speed="1"
+            loop
+            autoplay
+            style="width: 240px; height: 240px;"
+          ></lottie-player>
+        </div>
+      </div>
     </section>
 
     <!-- Page Connexion -->
     <section id="login" class="page">
-      <h2>Connexion</h2>
-      <input type="email" placeholder="Email" />
-      <input type="password" placeholder="Mot de passe" />
-      <button>Connexion</button>
-      <button onclick="goToPage('welcome')">Retour</button>
+      <h2 id="login-title">Connexion</h2>
+      <div class="form">
+        <input type="email" id="login-email" placeholder="Email" />
+        <input type="password" id="login-pass" placeholder="Mot de passe" />
+        <button id="login-submit">Connexion</button>
+      </div>
+      <button class="link" onclick="goToPage('welcome')">← Retour</button>
     </section>
 
     <!-- Page Inscription -->
     <section id="signup" class="page">
-      <h2>Créer un compte</h2>
-      <input type="text" placeholder="Prénom" />
-      <input type="text" placeholder="Nom" />
-      <input type="text" placeholder="Surnom" />
-      <input type="email" placeholder="Email" />
-      <input type="password" placeholder="Mot de passe" />
-      <button>Créer</button>
-      <button onclick="goToPage('welcome')">Retour</button>
+      <h2 id="signup-title">Créer un compte</h2>
+      <div class="form">
+        <input type="text" id="signup-first" placeholder="Prénom" />
+        <input type="text" id="signup-last" placeholder="Nom" />
+        <input type="text" id="signup-nick" placeholder="Surnom (facultatif)" />
+        <input type="email" id="signup-email" placeholder="Email" />
+        <input type="password" id="signup-pass" placeholder="Mot de passe" />
+        <button id="signup-submit">Créer</button>
+      </div>
+      <button class="link" onclick="goToPage('welcome')">← Retour</button>
     </section>
 
     <!-- Page Langues -->
     <section id="languages" class="page">
-      <h2 id="lang-select-title"></h2>
-      <label>Langue(s) parlée(s)</label>
-      <select multiple>
-        <option>Français</option>
-        <option>Anglais</option>
-        <option>Espagnol</option>
-        <option>Allemand</option>
-      </select>
-      <label>Langue à apprendre</label>
-      <select>
-        <option>Français</option>
-        <option>Anglais</option>
-        <option>Espagnol</option>
-        <option>Allemand</option>
-      </select>
-      <button>Continuer</button>
+      <h2 id="lang-select-title">Choisis tes langues</h2>
+
+      <div class="form">
+        <label for="native-select" id="lbl-native">Langue(s) parlée(s)</label>
+        <select id="native-select" multiple>
+          <option>Français</option>
+          <option>English</option>
+          <option>Español</option>
+          <option>Deutsch</option>
+          <option>Italiano</option>
+          <option>Português</option>
+        </select>
+
+        <label for="target-select" id="lbl-target">Langue à apprendre</label>
+        <select id="target-select">
+          <option>Français</option>
+          <option>English</option>
+          <option>Español</option>
+          <option>Deutsch</option>
+          <option>Italiano</option>
+          <option>Português</option>
+        </select>
+
+        <button id="lang-continue" onclick="goToPage('level')">Continuer</button>
+      </div>
+    </section>
+
+    <!-- Page Niveau -->
+    <section id="level" class="page">
+      <h2 id="level-title">Choisis ton point de départ</h2>
+      <div class="btn-col">
+        <button id="btn-beginner" onclick="startBeginner()">Je suis totalement débutant(e)</button>
+        <button id="btn-hasbasics" onclick="startPlacement()">J’ai déjà des bases</button>
+      </div>
+      <button class="link" onclick="goToPage('languages')">← Retour</button>
+    </section>
+
+    <!-- Page Dashboard (placeholder) -->
+    <section id="dashboard" class="page">
+      <h2 id="dash-title">Bienvenue dans tes cours</h2>
+      <p id="dash-sub">Bouton “Reprendre” et progression à venir…</p>
+      <button class="link" onclick="goToPage('welcome')">← Accueil</button>
     </section>
   </div>
 
-  <script src="js/i18n.js"></script>
-  <script src="js/main.js"></script>
+  <script defer src="js/i18n.js"></script>
+  <script defer src="js/main.js"></script>
 </body>
 </html>

@@ -3,7 +3,25 @@
     "title": "Hello 👋 Welcome to HP+",
     "subtitle": "Learn languages step by step."
   },
+  "auth": {
+    "login_title": "Sign in",
+    "signup_title": "Create account",
+    "login_btn": "Sign in",
+    "signup_btn": "Create account",
+    "guest_btn": "Continue as guest"
+  },
   "languages": {
-    "title": "Choose your languages"
+    "title": "Choose your languages",
+    "native_label": "Language(s) you speak",
+    "target_label": "Language to learn"
+  },
+  "level": {
+    "title": "Pick your starting point",
+    "beginner_btn": "I’m a complete beginner",
+    "hasbasics_btn": "I already have some basics"
+  },
+  "dashboard": {
+    "title": "Welcome to your lessons",
+    "subtitle": "Resume button & progress coming soon…"
   }
 }

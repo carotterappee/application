@@ -3,7 +3,25 @@
     "title": "Bonjour 👋 Bienvenue sur HP+",
     "subtitle": "Apprends les langues pas à pas."
   },
+  "auth": {
+    "login_title": "Connexion",
+    "signup_title": "Créer un compte",
+    "login_btn": "Se connecter",
+    "signup_btn": "Créer un compte",
+    "guest_btn": "Continuer en invité"
+  },
   "languages": {
-    "title": "Choisis tes langues"
+    "title": "Choisis tes langues",
+    "native_label": "Langue(s) parlée(s)",
+    "target_label": "Langue à apprendre"
+  },
+  "level": {
+    "title": "Choisis ton point de départ",
+    "beginner_btn": "Je suis totalement débutant(e)",
+    "hasbasics_btn": "J’ai déjà des bases"
+  },
+  "dashboard": {
+    "title": "Bienvenue dans tes cours",
+    "subtitle": "Reprise et progression arrivent bientôt…"
   }
 }
