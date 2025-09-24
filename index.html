@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HP+ - Apprentissage de langues</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- Page Accueil -->
+    <section id="welcome" class="page active">
+      <h1 id="welcome-title"></h1>
+      <p id="welcome-subtitle"></p>
+      <button onclick="goToPage('login')">Se connecter</button>
+      <button onclick="goToPage('signup')">Créer un compte</button>
+      <button onclick="guestMode()">Continuer en invité</button>
+    </section>
+
+    <!-- Page Connexion -->
+    <section id="login" class="page">
+      <h2>Connexion</h2>
+      <input type="email" placeholder="Email" />
+      <input type="password" placeholder="Mot de passe" />
+      <button>Connexion</button>
+      <button onclick="goToPage('welcome')">Retour</button>
+    </section>
+
+    <!-- Page Inscription -->
+    <section id="signup" class="page">
+      <h2>Créer un compte</h2>
+      <input type="text" placeholder="Prénom" />
+      <input type="text" placeholder="Nom" />
+      <input type="text" placeholder="Surnom" />
+      <input type="email" placeholder="Email" />
+      <input type="password" placeholder="Mot de passe" />
+      <button>Créer</button>
+      <button onclick="goToPage('welcome')">Retour</button>
+    </section>
+
+    <!-- Page Langues -->
+    <section id="languages" class="page">
+      <h2 id="lang-select-title"></h2>
+      <label>Langue(s) parlée(s)</label>
+      <select multiple>
+        <option>Français</option>
+        <option>Anglais</option>
+        <option>Espagnol</option>
+        <option>Allemand</option>
+      </select>
+      <label>Langue à apprendre</label>
+      <select>
+        <option>Français</option>
+        <option>Anglais</option>
+        <option>Espagnol</option>
+        <option>Allemand</option>
+      </select>
+      <button>Continuer</button>
+    </section>
+  </div>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
