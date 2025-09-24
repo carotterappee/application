@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>HP+ - Apprentissage de langues</title>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=guest-pills-1" />
+  <link rel="stylesheet" href="css/style.css" />
   <noscript><style>#loader{display:none!important}.fade{opacity:1!important;transform:none!important}</style></noscript>
 </head>
 <body class="preload">
@@ -13,7 +13,43 @@
   <div id="loader" aria-hidden="true">
     <div class="loader-track">
       <svg class="sled-svg" viewBox="0 0 420 180" role="img" aria-label="Chat en luge">
-        <!-- (SVG complet comme déjà intégré) -->
+        <defs>
+          <linearGradient id="woodGrad" x1="0" x2="1" y1="0" y2="0">
+            <stop offset="0"  stop-color="#9c6d3a"/>
+            <stop offset="1"  stop-color="#b8834b"/>
+          </linearGradient>
+          <linearGradient id="metalGrad" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0"  stop-color="#e7ecf5"/>
+            <stop offset="1"  stop-color="#b7c2d5"/>
+          </linearGradient>
+          <radialGradient id="shadowGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0" stop-color="rgba(0,0,0,.25)"/>
+            <stop offset="1" stop-color="rgba(0,0,0,0)"/>
+          </radialGradient>
+        </defs>
+        <rect x="0" y="140" width="420" height="40" fill="#eef5ff"/>
+        <ellipse class="sled-shadow" cx="200" cy="148" rx="80" ry="12" fill="url(#shadowGrad)"/>
+        <g class="sled">
+          <g transform="translate(60,0)">
+            <rect x="0" y="116" width="210" height="6" rx="3" fill="#a9b6cc" opacity=".6"/>
+            <rect x="0" y="126" width="210" height="6" rx="3" fill="#a9b6cc" opacity=".6"/>
+          </g>
+          <g transform="translate(120,40)">
+            <ellipse cx="40" cy="60" rx="26" ry="32" fill="#0b0b0e"/>
+            <circle cx="40" cy="36" r="20" fill="#0b0b0e"/>
+            <path d="M28,24 l-8,-8 a5,5 0 0 1 6,-6 l9,6z" fill="#0b0b0e"/>
+            <path d="M52,24 l8,-8 a5,5 0 0 0 -6,-6 l-9,6z" fill="#0b0b0e"/>
+            <g transform="translate(31,36)">
+              <circle r="5.6" fill="#ffe0a8"/>
+              <circle r="2.2" fill="#111"/>
+            </g>
+            <g transform="translate(49,36)">
+              <circle r="5.6" fill="#ffe0a8"/>
+              <circle r="2.2" fill="#111"/>
+            </g>
+            <ellipse cx="40" cy="42" rx="1.5" ry="1.2" fill="#2b2b2b"/>
+          </g>
+        </g>
       </svg>
     </div>
     <div class="loading-label">Loading…</div>
@@ -28,7 +64,55 @@
   <main id="heroCenter" class="fade">
     <section id="welcome" class="welcome-card">
       <div class="hero-mascot">
-        <!-- (SVG mascotte chat déjà intégré) -->
+        <svg class="mascot-svg" viewBox="0 0 220 220" role="img" aria-label="Chat noir kawaii">
+          <defs>
+            <style>
+              .fur { fill:#0b0b0e; }
+              .eye { fill:#ffe0a8; }
+              .pupil { fill:#111; }
+              .nose { fill:#2b2b2b; }
+              .bow  { fill:#ff66a6; }
+              .bow-dark { fill:#ff4d98; }
+              .pad  { fill:#f3d3da; }
+              .scarf { fill:#ff6fae; }
+              .scarf2{ fill:#ff5ea2; }
+              @keyframes blink {0%,96%,100%{transform:scaleY(1);}97%,99%{transform:scaleY(.1);} }
+              @keyframes wave {0%,100%{transform:rotate(0);}50%{transform:rotate(-12deg);} }
+              @keyframes scarfFloat {0%,100%{transform:rotate(4deg);}50%{transform:rotate(-6deg);} }
+            </style>
+          </defs>
+          <ellipse cx="110" cy="198" rx="44" ry="10" fill="#e9eefc"/>
+          <path d="M150,160 q20,10 10,30 q-15,18 -30,6" fill="none" stroke="#0b0b0e" stroke-width="16" stroke-linecap="round"/>
+          <g transform="translate(0,6)">
+            <ellipse class="fur" cx="110" cy="142" rx="50" ry="58"/>
+            <g transform="translate(0,-10)">
+              <circle class="fur" cx="110" cy="78" r="46"/>
+              <g transform="translate(122,38) rotate(-8)">
+                <ellipse class="bow" cx="0" cy="0" rx="7" ry="5"/>
+                <path class="bow-dark" d="M-7,0 C-16,-6,-15,8,-7,5 C-12,10,-10,16,-3,8 Z"/>
+                <path class="bow-dark" d="M7,0 C16,-6,15,8,7,5 C12,10,10,16,3,8 Z"/>
+              </g>
+              <g transform="translate(86,78)">
+                <g style="transform-origin:0 0; animation: blink 4.6s infinite;">
+                  <circle class="eye" cx="0" cy="0" r="10"/>
+                </g>
+                <circle class="pupil" cx="0" cy="0" r="4"/>
+              </g>
+              <g transform="translate(134,78)">
+                <g style="transform-origin:0 0; animation: blink 5.1s infinite .12s;">
+                  <circle class="eye" cx="0" cy="0" r="10"/>
+                </g>
+                <circle class="pupil" cx="0" cy="0" r="4"/>
+              </g>
+              <ellipse class="nose" cx="110" cy="92" rx="4" ry="3"/>
+            </g>
+            <g>
+              <path class="scarf" d="M78,116 q32,-10 64,0 q-8,12 -32,12 q-24,0 -32,-12z"/>
+              <path class="scarf2" d="M142,118 q10,12 -4,26 q-10,12 -16,2"
+                    style="transform-origin:140px 118px; animation: scarfFloat 2.4s ease-in-out infinite;"/>
+            </g>
+          </g>
+        </svg>
       </div>
       <div class="hero-text">
         <h1>Bonjour, bienvenue sur HP+</h1>
@@ -42,11 +126,10 @@
     </section>
   </main>
 
-  <!-- PANNEAUX -->
+  <!-- Panneaux -->
   <section id="panel-login" class="panel">
     <div class="panel-card">
       <h2>Connexion</h2>
-      <p class="helper">Ravi de te revoir</p>
       <div class="form">
         <input type="email" placeholder="Email" autocomplete="email" />
         <input type="password" placeholder="Mot de passe" autocomplete="current-password" />
@@ -62,13 +145,11 @@
   <section id="panel-signup" class="panel">
     <div class="panel-card">
       <h2>Créer un compte</h2>
-      <p class="helper">Bienvenue dans l’aventure HP+ ✨</p>
       <div class="form">
-        <input type="text" placeholder="Prénom" autocomplete="given-name" />
-        <input type="text" placeholder="Nom" autocomplete="family-name" />
-        <input type="text" placeholder="Surnom (optionnel)" />
-        <input type="email" placeholder="Email" autocomplete="email" />
-        <input type="password" placeholder="Mot de passe" autocomplete="new-password" />
+        <input type="text" placeholder="Prénom" />
+        <input type="text" placeholder="Nom" />
+        <input type="email" placeholder="Email" />
+        <input type="password" placeholder="Mot de passe" />
       </div>
       <div class="actions">
         <button onclick="redirectDashboard()">Créer mon compte</button>
@@ -81,33 +162,18 @@
   <section id="panel-guest" class="panel">
     <div class="panel-card">
       <h2>Choisis tes langues</h2>
-      <p class="helper">Tu peux commencer en mode invité. Ton avancée restera locale.</p>
-
       <div class="form">
         <label>Langue(s) parlée(s)</label>
-        <!-- Pills cliquables -->
-        <div class="lang-pills" role="group" aria-label="Langue(s) parlée(s)">
+        <div class="lang-pills">
           <input class="pill-input" type="checkbox" id="lp-fr" value="Français"><label class="pill" for="lp-fr">Français</label>
           <input class="pill-input" type="checkbox" id="lp-en" value="English"><label class="pill" for="lp-en">English</label>
-          <input class="pill-input" type="checkbox" id="lp-es" value="Español"><label class="pill" for="lp-es">Español</label>
-          <input class="pill-input" type="checkbox" id="lp-de" value="Deutsch"><label class="pill" for="lp-de">Deutsch</label>
-          <input class="pill-input" type="checkbox" id="lp-it" value="Italiano"><label class="pill" for="lp-it">Italiano</label>
-          <input class="pill-input" type="checkbox" id="lp-pt" value="Português"><label class="pill" for="lp-pt">Português</label>
         </div>
-
         <label>Langue à apprendre</label>
-        <div class="select">
-          <select id="learn-lang">
-            <option>Français</option>
-            <option>English</option>
-            <option>Español</option>
-            <option>Deutsch</option>
-            <option>Italiano</option>
-            <option>Português</option>
-          </select>
-        </div>
+        <select id="learn-lang">
+          <option>Français</option>
+          <option>English</option>
+        </select>
       </div>
-
       <div class="actions">
         <button onclick="redirectDashboard()">Continuer</button>
         <span class="spacer"></span>
@@ -119,7 +185,6 @@
   <section id="panel-level" class="panel">
     <div class="panel-card">
       <h2>Ton point de départ</h2>
-      <p class="helper">On s’adapte à ton niveau.</p>
       <div class="actions" style="gap:10px; flex-wrap: wrap;">
         <button onclick="redirectDashboard()">Je suis débutant(e)</button>
         <button onclick="redirectDashboard()">J’ai déjà des bases</button>
@@ -129,9 +194,7 @@
     </div>
   </section>
 
-  <!-- JS -->
   <script>
-    // Loader -> Hero
     function showHero(){
       const loader = document.getElementById('loader');
       const hero = document.getElementById('heroCenter');
@@ -140,51 +203,23 @@
       if (hero) hero.classList.add('show');
     }
     window.addEventListener('load', ()=> setTimeout(showHero, 1800));
-    setTimeout(showHero, 3500); // filet de sécurité
+    setTimeout(showHero, 3500);
 
-    // Panneaux
     function openPanel(id){
       document.body.classList.add('panel-open');
       document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
       document.getElementById(id)?.classList.add('active');
-      window.scrollTo({top:0, behavior:'instant'});
     }
     function closePanel(){
       document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
       document.body.classList.remove('panel-open');
-      const hero = document.getElementById('heroCenter');
-      requestAnimationFrame(()=> hero.classList.add('show'));
     }
-
-    // Compat boutons accueil
     function goToPage(id){
       if(id==='login'){ openPanel('panel-login'); return; }
       if(id==='signup'){ openPanel('panel-signup'); return; }
     }
-    function guestMode(){ 
-      // Redirection direct tableau de bord
-      window.location.href = "dashboard.html"; 
-    }
-
-    // Récupération langues invité (non utilisé car redirection directe maintenant)
-    function saveGuestLanguages(){
-      const spoken = [...document.querySelectorAll('.lang-pills .pill-input:checked')].map(i=>i.value);
-      const learning = document.getElementById('learn-lang').value;
-
-      if(spoken.length === 0){
-        alert("Choisis au moins une langue parlée 🙂");
-        return;
-      }
-      console.log('Langues parlées:', spoken);
-      console.log('Langue à apprendre:', learning);
-
-      redirectDashboard();
-    }
-
-    // Redirection vers dashboard
-    function redirectDashboard(){
-      window.location.href = "dashboard.html";
-    }
+    function guestMode(){ window.location.href = "dashboard.html"; }
+    function redirectDashboard(){ window.location.href = "dashboard.html"; }
   </script>
 </body>
 </html>
