@@ -17,87 +17,87 @@
       <div class="hero">
         <!-- Mascotte -->
         <div class="hero-mascot">
-          <svg width="260" height="260" viewBox="0 0 260 260" role="img" aria-label="Chat noir avec nœud rose">
+          <!-- Chat kawaii + petit nœud rose -->
+          <svg class="mascot-svg" viewBox="0 0 220 220" role="img" aria-label="Chat noir kawaii avec nœud rose">
             <defs>
               <style>
-                .fur { fill:#0d0d0f; }
-                .inner { fill:#1b1b22; }
-                .nose { fill:#ff7aa2; }
-                .bow  { fill:#ff5ea2; }
-                .eye { fill:#ffffff; }
+                .fur { fill:#0b0b0e; }
+                .shade { fill:#171820; opacity:.15; }
+                .eye { fill:#ffe0a8; }
                 .pupil { fill:#111; }
-                .pad { fill:#f3d3da; }
+                .nose { fill:#2b2b2b; }
+                .bow  { fill:#ff66a6; }
+                .bow-dark { fill:#ff4d98; }
+                .pad  { fill:#f3d3da; }
                 @keyframes blink {
-                  0%, 92%, 100% { transform: scaleY(1); }
-                  94%, 96%      { transform: scaleY(0.05); }
+                  0%, 96%, 100% { transform: scaleY(1); }
+                  97%, 99%      { transform: scaleY(0.08); }
                 }
                 @keyframes wave {
                   0%, 100% { transform: rotate(0deg); }
-                  50%      { transform: rotate(-18deg); }
+                  50%      { transform: rotate(-12deg); }
                 }
               </style>
             </defs>
 
-            <!-- Ombre -->
-            <ellipse cx="130" cy="220" rx="60" ry="12" fill="#eaeefe"/>
+            <!-- ombre -->
+            <ellipse cx="110" cy="198" rx="42" ry="10" fill="#e9eefc"/>
 
-            <!-- Corps -->
-            <g id="cat" transform="translate(0,4)">
+            <!-- corps -->
+            <g transform="translate(0,6)">
               <!-- queue -->
-              <path class="fur" d="M198,164c22,8 26,24 16,34c-10,10-30,4-30,-8c0,-10 8,-12 14,-18z" opacity="0.95"/>
-              <!-- corps -->
-              <ellipse class="fur" cx="130" cy="150" rx="66" ry="72"/>
-              <ellipse class="inner" cx="130" cy="162" rx="42" ry="48" opacity="0.18"/>
+              <path class="fur" d="M150,150c18,6 18,18 10,24c-7,6-20,3-20,-5c0,-7 5,-9 10,-14z"/>
+
+              <!-- buste -->
+              <ellipse class="fur" cx="110" cy="142" rx="48" ry="56"/>
+              <ellipse class="shade" cx="110" cy="152" rx="30" ry="36"/>
 
               <!-- tête -->
-              <g id="head" transform="translate(0,-10)">
-                <circle class="fur" cx="130" cy="88" r="50"/>
+              <g transform="translate(0,-10)">
+                <circle class="fur" cx="110" cy="78" r="46"/>
                 <!-- oreilles -->
-                <path class="fur" d="M92,58 l-18,-20 a6,6 0 0 1 8,-8 l22,14z"/>
-                <path class="fur" d="M168,58 l18,-20 a6,6 0 0 0 -8,-8 l-22,14z"/>
-
+                <path class="fur" d="M80,56 l-15,-16 a6,6 0 0 1 8,-8 l18,12z"/>
+                <path class="fur" d="M140,56 l15,-16 a6,6 0 0 0 -8,-8 l-18,12z"/>
                 <!-- nœud rose -->
-                <g transform="translate(130,40)">
-                  <ellipse class="bow" cx="0" cy="0" rx="10" ry="7"/>
-                  <path class="bow" d="M-10,0 C-24,-8,-22,10,-10,6 C-18,12,-16,22,-4,10 Z"/>
-                  <path class="bow" d="M10,0 C24,-8,22,10,10,6 C18,12,16,22,4,10 Z"/>
+                <g transform="translate(122,38) rotate(-8)">
+                  <ellipse class="bow" cx="0" cy="0" rx="7" ry="5"/>
+                  <path class="bow-dark" d="M-7,0 C-16,-6,-15,8,-7,5 C-12,10,-10,16,-3,8 Z"/>
+                  <path class="bow-dark" d="M7,0 C16,-6,15,8,7,5 C12,10,10,16,3,8 Z"/>
                 </g>
-
                 <!-- yeux -->
-                <g transform="translate(100,88)">
-                  <g style="transform-origin:0 0; animation: blink 3.6s infinite;">
-                    <ellipse class="eye" cx="0" cy="0" rx="12" ry="10"/>
+                <g transform="translate(86,78)">
+                  <g style="transform-origin:0 0; animation: blink 4.2s infinite;">
+                    <circle class="eye" cx="0" cy="0" r="10"/>
                   </g>
                   <circle class="pupil" cx="0" cy="0" r="4"/>
                 </g>
-                <g transform="translate(160,88)">
-                  <g style="transform-origin:0 0; animation: blink 3.6s infinite 0.05s;">
-                    <ellipse class="eye" cx="0" cy="0" rx="12" ry="10"/>
+                <g transform="translate(134,78)">
+                  <g style="transform-origin:0 0; animation: blink 4.2s infinite .08s;">
+                    <circle class="eye" cx="0" cy="0" r="10"/>
                   </g>
                   <circle class="pupil" cx="0" cy="0" r="4"/>
                 </g>
-
                 <!-- nez + bouche -->
-                <polygon class="nose" points="128,104 132,104 130,108"/>
-                <path d="M130,112 q-6,4 -12,0" stroke="#222" stroke-width="2" fill="none"/>
-                <path d="M130,112 q6,4 12,0" stroke="#222" stroke-width="2" fill="none"/>
+                <ellipse class="nose" cx="110" cy="92" rx="4" ry="3"/>
+                <path d="M110,96 q-5,4 -9,0" stroke="#2b2b2b" stroke-width="2" fill="none"/>
+                <path d="M110,96 q5,4 9,0" stroke="#2b2b2b" stroke-width="2" fill="none"/>
                 <!-- moustaches -->
-                <path d="M102,108 h-18" stroke="#222" stroke-width="2" />
-                <path d="M104,112 h-20" stroke="#222" stroke-width="2" />
-                <path d="M158,108 h18" stroke="#222" stroke-width="2" />
-                <path d="M156,112 h20" stroke="#222" stroke-width="2" />
+                <path d="M92,90 h-16" stroke="#232323" stroke-width="2" />
+                <path d="M94,95 h-18" stroke="#232323" stroke-width="2" />
+                <path d="M128,90 h16"  stroke="#232323" stroke-width="2" />
+                <path d="M126,95 h18"  stroke="#232323" stroke-width="2" />
               </g>
 
-              <!-- bras gauche -->
-              <g transform="translate(88,156)">
-                <ellipse class="fur" cx="0" cy="24" rx="14" ry="24"/>
-                <circle class="pad" cx="0" cy="44" r="6"/>
+              <!-- pattes -->
+              <g transform="translate(82,150)">
+                <ellipse class="fur" cx="0" cy="18" rx="10" ry="18"/>
+                <circle class="pad" cx="0" cy="34" r="5"/>
               </g>
-              <!-- bras droit (coucou) -->
-              <g transform="translate(172,156)">
-                <g style="transform-origin:0 0; animation: wave 1.6s ease-in-out infinite;">
-                  <ellipse class="fur" cx="0" cy="24" rx="14" ry="24"/>
-                  <circle class="pad" cx="0" cy="44" r="6"/>
+              <!-- patte coucou -->
+              <g transform="translate(138,150)">
+                <g style="transform-origin:0 0; animation: wave 1.8s ease-in-out infinite;">
+                  <ellipse class="fur" cx="0" cy="18" rx="10" ry="18"/>
+                  <circle class="pad" cx="0" cy="34" r="5"/>
                 </g>
               </g>
             </g>
@@ -117,7 +117,7 @@
       </div>
     </section>
 
-    <!-- Autres pages (inchangées) -->
+    <!-- Autres pages -->
     <section id="login" class="page">
       <h2>Connexion</h2>
       <input type="email" placeholder="Email" />
