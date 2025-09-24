@@ -49,17 +49,18 @@ body{
   position: relative;
   overflow:hidden;
 }
+
+/* >>> Aucune délimitation (pas de cadre, pas d’ombre) */
 .welcome-card{
   display:grid;
   grid-template-columns: 1fr 1fr;
   gap: 32px;
   align-items: center;
   padding: 36px 40px;
-  border-radius: 24px;
-  backdrop-filter: blur(6px);
-  background: rgba(255,255,255,0.6);
-  border: 1px solid var(--outline);
-  box-shadow: 0 20px 40px rgba(50, 80, 200, 0.08);
+  background: none;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
 }
 @media (max-width: 860px){
   .welcome-card{ grid-template-columns: 1fr; text-align:center; }
@@ -87,6 +88,7 @@ body{
 /* Boutons */
 .btn-row{ display:flex; flex-wrap:wrap; gap:12px; justify-content:flex-start; }
 @media (max-width:860px){ .btn-row{ justify-content:center; } }
+
 button{
   border:none;
   padding:12px 20px;
@@ -109,7 +111,7 @@ button.ghost{
   background:#fff; color:#3F51B5; border:1px solid var(--outline); box-shadow:none;
 }
 
-/* Fade-in du contenu */
+/* Fade-in du contenu après loader */
 .fade{ opacity:0; transform: translateY(8px); transition: opacity .5s ease, transform .5s ease; }
 .fade.show{ opacity:1; transform:none; }
 
@@ -132,7 +134,7 @@ button.ghost{
 }
 
 /* =========================
-   LOADER — LUGE AMÉLIORÉE
+   LOADER — LUGE PREMIUM
    ========================= */
 #loader{
   position: fixed; inset:0; z-index:9999;
@@ -178,7 +180,7 @@ input, select{
   font-family: inherit;
 }
 
-/* Accessibilité : réduit les animations si l’utilisateur a activé “réduire les mouvements” */
+/* Accessibilité : réduire les animations si l’utilisateur l’a demandé */
 @media (prefers-reduced-motion: reduce){
   .sled, .wind, .fade{ animation:none !important; transition:none !important; }
 }
