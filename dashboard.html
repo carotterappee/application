@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HP+ - Tableau de bord</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=dashboard1" />
+</head>
+<body>
+  <!-- Header -->
+  <header class="topbar">
+    <div class="brand">HP+</div>
+  </header>
+
+  <!-- Dashboard -->
+  <main id="dashboard">
+    <section class="welcome">
+      <h1>Bonjour, bienvenue sur ton espace 🎉</h1>
+      <p>Ici tu peux suivre ta progression et continuer tes cours.</p>
+    </section>
+
+    <!-- Bouton continuer -->
+    <section class="cta">
+      <button onclick="startLesson()">👉 Continuer la leçon</button>
+    </section>
+
+    <!-- Widgets -->
+    <section class="widgets">
+      <!-- XP -->
+      <div class="xp-widget">
+        <div class="xp-title">XP du jour</div>
+        <div class="stars" id="xpStars"></div>
+      </div>
+
+      <!-- Streak / Momentum -->
+      <div class="streak-card">
+        <div class="flame l1" id="streakFlame"></div>
+        <div class="streak-text"><span id="streakDays">0</span> jours d’affilée</div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Fonction démarrage leçon
+    function startLesson(){
+      alert("Ici on chargera la prochaine leçon 📖");
+    }
+
+    // Rendu des étoiles XP
+    function renderXpStars(xpToday, xpTarget = 50){
+      const count = Math.max(0, Math.min(5, Math.round((xpToday/xpTarget)*5)));
+      const wrap = document.getElementById('xpStars'); wrap.innerHTML='';
+      for(let i=0;i<5;i++){
+        const s = document.createElement('span');
+        s.className = 'star' + (i < count ? ' filled' : '');
+        wrap.appendChild(s);
+      }
+    }
+
+    // Mise à jour flamme / streak
+    function updateStreak(days){
+      const el = document.getElementById('streakFlame');
+      const t = document.getElementById('streakDays');
+      if(t) t.textContent = days;
+      const lvl = days>=30 ? 5 : days>=14 ? 4 : days>=7 ? 3 : days>=3 ? 2 : 1;
+      el.className = 'flame l' + lvl;
+    }
+
+    // Simulation de données
+    renderXpStars(34, 50); // 34/50 XP aujourd'hui
+    updateStreak(4);       // streak de 4 jours
+  </script>
+</body>
+</html>
