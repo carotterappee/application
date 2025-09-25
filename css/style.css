@@ -499,3 +499,21 @@ button.mini{
 /* Bouton icône déjà présent :
 .icon-btn{ ... }
 */
+/* Boutons côte à côte */
+.primary-cta.two-btns{
+  display:flex;
+  justify-content:center;
+  gap:24px;
+  margin: 20px 0 40px;
+}
+.primary-cta.two-btns .btn-big{
+  min-width:220px;
+}
+.primary-cta.two-btns .secondary{
+  background:#fff;
+  color:#3f51b5;
+  border:1px solid var(--outline);
+}
+.primary-cta.two-btns .secondary:hover{
+  background:#f3f5ff;
+}
