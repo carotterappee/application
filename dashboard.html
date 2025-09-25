@@ -109,7 +109,7 @@
 
     <!-- Contenu principal -->
     <section class="cta" style="margin-top:20px; text-align:center;">
-      <button onclick="alert('Prochaine étape : lancer la leçon 📖')">👉 Continuer la leçon</button>
+      <button id="lessonBtn" onclick="startOrContinue()">Continuer ta leçon</button>
     </section>
   </main>
 
@@ -130,5 +130,47 @@
       }
     })();
   </script>
+
+<!-- Nouveau script pour gérer le bouton leçon -->
+<script>
+  // --- Progression locale ---
+  function getProgress(){
+    try{
+      const raw = localStorage.getItem('hp_progress');
+      if(raw) return JSON.parse(raw);
+    }catch(e){}
+    // valeur par défaut si pas encore de progression
+    const initial = { started:false, lastLessonId:null, updatedAt:null };
+    localStorage.setItem('hp_progress', JSON.stringify(initial));
+    return initial;
+  }
+  function setProgress(p){
+    localStorage.setItem('hp_progress', JSON.stringify(p));
+  }
+
+  // Initialise le libellé du bouton
+  (function initLessonCta(){
+    const btn = document.getElementById('lessonBtn');
+    const prog = getProgress();
+    btn.textContent = prog.started ? 'Continuer ta leçon' : 'Commencer ta leçon';
+  })();
+
+  // Action du bouton
+  function startOrContinue(){
+    const prog = getProgress();
+    if(!prog.started){
+      prog.started = true;
+      prog.lastLessonId = 'lesson-1';
+      prog.updatedAt = new Date().toISOString();
+      setProgress(prog);
+    } else {
+      prog.updatedAt = new Date().toISOString();
+      setProgress(prog);
+    }
+    // TODO: rediriger vers la vraie page de cours
+    window.location.href = 'lesson.html';
+  }
+</script>
+
 </body>
 </html>
