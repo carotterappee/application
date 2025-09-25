@@ -397,3 +397,13 @@ button.mini{
   border:1px solid var(--outline); box-shadow:none; background:#fff; color:#3F51B5;
 }
 .quick-actions .mini:hover{ filter:brightness(1.02); box-shadow:0 6px 12px rgba(80,100,220,.10); }
+
+/* Bouton icône (Paramètres) */
+.icon-btn{
+  width:36px; height:36px;
+  border:none; background:none; cursor:pointer;
+  margin-left:auto;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="%233F51B5" viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94s-.02-.64-.06-.94l2.03-1.58a.5.5 0 00.11-.65l-1.92-3.32a.5.5 0 00-.61-.22l-2.39.96a7.07 7.07 0 00-1.63-.94l-.36-2.54A.488.488 0 0014 2h-4c-.25 0-.46.18-.49.42l-.36 2.54c-.59.24-1.14.55-1.63.94l-2.39-.96a.5.5 0 00-.61.22L2.61 9.43c-.14.23-.09.53.11.65l2.03 1.58c-.04.3-.06.61-.06.94s.02.64.06.94l-2.03 1.58a.5.5 0 00-.11.65l1.92 3.32c.14.23.42.3.61.22l2.39-.96c.49.39 1.04.7 1.63.94l.36 2.54c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.36-2.54c.59-.24 1.14-.55 1.63-.94l2.39.96c.19.08.47.01.61-.22l1.92-3.32a.5.5 0 00-.11-.65l-2.03-1.58zM12 15.6c-1.99 0-3.6-1.61-3.6-3.6s1.61-3.6 3.6-3.6 3.6 1.61 3.6 3.6-1.61 3.6-3.6 3.6z"/></svg>') no-repeat center / 70%;
+  opacity:.8; transition:opacity .2s ease, transform .2s ease;
+}
+.icon-btn:hover{ opacity:1; transform:rotate(30deg); }
