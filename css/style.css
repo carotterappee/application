@@ -407,3 +407,46 @@ button.mini{
   opacity:.8; transition:opacity .2s ease, transform .2s ease;
 }
 .icon-btn:hover{ opacity:1; transform:rotate(30deg); }
+#settings{
+  max-width: 720px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+
+#settings h1{
+  font-family:"Syne", sans-serif;
+  font-size: clamp(24px,4vw,32px);
+  font-weight:800;
+  color:#3446d4;
+  margin-bottom:20px;
+}
+
+.settings-menu ul{
+  list-style:none;
+  padding:0;
+  margin:0;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.settings-menu li button{
+  width:100%;
+  padding:14px 20px;
+  border-radius:12px;
+  border:1px solid var(--outline);
+  background:#fff;
+  font-weight:700;
+  text-align:left;
+  color:#3f51b5;
+}
+
+.settings-footer{
+  margin-top:40px;
+  text-align:center;
+}
+.settings-footer .mini{
+  background:#fff;
+  border:1px solid var(--outline);
+  color:#d43f3a;
+}

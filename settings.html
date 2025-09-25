@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Paramètres - HP+</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">HP+</div>
+    <button class="icon-btn" onclick="window.location.href='dashboard.html'" aria-label="Retour">←</button>
+  </header>
+
+  <main id="settings">
+    <h1>Paramètres</h1>
+    <nav class="settings-menu">
+      <ul>
+        <li><button>Profil</button></li>
+        <li><button>Langue de l’interface</button></li>
+        <li><button>Notifications</button></li>
+      </ul>
+    </nav>
+
+    <footer class="settings-footer">
+      <button class="mini" onclick="logout()">Déconnexion</button>
+    </footer>
+  </main>
+
+  <script>
+    function logout(){
+      localStorage.removeItem('hp_profile');
+      localStorage.removeItem('hp_progress');
+      window.location.href = "index.html"; // retour accueil
+    }
+  </script>
+</body>
+</html>
