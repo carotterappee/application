@@ -8,7 +8,13 @@
   <link rel="stylesheet" href="css/style.css?v=dashboard-1"/>
   <style>
     #dashboard { max-width: 960px; margin: 28px auto; padding: 0 20px; position:relative; }
-    .dash-top { position:relative; padding: 8px 0 18px; }
+
+      /* réservez de la place pour la mascotte pour que le titre ne passe pas dessous */
+    .dash-top {
+     position:relative;
+     padding: 8px 0 18px;
+     padding-right: 160px;        /* ← AJOUT */
+     }
     .dash-welcome {
       font-family:"Syne", system-ui, sans-serif;
       font-weight:800;
@@ -16,8 +22,19 @@
       color:#3446d4;
       margin: 10px 0 0;
     }
-    .dash-mascot { position:absolute; right:0; top:-10px; width:120px; height:120px; pointer-events:none; }
-    @media (max-width:640px){ .dash-mascot{ width:96px; height:96px; top:-4px; } }
+
+    /* décale légèrement la mascotte vers la droite */
+    .dash-mascot { 
+    position:absolute;
+    right:16px; 
+    top:-10px; 
+    width:120px; height:120px; 
+    pointer-events:none; 
+  }
+    @media (max-width:640px){ 
+    .dash-top{ padding-right:112px; }  /* ← moins d’espace sur mobile */
+    .dash-mascot{ width:96px; height:96px; top:-4px; right:10px; } 
+  }
   </style>
 </head>
 <body>
@@ -44,7 +61,12 @@
               @keyframes blink {0%,96%,100%{transform:scaleY(1);}97%,99%{transform:scaleY(.1);} }
             </style>
           </defs>
-          <g transform="translate(0,6)">
+
+          <!-- Queue -->
+          <path d="M150,160 q20,10 10,30 q-15,18 -30,6"
+                fill="none" stroke="#0b0b0e" stroke-width="16" stroke-linecap="round"/>
+          
+            <g transform="translate(0,6)">
             <ellipse class="fur" cx="110" cy="142" rx="50" ry="58"/>
             <g transform="translate(0,-10)">
               <circle class="fur" cx="110" cy="78" r="46"/>
