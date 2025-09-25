@@ -489,6 +489,13 @@ button.mini{
 .switch input:checked + .slider:before{ transform:translateX(20px); }
 .toggle-text{ color:#3b478e; font-weight:700; }
 
+/* Espacement bouton dans les cartes */
+.settings-content .card .actions {
+  margin-top: 16px;
+  display: flex;
+  justify-content: flex-start;
+}
+
 /* Bouton icône déjà présent :
 .icon-btn{ ... }
 */
