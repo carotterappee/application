@@ -161,7 +161,7 @@
         <input type="password" placeholder="Mot de passe" autocomplete="current-password" />
       </div>
       <div class="actions">
-        <button onclick="redirectDashboard()">Connexion</button>
+        <button onclick="redirectDashboard('login')">Connexion</button>
         <span class="spacer"></span>
         <button class="ghost" onclick="closePanel()">← Retour</button>
       </div>
@@ -169,21 +169,23 @@
   </section>
 
   <section id="panel-signup" class="panel">
-    <div class="panel-card">
-      <h2>Créer un compte</h2>
-      <div class="form">
-        <input type="text" placeholder="Prénom" />
-        <input type="text" placeholder="Nom" />
-        <input type="email" placeholder="Email" />
-        <input type="password" placeholder="Mot de passe" />
-      </div>
-      <div class="actions">
-        <button onclick="redirectDashboard()">Créer mon compte</button>
-        <span class="spacer"></span>
-        <button class="ghost" onclick="closePanel()">← Retour</button>
-      </div>
+  <div class="panel-card">
+    <h2>Créer un compte</h2>
+    <p class="helper">Bienvenue dans l’aventure HP+ ✨</p>
+    <div class="form">
+      <input id="su-first" type="text" placeholder="Prénom" autocomplete="given-name" />
+      <input id="su-last"  type="text" placeholder="Nom" autocomplete="family-name" />
+      <input id="su-nick"  type="text" placeholder="Surnom (optionnel)" />
+      <input id="su-mail"  type="email" placeholder="Email" autocomplete="email" />
+      <input id="su-pass"  type="password" placeholder="Mot de passe" autocomplete="new-password" />
     </div>
-  </section>
+    <div class="actions">
+      <button onclick="redirectDashboard('signup')">Créer mon compte</button>
+      <span class="spacer"></span>
+      <button class="ghost" onclick="closePanel()">← Retour</button>
+    </div>
+  </div>
+</section>
 
   <section id="panel-guest" class="panel">
     <div class="panel-card">
@@ -201,7 +203,7 @@
         </select>
       </div>
       <div class="actions">
-        <button onclick="redirectDashboard()">Continuer</button>
+        <button onclick="redirectDashboard('guest')">Continuer</button>
         <span class="spacer"></span>
         <button class="ghost" onclick="closePanel()">← Retour</button>
       </div>
@@ -212,8 +214,8 @@
     <div class="panel-card">
       <h2>Ton point de départ</h2>
       <div class="actions" style="gap:10px; flex-wrap: wrap;">
-        <button onclick="redirectDashboard()">Je suis débutant(e)</button>
-        <button onclick="redirectDashboard()">J’ai déjà des bases</button>
+        <button onclick="redirectDashboard('guest')">Je suis débutant(e)</button>
+        <button onclick="redirectDashboard('guest')">J’ai déjà des bases</button>
         <span class="spacer"></span>
         <button class="ghost" onclick="closePanel()">← Retour</button>
       </div>
@@ -221,31 +223,73 @@
   </section>
 
   <script>
-    function showHero(){
-      const loader = document.getElementById('loader');
-      const hero = document.getElementById('heroCenter');
-      if (loader) loader.classList.add('hide');
-      document.body.classList.remove('preload');
-      if (hero) hero.classList.add('show');
-    }
-    window.addEventListener('load', ()=> setTimeout(showHero, 1800));
-    setTimeout(showHero, 3500);
+  // Loader -> Hero
+  function showHero(){
+    const loader = document.getElementById('loader');
+    const hero = document.getElementById('heroCenter');
+    if (loader) loader.classList.add('hide');
+    document.body.classList.remove('preload');
+    if (hero) hero.classList.add('show');
+  }
+  window.addEventListener('load', ()=> setTimeout(showHero, 1800));
+  setTimeout(showHero, 3500); // filet de sécurité
 
-    function openPanel(id){
-      document.body.classList.add('panel-open');
-      document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-      document.getElementById(id)?.classList.add('active');
+  // Panneaux
+  function openPanel(id){
+    document.body.classList.add('panel-open');
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    document.getElementById(id)?.classList.add('active');
+  }
+  function closePanel(){
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    document.body.classList.remove('panel-open');
+  }
+
+  // Boutons d'accueil
+  function goToPage(id){
+    if(id==='login'){ openPanel('panel-login'); return; }
+    if(id==='signup'){ openPanel('panel-signup'); return; }
+  }
+
+  // Nouveau: une seule fonction pour tout rediriger + stocker le profil
+  function redirectDashboard(mode){
+    try{
+      // si aucun mode n'est passé, on considère "guest" (pour compat)
+      if(!mode) mode = 'guest';
+
+      let profile = { guest:false, displayName:null };
+
+      if(mode === 'signup'){
+        const first = (document.getElementById('su-first')?.value || '').trim();
+        const nick  = (document.getElementById('su-nick')?.value || '').trim();
+        const disp  = nick || first || null; // surnom prioritaire sinon prénom
+        profile.displayName = disp;
+        profile.guest = false;
+
+      } else if(mode === 'login'){
+        // Sans backend: on réutilise un profil existant si disponible
+        const existing = JSON.parse(localStorage.getItem('hp_profile') || 'null');
+        if(existing && existing.displayName){ profile.displayName = existing.displayName; }
+        profile.guest = false;
+
+      } else if(mode === 'guest'){
+        profile.guest = true;
+        profile.displayName = null; // pas de bienvenue en mode invité
+      }
+
+      // Merge avec ancien profil s'il existe
+      const prev = JSON.parse(localStorage.getItem('hp_profile') || 'null') || {};
+      localStorage.setItem('hp_profile', JSON.stringify({ ...prev, ...profile }));
+    }catch(e){
+      console.warn('profile save error', e);
     }
-    function closePanel(){
-      document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-      document.body.classList.remove('panel-open');
-    }
-    function goToPage(id){
-      if(id==='login'){ openPanel('panel-login'); return; }
-      if(id==='signup'){ openPanel('panel-signup'); return; }
-    }
-    function guestMode(){ window.location.href = "dashboard.html"; }
-    function redirectDashboard(){ window.location.href = "dashboard.html"; }
-  </script>
+
+    // Redirection finale
+    window.location.href = "dashboard.html";
+  }
+
+  // Compat: l'ancien bouton "Continuer en invité" peut garder guestMode()
+  function guestMode(){ redirectDashboard('guest'); }
+</script>
 </body>
 </html>
