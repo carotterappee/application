@@ -5,36 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>HP+ - Tableau de bord</title>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=dashboard-1"/>
+  <link rel="stylesheet" href="css/style.css?v=dashboard-v2"/>
   <style>
-    #dashboard { max-width: 960px; margin: 28px auto; padding: 0 20px; position:relative; }
-
-      /* réservez de la place pour la mascotte pour que le titre ne passe pas dessous */
-    .dash-top {
-     position:relative;
-     padding: 8px 0 18px;
-     padding-right: 160px;        /* ← AJOUT */
-     }
-    .dash-welcome {
-      font-family:"Syne", system-ui, sans-serif;
-      font-weight:800;
-      font-size: clamp(22px, 4vw, 34px);
-      color:#3446d4;
-      margin: 10px 0 0;
+    /* — mini styles spécifiques au dashboard (peuvent rester ici) — */
+    #dashboard { max-width: 1040px; margin: 28px auto; padding: 0 20px; position:relative; }
+    .dash-top{ position:relative; padding: 8px 0 18px; padding-right: 160px; }
+    .dash-welcome{
+      font-family:"Syne", system-ui, sans-serif; font-weight:800;
+      font-size: clamp(22px, 4vw, 34px); color:#3446d4; margin: 10px 0 0;
     }
-
-    /* décale légèrement la mascotte vers la droite */
-    .dash-mascot { 
-    position:absolute;
-    right:16px; 
-    top:-10px; 
-    width:120px; height:120px; 
-    pointer-events:none; 
-  }
-    @media (max-width:640px){ 
-    .dash-top{ padding-right:112px; }  /* ← moins d’espace sur mobile */
-    .dash-mascot{ width:96px; height:96px; top:-4px; right:10px; } 
-  }
+    .dash-sub{ color:#667085; margin:6px 0 0; }
+    .dash-mascot{ position:absolute; right:16px; top:-10px; width:120px; height:120px; pointer-events:none; }
+    @media (max-width:640px){
+      .dash-top{ padding-right:112px; }
+      .dash-mascot{ width:96px; height:96px; top:-4px; right:10px; }
+    }
   </style>
 </head>
 <body>
@@ -43,10 +28,11 @@
   </header>
 
   <main id="dashboard">
+
+    <!-- En-tête + mascotte -->
     <div class="dash-top">
-      <!-- Mascotte en haut à droite -->
       <div class="dash-mascot" aria-hidden="true">
-        <!-- Mini mascotte chat -->
+        <!-- Mini mascotte chat avec queue -->
         <svg viewBox="0 0 220 220" class="mascot-svg" role="img" aria-label="Chat noir kawaii">
           <defs>
             <style>
@@ -61,12 +47,10 @@
               @keyframes blink {0%,96%,100%{transform:scaleY(1);}97%,99%{transform:scaleY(.1);} }
             </style>
           </defs>
-
           <!-- Queue -->
           <path d="M150,160 q20,10 10,30 q-15,18 -30,6"
                 fill="none" stroke="#0b0b0e" stroke-width="16" stroke-linecap="round"/>
-          
-            <g transform="translate(0,6)">
+          <g transform="translate(0,6)">
             <ellipse class="fur" cx="110" cy="142" rx="50" ry="58"/>
             <g transform="translate(0,-10)">
               <circle class="fur" cx="110" cy="78" r="46"/>
@@ -103,74 +87,158 @@
         </svg>
       </div>
 
-      <!-- Message de bienvenue (affiché seulement si signup/login) -->
       <h1 id="dashWelcome" class="dash-welcome" style="display:none;"></h1>
+      <p id="dashSub" class="dash-sub" style="display:none;">Ravi de te revoir, prêt(e) à continuer ?</p>
     </div>
 
-    <!-- Contenu principal -->
-    <section class="cta" style="margin-top:20px; text-align:center;">
-      <button id="lessonBtn" onclick="startOrContinue()">Continuer ta leçon</button>
+    <!-- Grille de stats (XP + Streak) -->
+    <section class="stats-grid">
+      <div class="card">
+        <div class="card-title">XP du jour</div>
+        <div class="stars" id="xpStars"></div>
+        <div class="muted small">Objectif : <span id="xpTarget">50</span> XP</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Momentum</div>
+        <div class="streak-row">
+          <div class="flame l1" id="streakFlame"></div>
+          <div class="streak-days"><span id="streakDays">0</span> jours d’affilée</div>
+        </div>
+        <div class="muted small">Garde le rythme 🔁</div>
+      </div>
+    </section>
+
+    <!-- CTA principal -->
+    <section class="primary-cta">
+      <button id="lessonBtn" class="btn-big" onclick="startOrContinue()">Commencer ta leçon</button>
+    </section>
+
+    <!-- Modules (placeholders) -->
+    <section class="modules">
+      <h2 class="h2">Continuer où tu t’es arrêté</h2>
+      <div class="modules-grid">
+        <article class="module-card">
+          <div class="module-title">Leçon 1 · Salutations</div>
+          <div class="progress"><div class="bar" style="width: 60%"></div></div>
+          <button class="mini" onclick="openLesson('lesson-1')">Ouvrir</button>
+        </article>
+        <article class="module-card">
+          <div class="module-title">Leçon 2 · Chiffres</div>
+          <div class="progress"><div class="bar" style="width: 20%"></div></div>
+          <button class="mini" onclick="openLesson('lesson-2')">Ouvrir</button>
+        </article>
+        <article class="module-card">
+          <div class="module-title">Leçon 3 · Famille</div>
+          <div class="progress"><div class="bar" style="width: 0%"></div></div>
+          <button class="mini" onclick="openLesson('lesson-3')">Ouvrir</button>
+        </article>
+      </div>
+    </section>
+
+    <!-- Actions rapides -->
+    <section class="quick-actions">
+      <button class="ghost mini" onclick="alert('Test de niveau à venir')">Test de niveau</button>
+      <button class="ghost mini" onclick="alert('Réglages à venir')">Paramètres</button>
+      <button class="ghost mini" onclick="logout()">Déconnexion</button>
     </section>
   </main>
 
   <script>
-    // Lire le profil depuis localStorage
+    // ---- Bienvenue conditionnelle
     (function initWelcome(){
       let prof = null;
       try{ prof = JSON.parse(localStorage.getItem('hp_profile') || 'null'); }catch(e){}
       const welcome = document.getElementById('dashWelcome');
+      const sub = document.getElementById('dashSub');
 
-      // Conditions : afficher SI non-invité ET displayName connu
       if(prof && !prof.guest && prof.displayName){
         welcome.textContent = `Bienvenue sur ton espace, ${prof.displayName} !`;
         welcome.style.display = 'block';
+        sub.style.display = 'block';
       } else {
-        // Invité ou pas de nom => rien
         welcome.style.display = 'none';
+        sub.style.display = 'none';
       }
     })();
-  </script>
 
-<!-- Nouveau script pour gérer le bouton leçon -->
-<script>
-  // --- Progression locale ---
-  function getProgress(){
-    try{
-      const raw = localStorage.getItem('hp_progress');
-      if(raw) return JSON.parse(raw);
-    }catch(e){}
-    // valeur par défaut si pas encore de progression
-    const initial = { started:false, lastLessonId:null, updatedAt:null };
-    localStorage.setItem('hp_progress', JSON.stringify(initial));
-    return initial;
-  }
-  function setProgress(p){
-    localStorage.setItem('hp_progress', JSON.stringify(p));
-  }
-
-  // Initialise le libellé du bouton
-  (function initLessonCta(){
-    const btn = document.getElementById('lessonBtn');
-    const prog = getProgress();
-    btn.textContent = prog.started ? 'Continuer ta leçon' : 'Commencer ta leçon';
-  })();
-
-  // Action du bouton
-  function startOrContinue(){
-    const prog = getProgress();
-    if(!prog.started){
-      prog.started = true;
-      prog.lastLessonId = 'lesson-1';
-      prog.updatedAt = new Date().toISOString();
-      setProgress(prog);
-    } else {
-      prog.updatedAt = new Date().toISOString();
-      setProgress(prog);
+    // ---- Progression locale & CTA
+    function getProgress(){
+      try{
+        const raw = localStorage.getItem('hp_progress');
+        if(raw) return JSON.parse(raw);
+      }catch(e){}
+      const initial = { started:false, lastLessonId:null, updatedAt:null, xpToday: 0, xpTarget: 50, streakDays: 0 };
+      localStorage.setItem('hp_progress', JSON.stringify(initial));
+      return initial;
     }
-    // TODO: rediriger vers la vraie page de cours
-    window.location.href = 'lesson.html';
-  }
-</script>
+    function setProgress(p){ localStorage.setItem('hp_progress', JSON.stringify(p)); }
 
+    (function initLessonCta(){
+      const btn = document.getElementById('lessonBtn');
+      const prog = getProgress();
+      btn.textContent = prog.started ? 'Continuer ta leçon' : 'Commencer ta leçon';
+    })();
+
+    function startOrContinue(){
+      const prog = getProgress();
+      if(!prog.started){
+        prog.started = true;
+        prog.lastLessonId = 'lesson-1';
+      }
+      prog.updatedAt = new Date().toISOString();
+      setProgress(prog);
+      // TODO: page de cours réelle
+      // window.location.href = 'lesson.html';
+      alert(prog.started ? 'On reprend ta leçon.' : 'On commence la leçon 1 !');
+    }
+
+    function openLesson(id){
+      const prog = getProgress();
+      prog.started = true;
+      prog.lastLessonId = id;
+      prog.updatedAt = new Date().toISOString();
+      setProgress(prog);
+      // TODO: navigation
+      // window.location.href = `${id}.html`;
+      alert('Ouverture: ' + id);
+    }
+
+    function logout(){
+      localStorage.removeItem('hp_profile');
+      // on ne supprime pas la progression pour l’instant
+      window.location.href = 'index.html';
+    }
+
+    // ---- Rendu XP (étoiles argentées) & Streak (flamme)
+    function renderXpStars(xpToday, xpTarget = 50){
+      const count = Math.max(0, Math.min(5, Math.round((xpToday/xpTarget)*5)));
+      const wrap = document.getElementById('xpStars'); wrap.innerHTML='';
+      for(let i=0;i<5;i++){
+        const s = document.createElement('span');
+        s.className = 'star' + (i < count ? ' filled' : '');
+        wrap.appendChild(s);
+      }
+      document.getElementById('xpTarget').textContent = xpTarget;
+    }
+    function updateStreak(days){
+      const el = document.getElementById('streakFlame');
+      const t = document.getElementById('streakDays');
+      if(t) t.textContent = days;
+      const lvl = days>=30 ? 5 : days>=14 ? 4 : days>=7 ? 3 : days>=3 ? 2 : 1;
+      el.className = 'flame l' + lvl;
+    }
+
+    // ---- Init widgets (données simulées pour l’instant)
+    (function initWidgets(){
+      const p = getProgress();
+      // Valeurs par défaut si absentes
+      const xp = typeof p.xpToday === 'number' ? p.xpToday : 34;
+      const target = typeof p.xpTarget === 'number' ? p.xpTarget : 50;
+      const streak = typeof p.streakDays === 'number' ? p.streakDays : 4;
+      renderXpStars(xp, target);
+      updateStreak(streak);
+    })();
+  </script>
 </body>
 </html>
