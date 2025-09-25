@@ -2,36 +2,168 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Paramètres - HP+</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Paramètres — HP+</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=settings-v2"/>
 </head>
 <body>
   <header class="topbar">
-    <div class="brand">HP+</div>
-    <button class="icon-btn" onclick="window.location.href='dashboard.html'" aria-label="Retour">←</button>
+    <div class="brand" onclick="location.href='dashboard.html'" style="cursor:pointer">HP+</div>
   </header>
 
-  <main id="settings">
-    <h1>Paramètres</h1>
-    <nav class="settings-menu">
-      <ul>
-        <li><button>Profil</button></li>
-        <li><button>Langue de l’interface</button></li>
-        <li><button>Notifications</button></li>
-      </ul>
-    </nav>
+  <main id="settingsLayout">
+    <!-- Sidebar -->
+    <aside class="settings-sidebar">
+      <div class="user-card">
+        <div class="user-mascot" aria-hidden="true">
+          <!-- mini chat -->
+          <svg viewBox="0 0 120 120" class="mascot-svg" role="img" aria-label="Chat noir kawaii">
+            <defs>
+              <style>
+                .fur{fill:#0b0b0e}.eye{fill:#ffe0a8}.pupil{fill:#111}.nose{fill:#2b2b2b}
+                .bow{fill:#ff66a6}.bow2{fill:#ff4d98}.scarf{fill:#ff6fae}
+                @keyframes blink{0%,96%,100%{transform:scaleY(1)}97%,99%{transform:scaleY(.1)}}
+              </style>
+            </defs>
+            <g transform="translate(0,4)">
+              <ellipse class="fur" cx="60" cy="78" rx="28" ry="32"/>
+              <g transform="translate(0,-6)">
+                <circle class="fur" cx="60" cy="44" r="26"/>
+                <path class="fur" d="M43,33 l-10,-9 a4,4 0 0 1 6,-5 l11,7z"/>
+                <path class="fur" d="M77,33 l10,-9 a4,4 0 0 0 -6,-5 l-11,7z"/>
+                <g transform="translate(70,23) rotate(-8)">
+                  <ellipse class="bow" cx="0" cy="0" rx="4" ry="3"/><path class="bow2" d="M-5,0 C-9,-4,-9,5,-4,3 C-7,6,-6,9,-2,5 Z"/><path class="bow2" d="M5,0 C9,-4,9,5,4,3 C7,6,6,9,2,5 Z"/>
+                </g>
+                <g transform="translate(48,44)"><g style="transform-origin:0 0;animation:blink 5s infinite;"><circle class="eye" r="6"/></g><circle class="pupil" r="2.2"/></g>
+                <g transform="translate(72,44)"><g style="transform-origin:0 0;animation:blink 4.5s infinite .1s;"><circle class="eye" r="6"/></g><circle class="pupil" r="2.2"/></g>
+                <ellipse class="nose" cx="60" cy="52" rx="2.2" ry="1.6"/>
+              </g>
+              <path class="scarf" d="M44,73 q16,-6 32,0 q-4,8 -16,8 q-12,0 -16,-8z"/>
+            </g>
+          </svg>
+        </div>
+        <div class="user-name" id="settingsName">Ton compte</div>
+        <div class="user-sub">Gère tes préférences</div>
+      </div>
 
-    <footer class="settings-footer">
-      <button class="mini" onclick="logout()">Déconnexion</button>
-    </footer>
+      <nav class="settings-menu">
+        <button class="menu-item active" data-tab="tab-profile">Profil</button>
+        <button class="menu-item" data-tab="tab-interface">Langue de l’interface</button>
+        <button class="menu-item" data-tab="tab-notifs">Notifications</button>
+        <div class="menu-spacer"></div>
+        <button class="menu-item danger" onclick="logout()">Déconnexion</button>
+      </nav>
+    </aside>
+
+    <!-- Contenu -->
+    <section class="settings-content">
+      <!-- Profil -->
+      <div class="card tab active" id="tab-profile">
+        <div class="card-title">Profil</div>
+        <div class="form-grid">
+          <label>Nom affiché</label>
+          <input id="profileDisplay" type="text" placeholder="Ton prénom ou ton surnom" />
+
+          <label>Email (local)</label>
+          <input id="profileMail" type="email" placeholder="exemple@mail.com" />
+        </div>
+        <div class="actions">
+          <button onclick="saveProfile()">Enregistrer</button>
+        </div>
+      </div>
+
+      <!-- Langue interface -->
+      <div class="card tab" id="tab-interface">
+        <div class="card-title">Langue de l’interface</div>
+        <div class="form-grid">
+          <label>Choix</label>
+          <div class="select"><select id="uiLang">
+            <option value="fr">Français</option>
+            <option value="en">English</option>
+            <option value="es">Español</option>
+          </select></div>
+        </div>
+        <div class="actions">
+          <button onclick="saveUiLang()">Enregistrer</button>
+        </div>
+      </div>
+
+      <!-- Notifications -->
+      <div class="card tab" id="tab-notifs">
+        <div class="card-title">Notifications</div>
+        <div class="toggle-row">
+          <label class="switch">
+            <input type="checkbox" id="notifToggle">
+            <span class="slider"></span>
+          </label>
+          <div class="toggle-text">Me rappeler d’étudier chaque jour</div>
+        </div>
+        <div class="actions">
+          <button onclick="saveNotifs()">Enregistrer</button>
+        </div>
+      </div>
+    </section>
   </main>
 
   <script>
+    // ------ Helpers storage
+    function getProfile(){
+      try{ return JSON.parse(localStorage.getItem('hp_profile')||'null') || {}; }catch(e){ return {}; }
+    }
+    function setProfile(p){ localStorage.setItem('hp_profile', JSON.stringify(p)); }
+
+    // ------ Init page
+    (function init(){
+      const p = getProfile();
+      // nom affiché
+      document.getElementById('settingsName').textContent = p.displayName ? p.displayName : 'Ton compte';
+      document.getElementById('profileDisplay').value = p.displayName || '';
+      document.getElementById('profileMail').value = p.email || '';
+      // langue interface
+      const uiLang = (p.uiLang || 'fr');
+      document.getElementById('uiLang').value = uiLang;
+      // notifs
+      document.getElementById('notifToggle').checked = !!p.notifs;
+      // menu tabs
+      document.querySelectorAll('.menu-item[data-tab]').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          document.querySelectorAll('.menu-item').forEach(b=>b.classList.remove('active'));
+          btn.classList.add('active');
+          const t = btn.getAttribute('data-tab');
+          document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+          document.getElementById(t).classList.add('active');
+        });
+      });
+    })();
+
+    // ------ Save actions
+    function saveProfile(){
+      const p = getProfile();
+      p.displayName = (document.getElementById('profileDisplay').value || '').trim();
+      p.email = (document.getElementById('profileMail').value || '').trim();
+      setProfile(p);
+      alert('Profil enregistré ✅');
+      document.getElementById('settingsName').textContent = p.displayName || 'Ton compte';
+    }
+    function saveUiLang(){
+      const p = getProfile();
+      p.uiLang = document.getElementById('uiLang').value;
+      setProfile(p);
+      alert('Langue de l’interface enregistrée ✅');
+    }
+    function saveNotifs(){
+      const p = getProfile();
+      p.notifs = document.getElementById('notifToggle').checked;
+      setProfile(p);
+      alert('Préférence notifications enregistrée ✅');
+    }
+
+    // ------ Déconnexion
     function logout(){
       localStorage.removeItem('hp_profile');
-      localStorage.removeItem('hp_progress');
-      window.location.href = "index.html"; // retour accueil
+      // on peut garder hp_progress si tu veux que l’invité reprenne plus tard
+      window.location.href = 'index.html';
     }
   </script>
 </body>
