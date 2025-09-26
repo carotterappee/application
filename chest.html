@@ -42,14 +42,57 @@
       display:inline-flex; align-items:center; gap:10px; padding:12px 16px;
       border-radius:14px; border:1px solid #e7ebff; background:#f7f9ff; font-weight:800; color:#2f43c8;
     }
-    .streak-legend{ display:flex; gap:10px; flex-wrap:wrap; }
-    .chip{ padding:6px 10px; border:1px solid #e7ebff; border-radius:999px; background:#fff; font-weight:700; color:#3f51b5; }
-    .flame-demo{ width:28px; height:34px; display:inline-block; vertical-align:middle; margin-right:6px; }
-    .flame-red{ background: linear-gradient(180deg,#ffb3a3,#ff6b5e 60%,#ff2d2d); mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.5 0S9 3 9 7c0 3 2.5 4.5 2.5 6.5S9.5 17 9.5 19c0 2.2 1.8 5 5.5 5 3.3 0 6-2.7 6-6 0-6.5-7.5-10.5-7.5-18z"/></svg>') no-repeat center/contain; -webkit-mask: same; }
-    .flame-yellow{ background: linear-gradient(180deg,#ffe39a,#ffc14e 60%,#ffa800); mask: inherit; -webkit-mask: inherit; }
-    .flame-blue{ background: linear-gradient(180deg,#c7e7ff,#79c0ff 60%,#3192ff); mask: inherit; -webkit-mask: inherit; }
     .row{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
     .back{ border:none; background:#fff; color:#3f51b5; border:1px solid var(--outline); padding:10px 14px; border-radius:12px; cursor:pointer; }
+  
+   /* --- Momentum mystique (sans spoiler) --- */
+  .mystic-card{
+    position:relative;
+    overflow:hidden;
+    background: radial-gradient(120% 140% at 10% 0%, #f7f9ff 0, #eef3ff 55%, #fef8ff 100%);
+  }
+  .mystic-wrap{
+    display:flex; align-items:center; gap:16px; position:relative;
+    min-height:120px;
+  }
+  .mystic-caption .streak-days{ font-weight:800; color:#2f43c8; }
+  .mystic-caption .small{ font-size:.9rem; }
+
+  /* Aura douce derrière la flamme */
+  .mystic-card .aura{
+    position:absolute; left:20px; top:50%; transform:translateY(-50%);
+    width:140px; height:140px; border-radius:50%;
+    background: radial-gradient(closest-side, rgba(140,160,255,.35), rgba(255,255,255,0));
+    filter: blur(14px);
+    pointer-events:none;
+    animation: auraPulse 3s ease-in-out infinite;
+  }
+  @keyframes auraPulse{ 0%,100%{opacity:.65; transform:translateY(-50%) scale(1);} 50%{opacity:.9; transform:translateY(-50%) scale(1.06);} }
+
+  /* Grande flamme unique (couleur/tailles gérées par classes) */
+  .flame-large{
+    width:64px; height:78px;
+    mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.5 0S9 3 9 7c0 3 2.5 4.5 2.5 6.5S9.5 17 9.5 19c0 2.2 1.8 5 5.5 5 3.3 0 6-2.7 6-6 0-6.5-7.5-10.5-7.5-18z"/></svg>') no-repeat center / contain;
+    -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.5 0S9 3 9 7c0 3 2.5 4.5 2.5 6.5S9.5 17 9.5 19c0 2.2 1.8 5 5.5 5 3.3 0 6-2.7 6-6 0-6.5-7.5-10.5-7.5-18z"/></svg>') no-repeat center / contain;
+    background: linear-gradient(180deg,#ffd58a,#ff9a3c 60%,#ff6a00);
+    filter: drop-shadow(0 8px 22px rgba(80,120,255,.25));
+    animation: breathe 2.4s ease-in-out infinite;
+  }
+  @keyframes breathe{ 0%,100%{transform:translateY(0) scale(1);} 50%{transform:translateY(-2px) scale(1.04);} }
+
+  /* Tailles (selon la série) */
+  .flame-large.s1{ transform-origin:center; }
+  .flame-large.s2{ transform: scale(1.15); }
+  .flame-large.s3{ transform: scale(1.3); }
+
+  /* Couleurs (selon la série) */
+  .flame-large.red{    background: linear-gradient(180deg,#ffb3a3,#ff6b5e 60%,#ff2d2d); }
+  .flame-large.amber{  background: linear-gradient(180deg,#ffe39a,#ffc14e 60%,#ffa800); }
+  .flame-large.blue{   background: linear-gradient(180deg,#c7e7ff,#79c0ff 60%,#3192ff); }
+  .flame-large.violet{ background: linear-gradient(180deg,#ffc2f2,#ff6ed6 60%,#ff37a8); }
+
+  /* Petite lueur sur la légende de jours */
+  .streak-days{ text-shadow:0 1px 0 #fff; }
   </style>
 </head>
 <body>
@@ -87,30 +130,27 @@
     </section>
 
     <section id="tab-streak" class="tab-panel" style="display:none;">
-      <div class="grid">
-        <div class="card">
-          <div class="card-title">Évolution des flammes</div>
-          <div class="streak-legend">
-            <span class="chip"><span class="flame-demo flame-red"></span> Petite (rouge)</span>
-            <span class="chip"><span class="flame-demo flame-yellow"></span> Moyenne (jaune)</span>
-            <span class="chip"><span class="flame-demo flame-blue"></span> Grande (bleue)</span>
-          </div>
-          <p class="muted">Ta flamme grandit avec ta série de jours d’affilée. Au fil du temps, elle change de couleur et de taille.</p>
-          <div class="row">
-            <div>Jours d’affilée :</div>
-            <div class="total-badge" id="streakDaysBox">0 🔥</div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-title">Historique</div>
-          <div id="streakHistory" class="muted">Pas encore d’historique.</div>
-        </div>
-        <div class="card">
-          <div class="card-title">Astuce</div>
-          <p class="muted">Étudie un peu chaque jour pour maintenir ta flamme. Manquer un jour la réduit.</p>
+  <div class="grid">
+    <!-- Carte mystique -->
+    <div class="card mystic-card">
+      <div class="card-title">Momentum</div>
+      <div class="mystic-wrap">
+        <div class="aura"></div>
+        <div id="bigFlame" class="flame-large"></div>
+        <div class="mystic-caption">
+          <div class="streak-days" id="streakDaysBox">0 🔥</div>
+          <div class="muted small">Ta flamme reflète ta régularité.</div>
         </div>
       </div>
-    </section>
+    </div>
+
+    <!-- Historique -->
+    <div class="card">
+      <div class="card-title">Historique</div>
+      <div id="streakHistory" class="muted">Pas encore d’historique.</div>
+    </div>
+  </div>
+</section>
   </main>
 
   <script>
