@@ -87,6 +87,8 @@
           </g>
         </svg>
       </div>
+      <!-- Coffre (bouton d'accès inventaire) -->
+<button class="chest-btn" onclick="openChest()" aria-label="Ouvrir le coffre"></button>
 
       <h1 id="dashWelcome" class="dash-welcome" style="display:none;"></h1>
       <p id="dashSub" class="dash-sub" style="display:none;">Ravi de te revoir, prêt(e) à continuer ?</p>
@@ -281,6 +283,32 @@ function renderModules(){
 
 // --- appelle le rendu des modules au chargement
 renderModules();
+
+function openChest(){
+  window.location.href = 'chest.html';
+}
+
+/* Récompenses: utilitaires */
+function getRewards(){
+  try{ return JSON.parse(localStorage.getItem('hp_rewards')||'null') || {}; }catch(e){ return {}; }
+}
+function setRewards(r){ localStorage.setItem('hp_rewards', JSON.stringify(r)); }
+
+/* Appelle ceci quand une leçon est finie pour donner des étoiles */
+function awardStars(n = 5){
+  const r = getRewards();
+  r.starsTotal = (r.starsTotal || 0) + n;
+  // Historique par jour (facultatif)
+  const d = new Date().toISOString().slice(0,10);
+  r.starsByDay = r.starsByDay || {};
+  r.starsByDay[d] = (r.starsByDay[d] || 0) + n;
+  setRewards(r);
+  // Mets aussi à jour l'XP du jour si tu veux synchroniser
+  const p = getProgress();
+  p.xpToday = (p.xpToday || 0) + n*10; // ex: 1 étoile = 10 XP (à adapter)
+  setProgress(p);
+  renderXpStars(p.xpToday, p.xpTarget || 50);
+}
   </script>
 </body>
 </html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Coffre — HP+</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=chest-v1"/>
+  <style>
+    #chestPage{ max-width: 1040px; margin: 26px auto; padding: 0 20px; }
+    .chest-top{
+      display:flex; align-items:center; gap:12px; margin-bottom:12px;
+    }
+    .chest-top .title{
+      font-family:"Syne", system-ui, sans-serif; font-weight:800;
+      font-size: clamp(22px, 4vw, 34px); color:#3446d4;
+    }
+    .tabs{
+      display:flex; gap:8px; flex-wrap:wrap; margin: 8px 0 16px;
+    }
+    .tab-btn{
+      padding:10px 14px; border-radius:12px; border:1px solid var(--outline); background:#fff;
+      font-weight:700; color:#3f51b5; cursor:pointer;
+    }
+    .tab-btn.active{
+      background:linear-gradient(135deg, var(--primary), #C4CEFF); color:#0F172A; border-color:transparent;
+    }
+    .grid{
+      display:grid; gap:16px; grid-template-columns: repeat(3, minmax(240px,1fr));
+    }
+    @media (max-width:900px){ .grid{ grid-template-columns: repeat(2, minmax(220px,1fr)); } }
+    @media (max-width:640px){ .grid{ grid-template-columns: 1fr; } }
+    .card{
+      background:#fff; border:1px solid #eef1fb; border-radius:16px; padding:16px;
+      box-shadow:0 10px 30px rgba(70,90,200,.10);
+    }
+    .card-title{ font-weight:800; color:#3f51b5; margin-bottom:10px; }
+    .stars-big{ display:flex; gap:10px; flex-wrap:wrap; }
+    .star.big{ width:40px; height:40px; }
+    .center{ text-align:center; }
+    .total-badge{
+      display:inline-flex; align-items:center; gap:10px; padding:12px 16px;
+      border-radius:14px; border:1px solid #e7ebff; background:#f7f9ff; font-weight:800; color:#2f43c8;
+    }
+    .streak-legend{ display:flex; gap:10px; flex-wrap:wrap; }
+    .chip{ padding:6px 10px; border:1px solid #e7ebff; border-radius:999px; background:#fff; font-weight:700; color:#3f51b5; }
+    .flame-demo{ width:28px; height:34px; display:inline-block; vertical-align:middle; margin-right:6px; }
+    .flame-red{ background: linear-gradient(180deg,#ffb3a3,#ff6b5e 60%,#ff2d2d); mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.5 0S9 3 9 7c0 3 2.5 4.5 2.5 6.5S9.5 17 9.5 19c0 2.2 1.8 5 5.5 5 3.3 0 6-2.7 6-6 0-6.5-7.5-10.5-7.5-18z"/></svg>') no-repeat center/contain; -webkit-mask: same; }
+    .flame-yellow{ background: linear-gradient(180deg,#ffe39a,#ffc14e 60%,#ffa800); mask: inherit; -webkit-mask: inherit; }
+    .flame-blue{ background: linear-gradient(180deg,#c7e7ff,#79c0ff 60%,#3192ff); mask: inherit; -webkit-mask: inherit; }
+    .row{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
+    .back{ border:none; background:#fff; color:#3f51b5; border:1px solid var(--outline); padding:10px 14px; border-radius:12px; cursor:pointer; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand" onclick="location.href='dashboard.html'" style="cursor:pointer">HP+</div>
+  </header>
+
+  <main id="chestPage">
+    <div class="chest-top">
+      <button class="back" onclick="history.back()">← Retour</button>
+      <div class="title">Coffre des récompenses</div>
+      <div class="total-badge" id="totalStars">⭐ 0 étoiles</div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="tab-stars">Étoiles</button>
+      <button class="tab-btn" data-tab="tab-streak">Momentum (flammes)</button>
+    </div>
+
+    <section id="tab-stars" class="tab-panel">
+      <div class="grid">
+        <div class="card">
+          <div class="card-title">Étoiles gagnées</div>
+          <div id="starsWrap" class="stars-big"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Répartition (aujourd’hui)</div>
+          <div id="todayStars" class="center muted">—</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Prochain badge</div>
+          <div class="center muted" id="nextBadge">Gagne encore 10 ⭐ pour décrocher un badge.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-streak" class="tab-panel" style="display:none;">
+      <div class="grid">
+        <div class="card">
+          <div class="card-title">Évolution des flammes</div>
+          <div class="streak-legend">
+            <span class="chip"><span class="flame-demo flame-red"></span> Petite (rouge)</span>
+            <span class="chip"><span class="flame-demo flame-yellow"></span> Moyenne (jaune)</span>
+            <span class="chip"><span class="flame-demo flame-blue"></span> Grande (bleue)</span>
+          </div>
+          <p class="muted">Ta flamme grandit avec ta série de jours d’affilée. Au fil du temps, elle change de couleur et de taille.</p>
+          <div class="row">
+            <div>Jours d’affilée :</div>
+            <div class="total-badge" id="streakDaysBox">0 🔥</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Historique</div>
+          <div id="streakHistory" class="muted">Pas encore d’historique.</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Astuce</div>
+          <p class="muted">Étudie un peu chaque jour pour maintenir ta flamme. Manquer un jour la réduit.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    function getRewards(){ try{ return JSON.parse(localStorage.getItem('hp_rewards')||'null')||{} }catch(e){ return {}; } }
+    function setRewards(r){ localStorage.setItem('hp_rewards', JSON.stringify(r)); }
+    function getProgress(){ try{ return JSON.parse(localStorage.getItem('hp_progress')||'null')||{} }catch(e){ return {}; } }
+
+    // Tabs simple
+    document.querySelectorAll('.tab-btn').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        const t = btn.getAttribute('data-tab');
+        document.querySelectorAll('.tab-panel').forEach(p=>p.style.display='none');
+        document.getElementById(t).style.display = 'block';
+      });
+    });
+
+    // Rendu des étoiles
+    function renderStars(){
+      const r = getRewards();
+      const total = r.starsTotal || 0;
+      document.getElementById('totalStars').textContent = `⭐ ${total} ${total>1?'étoiles':'étoile'}`;
+
+      const wrap = document.getElementById('starsWrap');
+      wrap.innerHTML = '';
+      const count = Math.min(30, total); // on n’en affiche qu’un échantillon
+      for(let i=0;i<count;i++){
+        const s = document.createElement('span');
+        s.className = 'star big filled';
+        wrap.appendChild(s);
+      }
+
+      const d = new Date().toISOString().slice(0,10);
+      const today = (r.starsByDay && r.starsByDay[d]) ? r.starsByDay[d] : 0;
+      document.getElementById('todayStars').textContent = today ? `${today} ⭐ aujourd’hui` : 'Aucune étoile gagnée aujourd’hui';
+
+      const next = Math.max(0, 10 - (total % 10));
+      document.getElementById('nextBadge').textContent = next ? `Gagne encore ${next} ⭐ pour décrocher un badge.` : `Bravo ! Tu viens de débloquer un badge 🎉`;
+    }
+
+    // Rendu streak
+    function renderStreak(){
+      const p = getProgress();
+      const days = p.streakDays || 0;
+      document.getElementById('streakDaysBox').textContent = `${days} 🔥`;
+      const hist = p.streakHistory || [];
+      document.getElementById('streakHistory').textContent = hist.length ? hist.join(', ') : 'Pas encore d’historique.';
+    }
+
+    // Init
+    renderStars();
+    renderStreak();
+  </script>
+</body>
+</html>

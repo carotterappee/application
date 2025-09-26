@@ -523,3 +523,31 @@ button.mini{
 
 /* Option: petit espace sous le CTA double */
 .primary-cta.two-btns{ margin-bottom: 32px; }
+
+/* Bouton coffre près de la mascotte */
+.chest-btn{
+  position:absolute; right:150px; top:8px;
+  width:44px; height:44px; border:none; cursor:pointer; background:none;
+  filter: drop-shadow(0 6px 12px rgba(0,0,0,.15));
+}
+.chest-btn::before{
+  content:"";
+  display:block; width:100%; height:100%;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path fill="%23b07233" d="M6 26h52v28H6z"/><path fill="%23945c29" d="M6 26h52v8H6z"/><path fill="%23c8843c" d="M10 18h44v8H10z"/><rect x="30" y="30" width="4" height="10" rx="1" fill="%23282420"/><rect x="29" y="38" width="6" height="8" rx="1" fill="%23ffd15c"/></svg>') no-repeat center/contain;
+  transition: transform .2s ease;
+}
+.chest-btn:hover::before{ transform: translateY(-2px) scale(1.03); }
+@media (max-width:640px){ .chest-btn{ right:118px; top:4px; width:38px; height:38px; } }
+
+/* Étoiles argentées rework */
+.star{
+  width:30px; height:30px; display:inline-block;
+  mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>') no-repeat center/contain;
+  -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>') no-repeat center/contain;
+  background: linear-gradient(145deg,#f8fbff,#e7ecf5 40%,#cfd6e3 60%,#f6f7fb);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.6), 0 2px 6px rgba(0,0,0,.12);
+  border-radius:4px;
+  opacity:.35; transition: opacity .2s ease, transform .15s ease;
+}
+.star.filled{ opacity:1; }
+.star.filled:hover{ transform: translateY(-2px) scale(1.02); }
