@@ -524,21 +524,6 @@ button.mini{
 /* Option: petit espace sous le CTA double */
 .primary-cta.two-btns{ margin-bottom: 32px; }
 
-/* Bouton coffre près de la mascotte */
-.chest-btn{
-  position:absolute; right:150px; top:8px;
-  width:44px; height:44px; border:none; cursor:pointer; background:none;
-  filter: drop-shadow(0 6px 12px rgba(0,0,0,.15));
-}
-.chest-btn::before{
-  content:"";
-  display:block; width:100%; height:100%;
-  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path fill="%23b07233" d="M6 26h52v28H6z"/><path fill="%23945c29" d="M6 26h52v8H6z"/><path fill="%23c8843c" d="M10 18h44v8H10z"/><rect x="30" y="30" width="4" height="10" rx="1" fill="%23282420"/><rect x="29" y="38" width="6" height="8" rx="1" fill="%23ffd15c"/></svg>') no-repeat center/contain;
-  transition: transform .2s ease;
-}
-.chest-btn:hover::before{ transform: translateY(-2px) scale(1.03); }
-@media (max-width:640px){ .chest-btn{ right:118px; top:4px; width:38px; height:38px; } }
-
 /* Étoiles argentées rework */
 .star{
   width:30px; height:30px; display:inline-block;
@@ -551,18 +536,37 @@ button.mini{
 }
 .star.filled{ opacity:1; }
 .star.filled:hover{ transform: translateY(-2px) scale(1.02); }
-/* Coffre à côté de la mascotte */
-.treasure-link {
-  display: inline-block;
-  margin-left: 16px; /* espace entre le chat et le coffre */
-  text-decoration: none;
+
+/* Coffre collé à droite de la mascotte */
+.dash-mascot { position:absolute; right:16px; top:-10px; width:120px; height:120px; pointer-events:none; }
+
+.dash-mascot .treasure-link{
+  position:absolute;
+  left:100%;              /* place le coffre juste après la largeur du chat */
+  top:24px;               /* ajuste verticalement */
+  transform: translateX(12px); /* petit espace entre chat et coffre */
+  width:80px;
+  height:80px;
+  display:block;
+  pointer-events:auto;    /* réactive le clic à l’intérieur de .dash-mascot */
+  text-decoration:none;
 }
-.treasure-svg {
-  width: 80px;
-  height: 80px;
+
+.dash-mascot .treasure-svg{
+  width:100%;
+  height:100%;
   transition: transform .2s ease;
-  cursor: pointer;
+  filter: drop-shadow(0 6px 12px rgba(0,0,0,.15));
 }
-.treasure-svg:hover {
+.dash-mascot .treasure-svg:hover{
   transform: scale(1.1) rotate(-3deg);
+}
+
+/* Mobile : coffre un peu plus petit et plus proche */
+@media (max-width:640px){
+  .dash-mascot .treasure-link{
+    top:10px;
+    transform: translateX(8px);
+    width:62px; height:62px;
+  }
 }
