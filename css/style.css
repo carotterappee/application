@@ -551,3 +551,18 @@ button.mini{
 }
 .star.filled{ opacity:1; }
 .star.filled:hover{ transform: translateY(-2px) scale(1.02); }
+/* Coffre à côté de la mascotte */
+.treasure-link {
+  display: inline-block;
+  margin-left: 16px; /* espace entre le chat et le coffre */
+  text-decoration: none;
+}
+.treasure-svg {
+  width: 80px;
+  height: 80px;
+  transition: transform .2s ease;
+  cursor: pointer;
+}
+.treasure-svg:hover {
+  transform: scale(1.1) rotate(-3deg);
+}
