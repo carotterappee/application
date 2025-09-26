@@ -97,7 +97,7 @@
   </a>
       </div>
       <!-- Coffre (bouton d'accès inventaire) -->
-       
+
       <h1 id="dashWelcome" class="dash-welcome" style="display:none;"></h1>
       <p id="dashSub" class="dash-sub" style="display:none;">Ravi de te revoir, prêt(e) à continuer ?</p>
     </div>
@@ -316,6 +316,16 @@ function awardStars(n = 5){
   p.xpToday = (p.xpToday || 0) + n*10; // ex: 1 étoile = 10 XP (à adapter)
   setProgress(p);
   renderXpStars(p.xpToday, p.xpTarget || 50);
+}
+function popLastEarnedStar(){
+  const row = document.querySelector('.xp-stars');
+  if(!row) return;
+  const filled = row.querySelectorAll('.star.filled');
+  const last = filled[filled.length - 1];
+  if(last){
+    last.classList.add('earned');
+    setTimeout(()=> last.classList.remove('earned'), 500);
+  }
 }
   </script>
 </body>
