@@ -517,3 +517,9 @@ button.mini{
 .primary-cta.two-btns .secondary:hover{
   background:#f3f5ff;
 }
+/* Plus d'espace au-dessus des modules */
+.modules{ margin-top: 40px; }
+@media (max-width:860px){ .modules{ margin-top: 32px; } }
+
+/* Option: petit espace sous le CTA double */
+.primary-cta.two-btns{ margin-bottom: 32px; }

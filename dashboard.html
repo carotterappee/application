@@ -117,25 +117,9 @@
     </section>
 
     <!-- Modules (placeholders) -->
-    <section class="modules">
-      <h2 class="h2">Continuer où tu t’es arrêté</h2>
-      <div class="modules-grid">
-        <article class="module-card">
-          <div class="module-title">Leçon 1 · Salutations</div>
-          <div class="progress"><div class="bar" style="width: 60%"></div></div>
-          <button class="mini" onclick="openLesson('lesson-1')">Ouvrir</button>
-        </article>
-        <article class="module-card">
-          <div class="module-title">Leçon 2 · Chiffres</div>
-          <div class="progress"><div class="bar" style="width: 20%"></div></div>
-          <button class="mini" onclick="openLesson('lesson-2')">Ouvrir</button>
-        </article>
-        <article class="module-card">
-          <div class="module-title">Leçon 3 · Famille</div>
-          <div class="progress"><div class="bar" style="width: 0%"></div></div>
-          <button class="mini" onclick="openLesson('lesson-3')">Ouvrir</button>
-        </article>
-      </div>
+    <section class="modules" id="modulesSection" style="display:none;">
+      <h2 class="h2" id="modulesTitle">Continuer où tu t’es arrêté</h2>
+      <div class="modules-grid" id="modulesGrid"></div>
     </section>
 
     <!-- Actions rapides -->
@@ -244,6 +228,59 @@
   function startTest(){
     alert("Lancement du test de niveau (à développer) !");
    } 
+   // --- helper pour créer une carte leçon
+function createLessonCard({id, title, progress=0}){
+  const wrap = document.createElement('article');
+  wrap.className = 'module-card';
+  wrap.innerHTML = `
+    <div class="module-title">${title}</div>
+    <div class="progress"><div class="bar" style="width:${Math.max(0, Math.min(100, progress))}%;"></div></div>
+    <button class="mini" onclick="openLesson('${id}')">Ouvrir</button>
+  `;
+  return wrap;
+}
+
+// --- rend les modules selon l'état de progression
+function renderModules(){
+  const section = document.getElementById('modulesSection');
+  const grid = document.getElementById('modulesGrid');
+  const title = document.getElementById('modulesTitle');
+  if(!section || !grid || !title) return;
+
+  const p = getProgress();
+  grid.innerHTML = '';
+
+  if(!p.started){
+    // Première fois → une seule carte, Leçon 1
+    title.textContent = "Commencer avec la première leçon";
+    grid.appendChild(createLessonCard({
+      id: 'lesson-1',
+      title: 'Leçon 1 · Salutations',
+      progress: 0
+    }));
+    section.style.display = 'block';
+  }else{
+    // Déjà commencé → 3 cartes (comme avant)
+    title.textContent = "Continuer où tu t’es arrêté";
+    const lessons = [
+      { id:'lesson-1', title:'Leçon 1 · Salutations', progress: 62 },
+      { id:'lesson-2', title:'Leçon 2 · Chiffres',    progress: 28 },
+      { id:'lesson-3', title:'Leçon 3 · Famille',     progress: 0  },
+    ];
+    lessons.forEach(l => grid.appendChild(createLessonCard(l)));
+    section.style.display = 'block';
+  }
+}
+
+// --- initialise le CTA (déjà présent chez toi, on garde la logique)
+(function initLessonCta(){
+  const btn = document.getElementById('lessonBtn');
+  const prog = getProgress();
+  btn.textContent = prog.started ? 'Continuer ta leçon' : 'Commencer ta leçon';
+})();
+
+// --- appelle le rendu des modules au chargement
+renderModules();
   </script>
 </body>
 </html>
