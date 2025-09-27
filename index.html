@@ -144,8 +144,8 @@
         <h1>Bonjour, bienvenue sur HP+</h1>
         <p>Apprends les langues pas à pas.</p>
         <div class="btn-row">
-          <button onclick="goToPage('login')">Se connecter</button>
-          <button onclick="goToPage('signup')">Créer un compte</button>
+          <button onclick="goToLogin()">Se connecter</button>
+          <button onclick="goToLogin()">Créer un compte</button>
           <button class="ghost" onclick="guestMode()">Continuer en invité</button>
         </div>
       </div>
@@ -223,18 +223,31 @@
   </section>
 
   <script>
-  // Loader -> Hero
+    // ===== Loader & redirection vers login =====
+    let goingToLogin = false;
+
+    // Empêche le hero d'apparaître si on part vers la page de login
   function showHero(){
+    if (goingToLogin) return // si on part vers login, ne pas afficher le hero 
     const loader = document.getElementById('loader');
     const hero = document.getElementById('heroCenter');
     if (loader) loader.classList.add('hide');
     document.body.classList.remove('preload');
     if (hero) hero.classList.add('show');
   }
-  window.addEventListener('load', ()=> setTimeout(showHero, 1800));
-  setTimeout(showHero, 3500); // filet de sécurité
 
-  // Panneaux
+  // Laisse Le Loader un peu plus longtemps 
+  window.addEventListener('load', ()=> setTimeout(showHero, 2400));
+  setTimeout(showHero, 4000); // filet de sécurité
+
+  //Redirection propre vers la page de connexion 
+  function goToLogin (){
+    goingToLogin = true; 
+    window.location.href = 'login.html';
+    }
+  window.goToLogin = goToLogin; // pour les onclick des boutons 
+
+  // ===== panneaux =====
   function openPanel(id){
     document.body.classList.add('panel-open');
     document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
@@ -244,13 +257,11 @@
     document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
     document.body.classList.remove('panel-open');
   }
-
-  // Boutons d'accueil
   function goToPage(id){
     if(id==='login'){ openPanel('panel-login'); return; }
     if(id==='signup'){ openPanel('panel-signup'); return; }
   }
-
+  
   // Nouveau: une seule fonction pour tout rediriger + stocker le profil
   function redirectDashboard(mode){
     try{
@@ -290,49 +301,6 @@
 
   // Compat: l'ancien bouton "Continuer en invité" peut garder guestMode()
   function guestMode(){ redirectDashboard('guest'); }
-</script>
-
-  <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged, signOut } 
-    from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyD6G4vBBBCZdVkXKUZTPxGZOOAegzLvcqI",
-    authDomain: "appli-hp.firebaseapp.com",
-    projectId: "appli-hp",
-    storageBucket: "appli-hp.firebasestorage.app",
-    messagingSenderId: "339454204045",
-    appId: "1:339454204045:web:75f349c8f1f90e4399eac4",
-    measurementId: "G-PKTXGQ1DC7"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-
-  // Vérifie si utilisateur est connecté
-  onAuthStateChanged(auth, (user) => {
-    if (!user) {
-      // 🚪 pas connecté → retour login
-      window.location.href = "login.html";
-    } else {
-      // 👋 connecté → afficher message de bienvenue si prénom dispo
-      const welcome = document.getElementById('dashWelcome');
-      if (welcome && user.displayName) {
-       welcome.textContent = `Bienvenue sur ton espace, ${user.displayName} !`;
-      welcome.style.display = 'block';
-    }
-    // (optionnel) afficher le sous-texte si tu as #dashSub
-      const sub = document.getElementById('dashSub');
-      if (sub) sub.style.display = 'block';
-    }
-  });
-
-// Déconnexion (appelée depuis paramètres)
-  window.logout = async function() {
-    await signOut(auth);
-    window.location.href = "login.html";
-  };
 </script>
 </body>
 </html>

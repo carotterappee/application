@@ -49,16 +49,28 @@
       background:#fff; border:1px solid #3f51b5; color:#3f51b5;
     }
     .btn-secondary:hover{ background:#f0f4ff; }
+
+    /*--- Ajout pour désactiver le bouton pendant les requêtes ---*/
+    .auth-box button:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+    }
   </style>
 </head>
 <body>
   <div class="auth-box">
     <h1>Bienvenue 👋</h1>
-    <input id="email" type="email" placeholder="Email">
-    <input id="password" type="password" placeholder="Mot de passe">
-    <button class="btn-primary" onclick="signup()">Créer un compte</button>
-    <button class="btn-secondary" onclick="login()">Se connecter</button>
-  </div>
+    <form onsubmit="login(); return false;">
+    <input id="email" type="email" placeholder="Email" required autocomplete="email">
+    <input id="password" type="password" placeholder="Mot de passe" required autocomplete="current-password">
+    <input id="displayName" type="text" placeholder="Prénom/pseudo (optionnel)" autocomplete="nickname">
+    <button type="button" class="btn-primary" onclick="signup()">Créer un compte</button>
+    <button type="submit" class="btn-secondary">Se connecter</button>
+
+    <!--Zone pour afficher les erreurs-->
+    <p id="authError" style="color:#d43f3a;font-weight:700;min-height:1.2em;margin-top:8px;"></p>
+    </form>
+ </div>
 
   <!-- Firebase -->
   <script type="module">
@@ -81,46 +93,17 @@
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
-  await setPersistence(auth, browserLocalPersistence); // session conservée
 
-  window.signup = async function () {
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value.trim();
-    const displayName = document.getElementById("displayName").value.trim();
+  // Session persistante (reste connecté après refresh)
+  await setPersistence(auth, browserLocalPersistence);
 
-    if(!email || !password){ alert("Email et mot de passe requis."); return; }
+  // --- Helpers
+  const $ = (id) => document.getElementById(id);
+  const errBox = document.getElementById('authError'); // (optionnel) un <p id="authError"></p> sous les boutons
 
-    try {
-      const cred = await createUserWithEmailAndPassword(auth, email, password);
-      if (displayName) {
-        await updateProfile(cred.user, { displayName });
-      }
-      // envoi l’email de vérification (tu peux rendre l’accès conditionnel si tu veux)
-      try { await sendEmailVerification(cred.user); } catch(_) {}
-
-      window.location.href = "dashboard.html";
-    } catch (err) {
-      alert(mapAuthErr(err));
-    }
-  };
-
-  window.login = async function () {
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value.trim();
-    if(!email || !password){ alert("Email et mot de passe requis."); return; }
-
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      window.location.href = "dashboard.html";
-    } catch (err) {
-      alert(mapAuthErr(err));
-    }
-  };
-
-  // Petites traductions d’erreurs courantes
-  function mapAuthErr(e){
+  function showErr(e){
     const code = (e?.code || "").replace("auth/","");
-    const dict = {
+    const map = {
       "invalid-email":"Email invalide.",
       "missing-password":"Mot de passe manquant.",
       "weak-password":"Mot de passe trop faible (min 6 caractères).",
@@ -129,8 +112,56 @@
       "user-not-found":"Utilisateur introuvable.",
       "wrong-password":"Mot de passe incorrect."
     };
-    return dict[code] || (e?.message || "Erreur.");
+    const msg = map[code] || e?.message || "Erreur.";
+    if (errBox) errBox.textContent = msg; else alert("❌ " + msg);
   }
+
+  // --- Actions (avec état "busy" pour éviter le double-clic)
+  function setBusy(b){
+    document.querySelectorAll('.auth-box button').forEach(btn => { 
+      btn.disabled = b; 
+    });
+    const err = document.getElementById('authError');
+    if (err && b) err.textContent = ""; // nettoie L'erreur au nouveau try
+    }
+
+  window.signup = async function () {
+    const email = $("email")?.value.trim();
+    const password = $("password")?.value.trim();
+    const displayName = $("displayName") ? $("displayName").value.trim() : "";
+
+    if(!email || !password){ showErr({code:"missing-password"}); return; }
+    
+    setBusy(true);
+    try {
+      const cred = await createUserWithEmailAndPassword(auth, email, password);
+      if (displayName) {
+        await updateProfile(cred.user, { displayName });
+      }
+      try { await sendEmailVerification(cred.user); } catch(_) {}
+      window.location.href = "dashboard.html";
+    } catch (err) { 
+      showErr(err); 
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  window.login = async function () {
+    const email = $("email")?.value.trim();
+    const password = $("password")?.value.trim();
+    if(!email || !password){ showErr({code:"missing-password"}); return; }
+
+    setBusy(true);
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      window.location.href = "dashboard.html";
+    } catch (err) { 
+      showErr(err); 
+    } finally {
+      setBusy(false);
+    }
+  };
 </script>
 </body>
 </html>
