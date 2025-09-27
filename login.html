@@ -183,6 +183,9 @@
   }
 }
 
+const params = new URLSearchParams(window.location.search);
+const mode = params.get("mode") || "login";
+setAuthMode(mode);
 </script>
 </body>
 </html>

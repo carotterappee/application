@@ -144,8 +144,8 @@
         <h1>Bonjour, bienvenue sur HP+</h1>
         <p>Apprends les langues pas à pas.</p>
         <div class="btn-row">
-          <button onclick="goToLogin()">Se connecter</button>
-          <button onclick="goToLogin()">Créer un compte</button>
+          <button onclick="goToLogin('login')">Se connecter</button>
+          <button onclick="goToLogin('signup')">Créer un compte</button>
           <button class="ghost" onclick="guestMode()">Continuer en invité</button>
         </div>
       </div>
@@ -241,9 +241,9 @@
   setTimeout(showHero, 4000); // filet de sécurité
 
   //Redirection propre vers la page de connexion 
-  function goToLogin (){
+  function goToLogin (mode = 'login'){
     goingToLogin = true; 
-    window.location.href = 'login.html';
+    window.location.href = 'login.html?mode=${mode}';
     }
   window.goToLogin = goToLogin; // pour les onclick des boutons 
 
