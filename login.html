@@ -59,13 +59,15 @@
 </head>
 <body>
   <div class="auth-box">
-    <h1>Bienvenue 👋</h1>
+    <h1 id="authTitle"> Connexion </h1> 
+
     <form onsubmit="login(); return false;">
     <input id="email" type="email" placeholder="Email" required autocomplete="email">
     <input id="password" type="password" placeholder="Mot de passe" required autocomplete="current-password">
-    <input id="displayName" type="text" placeholder="Prénom/pseudo (optionnel)" autocomplete="nickname">
-    <button type="button" class="btn-primary" onclick="signup()">Créer un compte</button>
-    <button type="submit" class="btn-secondary">Se connecter</button>
+    <input id="displayName" type="text" placeholder="Prénom/pseudo (optionnel)" autocomplete="nickname" style="display:none;">
+    
+    <button id="signupBtn" type="button" class="btn-primary" onclick="signup()" style="display:none;">Créer un compte</button>
+    <button id="loginBtn" type="submit" class="btn-secondary">Se connecter</button>
 
     <!--Zone pour afficher les erreurs-->
     <p id="authError" style="color:#d43f3a;font-weight:700;min-height:1.2em;margin-top:8px;"></p>
@@ -162,6 +164,25 @@
       setBusy(false);
     }
   };
+  function setAuthMode(mode){
+  const title = document.getElementById("authTitle");
+  const displayName = document.getElementById("displayName");
+  const signupBtn = document.getElementById("signupBtn");
+  const loginBtn = document.getElementById("loginBtn");
+
+  if(mode === "signup"){
+    title.textContent = "Créer un compte";
+    displayName.style.display = "block";
+    signupBtn.style.display = "block";
+    loginBtn.style.display = "none";
+  } else {
+    title.textContent = "Connexion";
+    displayName.style.display = "none";
+    signupBtn.style.display = "none";
+    loginBtn.style.display = "block";
+  }
+}
+
 </script>
 </body>
 </html>
