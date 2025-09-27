@@ -243,7 +243,7 @@
   //Redirection propre vers la page de connexion 
   function goToLogin (mode = 'login'){
     goingToLogin = true; 
-    window.location.href = 'login.html?mode=${mode}';
+    window.location.href = `login.html?mode=${mode}`;
     }
   window.goToLogin = goToLogin; // pour les onclick des boutons 
 
