@@ -78,6 +78,7 @@
     filter: drop-shadow(0 8px 22px rgba(80,120,255,.25));
     animation: breathe 2.4s ease-in-out infinite;
   }
+  
   @keyframes breathe{ 0%,100%{transform:translateY(0) scale(1);} 50%{transform:translateY(-2px) scale(1.04);} }
 
   /* Tailles (selon la série) */
@@ -204,6 +205,34 @@
     // Init
     renderStars();
     renderStreak();
+    function getFlameClass(streak){
+  const steps = [
+    ['red','s1'], ['red','s2'], ['red','s3'],
+    ['amber','s1'], ['amber','s2'], ['amber','s3'],
+    ['blue','s1'], ['blue','s2'], ['blue','s3'], ['bluelight','s3'],
+    ['pink','s1'], ['pink','s2'], ['pink','s3'],
+    ['violet','s1'], ['violet','s2'], ['violet','s3'], ['violetlight','s3']
+  ];
+  const idx = Math.max(0, ((streak || 1) - 1) % steps.length);
+  const [color,size] = steps[idx];
+  return `flame-large ${color} ${size}`;
+}
+
+// Mets à jour renderStreak pour utiliser la séquence
+function renderStreak(){
+  const p = getProgress();
+  const days = p.streakDays || 0;
+
+  const flame = document.getElementById('bigFlame');
+  flame.className = getFlameClass(days > 0 ? days : 1); // par défaut, étape 1
+
+  document.getElementById('streakDaysBox').textContent = `${days} 🔥`;
+  const hist = p.streakHistory || [];
+  document.getElementById('streakHistory').textContent = hist.length ? hist.join(', ') : 'Pas encore d’historique.';
+}
+// --- init
+renderStars();
+renderStreak();
   </script>
 </body>
 </html>
