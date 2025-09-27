@@ -187,7 +187,8 @@
   // Déconnexion (ton bouton en Paramètres peut appeler ça)
   window.logout = async function() {
     await signOut(auth);
-    window.location.href = "login.html";
+    localStorage.removeItem("hp_profile"); // en option si tu veux aussi vider le profil local
+    window.location.href = "index.html"; // redirige vers le loader
   };
 </script>
 </body>
