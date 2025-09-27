@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Connexion | HP+</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body{
+      font-family: "Syne", system-ui, sans-serif;
+      background: linear-gradient(135deg, #f0f4ff, #fafaff);
+      display:flex; justify-content:center; align-items:center;
+      height:100vh; margin:0;
+    }
+    .auth-box{
+      background:#fff;
+      padding:28px;
+      border-radius:16px;
+      box-shadow:0 10px 30px rgba(70,90,200,.15);
+      width:100%; max-width:360px;
+      text-align:center;
+    }
+    .auth-box h1{
+      font-size:clamp(22px, 4vw, 28px);
+      font-weight:800;
+      color:#3446d4;
+      margin-bottom:20px;
+    }
+    .auth-box input{
+      width:100%; padding:12px;
+      margin-bottom:14px;
+      border-radius:12px;
+      border:1px solid #ccd4f5;
+      font-size:16px;
+    }
+    .auth-box button{
+      width:100%;
+      padding:12px;
+      margin-top:8px;
+      border:none; border-radius:12px;
+      font-weight:700; font-size:16px;
+      cursor:pointer;
+      transition:.2s;
+    }
+    .btn-primary{
+      background:#3f51b5; color:#fff;
+    }
+    .btn-primary:hover{ filter:brightness(1.08); }
+    .btn-secondary{
+      background:#fff; border:1px solid #3f51b5; color:#3f51b5;
+    }
+    .btn-secondary:hover{ background:#f0f4ff; }
+  </style>
+</head>
+<body>
+  <div class="auth-box">
+    <h1>Bienvenue 👋</h1>
+    <input id="email" type="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Mot de passe">
+    <button class="btn-primary" onclick="signup()">Créer un compte</button>
+    <button class="btn-secondary" onclick="login()">Se connecter</button>
+  </div>
+
+  <!-- Firebase -->
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+  import {
+    getAuth, setPersistence, browserLocalPersistence,
+    createUserWithEmailAndPassword, signInWithEmailAndPassword,
+    updateProfile, sendEmailVerification
+  } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyD6G4vBBBCZdVkXKUZTPxGZOOAegzLvcqI",
+    authDomain: "appli-hp.firebaseapp.com",
+    projectId: "appli-hp",
+    storageBucket: "appli-hp.firebasestorage.app",
+    messagingSenderId: "339454204045",
+    appId: "1:339454204045:web:75f349c8f1f90e4399eac4",
+    measurementId: "G-PKTXGQ1DC7"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  await setPersistence(auth, browserLocalPersistence); // session conservée
+
+  window.signup = async function () {
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+    const displayName = document.getElementById("displayName").value.trim();
+
+    if(!email || !password){ alert("Email et mot de passe requis."); return; }
+
+    try {
+      const cred = await createUserWithEmailAndPassword(auth, email, password);
+      if (displayName) {
+        await updateProfile(cred.user, { displayName });
+      }
+      // envoi l’email de vérification (tu peux rendre l’accès conditionnel si tu veux)
+      try { await sendEmailVerification(cred.user); } catch(_) {}
+
+      window.location.href = "dashboard.html";
+    } catch (err) {
+      alert(mapAuthErr(err));
+    }
+  };
+
+  window.login = async function () {
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+    if(!email || !password){ alert("Email et mot de passe requis."); return; }
+
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      window.location.href = "dashboard.html";
+    } catch (err) {
+      alert(mapAuthErr(err));
+    }
+  };
+
+  // Petites traductions d’erreurs courantes
+  function mapAuthErr(e){
+    const code = (e?.code || "").replace("auth/","");
+    const dict = {
+      "invalid-email":"Email invalide.",
+      "missing-password":"Mot de passe manquant.",
+      "weak-password":"Mot de passe trop faible (min 6 caractères).",
+      "email-already-in-use":"Cet email est déjà utilisé.",
+      "invalid-credential":"Identifiants invalides.",
+      "user-not-found":"Utilisateur introuvable.",
+      "wrong-password":"Mot de passe incorrect."
+    };
+    return dict[code] || (e?.message || "Erreur.");
+  }
+</script>
+</body>
+</html>
