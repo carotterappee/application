@@ -6,37 +6,55 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="css/style.css">
   <style>
-    body{ font-family:"Syne",system-ui,sans-serif; background:linear-gradient(135deg,#f0f4ff,#fafaff);
-      min-height:100vh; display:flex; align-items:center; justify-content:center; margin:0; }
-    .card{ background:#fff; border:1px solid #eef1fb; border-radius:16px; padding:24px;
-      width:100%; max-width:520px; box-shadow:0 10px 30px rgba(70,90,200,.15); text-align:center; }
-    h1{ font-weight:800; color:#3446d4; margin:0 0 10px; font-size:clamp(22px,4vw,28px); }
-    p{ color:#445; margin:6px 0 14px; }
-    .actions{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:12px; }
-    .btn{ padding:12px 16px; border-radius:12px; border:1px solid #ccd4f5; background:#fff; font-weight:700; cursor:pointer; }
-    .btn.primary{ background:#3f51b5; color:#fff; border-color:transparent; }
-    .hint{ font-size:.9rem; color:#667; margin-top:8px; }
+    body{
+      font-family:"Syne",system-ui,sans-serif;
+      background: linear-gradient(135deg,#f0f4ff,#fafaff);
+      min-height:100vh; margin:0;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .verify-box{
+      width:100%; max-width:420px; background:#fff; border-radius:16px;
+      box-shadow:0 10px 30px rgba(70,90,200,.15);
+      padding:26px; text-align:center;
+    }
+    h1{ font-size:clamp(22px,4vw,28px); font-weight:800; color:#3446d4; margin:0 0 10px;}
+    p{ color:#334155; margin:8px 0;}
+    .hint{ color:#7a86b6; font-size:.95rem; }
+    .actions{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:16px;}
+    .btn{ padding:12px 16px; border-radius:12px; font-weight:800; cursor:pointer; border:1px solid #ccd4f5; background:#fff; color:#3f51b5;}
+    .btn.primary{ background:#3f51b5; color:#fff; border:none; }
+    .btn:disabled{ opacity:.6; cursor:not-allowed; }
+    .back-top{
+      position:fixed; left:14px; top:14px; width:36px; height:36px; border:none; background:none; cursor:pointer;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="%233F51B5" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>') no-repeat center/70%;
+      opacity:.85;
+    }
+    .back-top:hover{ opacity:1; }
+    .ok{ color:#19a55a; font-weight:800; }
+    .err{ color:#d43f3a; font-weight:800; }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>Confirme ton adresse email</h1>
-    <p>Nous avons envoyé un email à <b id="userMail">…</b>.</p>
-    <p>Valide le lien dans cet email, puis reviens ici.</p>
+  <button class="back-top" onclick="goHome()" aria-label="Retour"></button>
+
+  <div class="verify-box">
+    <h1>Vérifie ton email</h1>
+    <p>Nous t’avons envoyé un lien de confirmation à <span id="userMail">ton adresse</span>.</p>
+    <p class="hint">⚠️ Pense à vérifier les <strong>indésirables</strong> si tu ne le vois pas.</p>
+    <div id="status" class="hint"></div>
 
     <div class="actions">
-      <button class="btn" id="resendBtn">Renvoyer l’email</button>
-      <button class="btn primary" id="refreshBtn">J’ai validé, vérifier</button>
-      <button class="btn" id="logoutBtn">Changer de compte</button>
+      <button id="refreshBtn" class="btn primary" onclick="checkVerified()">J’ai cliqué sur le lien ✅</button>
+      <button id="resendBtn" class="btn" onclick="resend()">Renvoyer l’email</button>
+      <button class="btn" onclick="goHome()">Retour à l’accueil</button>
     </div>
-
-    <p class="hint" id="msg"></p>
   </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, sendEmailVerification, signOut } 
-      from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+    import { 
+      getAuth, onAuthStateChanged, sendEmailVerification 
+    } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyD6G4vBBBCZdVkXKUZTPxGZOOAegzLvcqI",
@@ -51,46 +69,67 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    const mail = document.getElementById("userMail");
-    const msg = document.getElementById("msg");
-    const resendBtn = document.getElementById("resendBtn");
-    const refreshBtn = document.getElementById("refreshBtn");
-    const logoutBtn = document.getElementById("logoutBtn");
+    const mailEl = document.getElementById('userMail');
+    const statusEl = document.getElementById('status');
+    const refreshBtn = document.getElementById('refreshBtn');
+    const resendBtn  = document.getElementById('resendBtn');
 
-    let currentUser = null;
+    function setBusy(b){
+      refreshBtn.disabled = b;
+      resendBtn.disabled  = b;
+    }
 
     onAuthStateChanged(auth, async (user) => {
-      if (!user) { window.location.href = "login.html"; return; }
-      currentUser = user;
-      mail.textContent = user.email || "ton adresse";
-      if (user.emailVerified) { window.location.href = "dashboard.html"; }
+      if (!user) {
+        // pas loggé → on revient au login
+        window.location.href = "login.html";
+        return;
+      }
+      mailEl.textContent = user.email || "ton email";
+      await user.reload();
+      if (user.emailVerified) {
+        window.location.href = "dashboard.html";
+      }
     });
 
-    resendBtn.onclick = async () => {
-      msg.textContent = "";
+    // Vérifie à la demande si la vérif est faite
+    window.checkVerified = async function(){
+      const u = auth.currentUser;
+      if (!u) return;
+      setBusy(true);
+      statusEl.textContent = "Vérification en cours…";
       try{
-        await sendEmailVerification(currentUser);
-        msg.textContent = "✅ Email renvoyé. Regarde ta boîte (et les spams).";
-      }catch(e){
-        msg.textContent = "❌ Impossible de renvoyer l’email. Réessaie.";
+        await u.reload();
+        if (u.emailVerified) {
+          statusEl.innerHTML = '<span class="ok">Email vérifié !</span>';
+          window.location.href = "dashboard.html";
+        } else {
+          statusEl.innerHTML = '<span class="err">Pas encore vérifié. Clique sur le lien dans l’email.</span>';
+        }
+      } finally {
+        setBusy(false);
       }
-    };
+    }
 
-    refreshBtn.onclick = async () => {
-      msg.textContent = "⏳ Vérification en cours…";
-      await currentUser.reload();
-      if (currentUser.emailVerified) {
-        msg.textContent = "✅ Vérifié ! Redirection…";
-        window.location.href = "dashboard.html";
-      } else {
-        msg.textContent = "❌ Pas encore vérifié. Clique le lien dans l’email, puis réessaie.";
+    // Renvoyer l’email
+    window.resend = async function(){
+      const u = auth.currentUser;
+      if (!u) return;
+      setBusy(true);
+      statusEl.textContent = "Envoi en cours…";
+      try{
+        await sendEmailVerification(u);
+        statusEl.innerHTML = '<span class="ok">Email renvoyé ✔︎</span>';
+      } catch(e){
+        statusEl.innerHTML = '<span class="err">Impossible de renvoyer. Réessaie plus tard.</span>';
+      } finally {
+        setBusy(false);
       }
-    };
+    }
 
-    logoutBtn.onclick = async () => {
-      await signOut(auth);
+    window.goHome = function(){
       window.location.href = "index.html";
-    };
+    }
   </script>
 </body>
 </html>
