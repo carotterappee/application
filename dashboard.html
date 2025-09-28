@@ -30,6 +30,15 @@
 
   <main id="dashboard">
 
+    <!-- Ici on colle le bloc profil -->
+    <div class="dash-profile">
+      <h2 id="dashWelcome">Bienvenue 👋</h2>
+      <p><strong>Pseudo :</strong> <span id="profName">…</span></p>
+      <p><strong>Email :</strong> <span id="profMail">…</span></p>
+      <p><strong>XP :</strong> <span id="profXp">0</span></p>
+      <p><strong>Inscrit le :</strong> <span id="profCreated">…</span></p>
+    </div>
+
     <!-- En-tête + mascotte -->
     <div class="dash-top">
       <div class="dash-mascot" aria-hidden="true">
@@ -328,5 +337,51 @@ function popLastEarnedStar(){
   }
 }
   </script>
+  <!-- Charge le profil Firestore et remplit le dashboard -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyD6G4vBBBCZdVkXKUZTPxGZOOAegzLvcqI",
+    authDomain: "appli-hp.firebaseapp.com",
+    projectId: "appli-hp",
+    storageBucket: "appli-hp.firebasestorage.app",
+    messagingSenderId: "339454204045",
+    appId: "1:339454204045:web:75f349c8f1f90e4399eac4",
+    measurementId: "G-PKTXGQ1DC7"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+      window.location.href = "login.html";
+      return;
+    }
+    try {
+      const snap = await getDoc(doc(db, "users", user.uid));
+      if (snap.exists()) {
+        const data = snap.data();
+        const name = data.displayName || "invité";
+
+        const h = document.getElementById("dashWelcome");
+        if (h) { h.textContent = `Bienvenue sur ton espace, ${name} !`; h.style.display = "block"; }
+
+        const sub = document.getElementById("dashSub");
+        if (sub) sub.style.display = "block";
+
+        const byId = (id,val)=>{ const el=document.getElementById(id); if(el) el.textContent = val; };
+        byId("profName", name);
+        byId("profMail", data.email || "—");
+        byId("profXp",   data.xp ?? 0);
+        byId("profCreated", data.createdAt?.toDate?.().toLocaleDateString("fr-FR") || "—");
+      }
+    } catch(e){ console.warn("Firestore load error", e); }
+  });
+</script>
 </body>
 </html>
