@@ -665,3 +665,19 @@ button.mini{
     width:62px; height:62px;
   }
 }
+/* Flèche retour */
+.back-arrow {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #3446d4;
+  padding: 4px;
+  transition: transform 0.2s;
+}
+
+.back-arrow:hover {
+  transform: scale(1.1);
+}
