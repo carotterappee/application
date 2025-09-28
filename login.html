@@ -91,8 +91,10 @@
     createUserWithEmailAndPassword, signInWithEmailAndPassword,
     updateProfile, sendEmailVerification
   } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+  import { getFirestore, doc, setDoc, getDoc } 
+  from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
-  const firebaseConfig = {
+    const firebaseConfig = {
     apiKey: "AIzaSyD6G4vBBBCZdVkXKUZTPxGZOOAegzLvcqI",
     authDomain: "appli-hp.firebaseapp.com",
     projectId: "appli-hp",
@@ -104,6 +106,8 @@
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
+  const db = getFirestore(app);
+
 
   // Session persistante (reste connecté après refresh)
   await setPersistence(auth, browserLocalPersistence);
@@ -150,14 +154,21 @@
         await updateProfile(cred.user, { displayName });
       }
       try { await sendEmailVerification(cred.user); } catch(_) {}
-      window.location.href = "verify.html";
+       await setDoc(doc(db, "users", cred.user.uid), {
+  displayName: displayName || null,
+  email: email,
+  xp: 0,
+  createdAt: new Date()
+});
+     
+     window.location.href = "verify.html";
     } catch (err) { 
       showErr(err); 
     } finally {
       setBusy(false);
     }
   };
-
+  
   window.login = async function () {
     const email = $("email")?.value.trim();
     const password = $("password")?.value.trim();
@@ -167,7 +178,29 @@
     try { 
      const cred = await signInWithEmailAndPassword(auth, email, password);
      await cred.user.reload();
-     if (cred.user.emailVerified) { 
+     if (cred.user.emailVerified) {
+
+      const docRef = doc(db, "users", cred.user.uid);
+      const snap = await getDoc(docRef);
+
+      if (snap.exists()) {
+       const data = snap.data();
+       localStorage.setItem("hp_profile", JSON.stringify(data));
+
+  console.log("Profil Firestore:", data);
+  // Tu peux stocker ça dans localStorage pour le dashboard
+  localStorage.setItem("hp_profile", JSON.stringify(data));
+} else {
+
+  const data = {
+    displayName: cred.user.displayName || null,
+    email: cred.user.email || email,
+    xp: 0,
+    createdAt: new Date ()
+};
+   await setDoc(docRef, data, { merge: true});
+   localStorage.setItem("hp_profile", JSON.stringify(data));
+}
        window.location.href = "dashboard.html";
     } else { 
       window.location.href = "verify.html";
