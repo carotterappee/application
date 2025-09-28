@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Vérifie ton email | HP+</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body{ font-family:"Syne",system-ui,sans-serif; background:linear-gradient(135deg,#f0f4ff,#fafaff);
+      min-height:100vh; display:flex; align-items:center; justify-content:center; margin:0; }
+    .card{ background:#fff; border:1px solid #eef1fb; border-radius:16px; padding:24px;
+      width:100%; max-width:520px; box-shadow:0 10px 30px rgba(70,90,200,.15); text-align:center; }
+    h1{ font-weight:800; color:#3446d4; margin:0 0 10px; font-size:clamp(22px,4vw,28px); }
+    p{ color:#445; margin:6px 0 14px; }
+    .actions{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:12px; }
+    .btn{ padding:12px 16px; border-radius:12px; border:1px solid #ccd4f5; background:#fff; font-weight:700; cursor:pointer; }
+    .btn.primary{ background:#3f51b5; color:#fff; border-color:transparent; }
+    .hint{ font-size:.9rem; color:#667; margin-top:8px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Confirme ton adresse email</h1>
+    <p>Nous avons envoyé un email à <b id="userMail">…</b>.</p>
+    <p>Valide le lien dans cet email, puis reviens ici.</p>
+
+    <div class="actions">
+      <button class="btn" id="resendBtn">Renvoyer l’email</button>
+      <button class="btn primary" id="refreshBtn">J’ai validé, vérifier</button>
+      <button class="btn" id="logoutBtn">Changer de compte</button>
+    </div>
+
+    <p class="hint" id="msg"></p>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, sendEmailVerification, signOut } 
+      from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD6G4vBBBCZdVkXKUZTPxGZOOAegzLvcqI",
+      authDomain: "appli-hp.firebaseapp.com",
+      projectId: "appli-hp",
+      storageBucket: "appli-hp.firebasestorage.app",
+      messagingSenderId: "339454204045",
+      appId: "1:339454204045:web:75f349c8f1f90e4399eac4",
+      measurementId: "G-PKTXGQ1DC7"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const mail = document.getElementById("userMail");
+    const msg = document.getElementById("msg");
+    const resendBtn = document.getElementById("resendBtn");
+    const refreshBtn = document.getElementById("refreshBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    let currentUser = null;
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) { window.location.href = "login.html"; return; }
+      currentUser = user;
+      mail.textContent = user.email || "ton adresse";
+      if (user.emailVerified) { window.location.href = "dashboard.html"; }
+    });
+
+    resendBtn.onclick = async () => {
+      msg.textContent = "";
+      try{
+        await sendEmailVerification(currentUser);
+        msg.textContent = "✅ Email renvoyé. Regarde ta boîte (et les spams).";
+      }catch(e){
+        msg.textContent = "❌ Impossible de renvoyer l’email. Réessaie.";
+      }
+    };
+
+    refreshBtn.onclick = async () => {
+      msg.textContent = "⏳ Vérification en cours…";
+      await currentUser.reload();
+      if (currentUser.emailVerified) {
+        msg.textContent = "✅ Vérifié ! Redirection…";
+        window.location.href = "dashboard.html";
+      } else {
+        msg.textContent = "❌ Pas encore vérifié. Clique le lien dans l’email, puis réessaie.";
+      }
+    };
+
+    logoutBtn.onclick = async () => {
+      await signOut(auth);
+      window.location.href = "index.html";
+    };
+  </script>
+</body>
+</html>

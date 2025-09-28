@@ -150,7 +150,7 @@
         await updateProfile(cred.user, { displayName });
       }
       try { await sendEmailVerification(cred.user); } catch(_) {}
-      window.location.href = "dashboard.html";
+      window.location.href = "verify.html";
     } catch (err) { 
       showErr(err); 
     } finally {
@@ -164,10 +164,16 @@
     if(!email || !password){ showErr({code:"missing-password"}); return; }
 
     setBusy(true);
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      window.location.href = "dashboard.html";
-    } catch (err) { 
+    try { 
+     const cred = await signInWithEmailAndPassword(auth, email, password);
+     await cred.user.reload();
+     if (cred.user.emailVerified) { 
+       window.location.href = "dashboard.html";
+    } else { 
+      window.location.href = "verify.html";
+    }
+     
+  } catch (err) { 
       showErr(err); 
     } finally {
       setBusy(false);
