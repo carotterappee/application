@@ -104,7 +104,14 @@
         <div class="actions">
           <button onclick="saveNotifs()">Enregistrer</button>
         </div>
-      </div>
+
+      <div class="settings-section">
+  <h2>Profil</h2>
+  <label for="newDisplayName">Modifier mon pseudo :</label>
+  <input id="newDisplayName" type="text" placeholder="Nouveau pseudo">
+  <button onclick="updateDisplayName()">Mettre à jour</button>
+  <p id="updateMsg" style="color:green; font-weight:600; margin-top:8px;"></p>
+</div>
     </section>
   </main>
 
@@ -165,6 +172,8 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
   import { getAuth, onAuthStateChanged, signOut }
     from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+  import { getFirestore, doc, updateDoc } 
+    from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyD6G4vBBBCZdVkXKUZTPxGZOOAegzLvcqI",
@@ -178,6 +187,7 @@
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
+  const db = getFirestore(app);
 
   // Si pas connecté → renvoie vers login
   onAuthStateChanged(auth, (user) => {
@@ -187,9 +197,42 @@
   // Déconnexion (ton bouton en Paramètres peut appeler ça)
   window.logout = async function() {
     await signOut(auth);
-    localStorage.removeItem("hp_profile"); // en option si tu veux aussi vider le profil local
-    window.location.href = "index.html"; // redirige vers le loader
+    localStorage.removeItem("hp_profile");
+    window.location.href = "index.html"; 
   };
+  window.updateDisplayName = async function() {
+    const user = auth.currentUser;
+    const newName = document.getElementById("newDisplayName").value.trim();
+    const msg = document.getElementById("updateMsg");
+    
+    if (!user) {
+    msg.style.color = "red";
+    msg.textContent = "❌ Aucun utilisateur connecté.";
+    return;
+  }
+  if (!newName) {
+    msg.style.color = "red";
+    msg.textContent = "❌ Merci de saisir un pseudo.";
+    return;
+  }
+
+  try {
+    // 1. MAJ du profil Firebase Auth
+    await updateProfile(user, { displayName: newName });
+
+    // 2. MAJ dans Firestore
+    await updateDoc(doc(db, "users", user.uid), {
+      displayName: newName
+    });
+
+    msg.style.color = "green";
+    msg.textContent = "✅ Pseudo mis à jour avec succès !";
+
+  } catch (err) {
+    msg.style.color = "red";
+    msg.textContent = "Erreur : " + err.message;
+  }
+};
 </script>
 </body>
 </html>
