@@ -681,3 +681,8 @@ button.mini{
 .back-arrow:hover {
   transform: scale(1.1);
 }
+.dev-tools{
+  margin: 12px 0 20px;
+  display:flex; align-items:center; gap:10px;
+}
+.dev-tools .dev-hint{ color:#667085; }

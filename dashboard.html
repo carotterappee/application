@@ -143,6 +143,12 @@
 
     <!-- Actions rapides -->
     <section class="quick-actions">
+      </section>
+
+    <section class="dev-tools" aria-hidden="false">
+  <button id="btnSimLesson" class="mini">✅ Finir la leçon (test)</button>
+  <small class="dev-hint">Ajoute 3 étoiles (+30 XP) pour tester</small>
+</section>
   </main>
 
   <script>
@@ -244,9 +250,10 @@
     window.location.href = "settings.html";
   }
 
-  function startTest(){
-    alert("Lancement du test de niveau (à développer) !");
-   } 
+ function startTest(){
+  window.location.href = "test.html";
+}
+
    // --- helper pour créer une carte leçon
 function createLessonCard({id, title, progress=0}){
   const wrap = document.createElement('article');
@@ -304,44 +311,15 @@ renderModules();
 function openChest(){
   window.location.href = 'chest.html';
 }
-
-/* Récompenses: utilitaires */
-function getRewards(){
-  try{ return JSON.parse(localStorage.getItem('hp_rewards')||'null') || {}; }catch(e){ return {}; }
-}
-function setRewards(r){ localStorage.setItem('hp_rewards', JSON.stringify(r)); }
-
-/* Appelle ceci quand une leçon est finie pour donner des étoiles */
-function awardStars(n = 5){
-  const r = getRewards();
-  r.starsTotal = (r.starsTotal || 0) + n;
-  // Historique par jour (facultatif)
-  const d = new Date().toISOString().slice(0,10);
-  r.starsByDay = r.starsByDay || {};
-  r.starsByDay[d] = (r.starsByDay[d] || 0) + n;
-  setRewards(r);
-  // Mets aussi à jour l'XP du jour si tu veux synchroniser
-  const p = getProgress();
-  p.xpToday = (p.xpToday || 0) + n*10; // ex: 1 étoile = 10 XP (à adapter)
-  setProgress(p);
-  renderXpStars(p.xpToday, p.xpTarget || 50);
-}
-function popLastEarnedStar(){
-  const row = document.querySelector('.xp-stars');
-  if(!row) return;
-  const filled = row.querySelectorAll('.star.filled');
-  const last = filled[filled.length - 1];
-  if(last){
-    last.classList.add('earned');
-    setTimeout(()=> last.classList.remove('earned'), 500);
-  }
-}
   </script>
   <!-- Charge le profil Firestore et remplit le dashboard -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
   import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
-  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+  import {
+    getFirestore, doc, getDoc, updateDoc,
+    increment, serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyD6G4vBBBCZdVkXKUZTPxGZOOAegzLvcqI",
@@ -353,34 +331,108 @@ function popLastEarnedStar(){
     measurementId: "G-PKTXGQ1DC7"
   };
 
-  const app = initializeApp(firebaseConfig);
+  const app  = initializeApp(firebaseConfig);
   const auth = getAuth(app);
-  const db = getFirestore(app);
+  const db   = getFirestore(app);
 
-  onAuthStateChanged(auth, async (user) => {
-    if (!user) {
-      window.location.href = "login.html";
+  window.awardStars = async function(deltaStars = 1, xpPerstar = 10){
+    const user = auth.currentUser;
+    if (!user) return;
+
+    const ref   = doc(db, "users", user.uid);
+    const snap  = await getDoc(ref);
+    const today = new Date().toISOString().slice(0,10); // YYYY-MM-DD
+
+    const progress   = snap.data()?.progress || {};
+    const lastXpDate = progress.lastXpDate || today;
+
+    const diffDays = Math.floor((Date.parse(today) - Date.parse(lastXpDate)) / 86400000);
+    const resetToday = (lastXpDate !== today);
+
+
+      // reset du compteur quotidien si on a changé de jour
+    if (resetToday) {
+      await updateDoc(ref, {
+        "progress.xpToday": 0,
+        "progress.lastXpDate": today,
+        "progress.updatedAt": serverTimestamp()
+      });
+    }
+
+    // incréments
+    await updateDoc(ref, {
+      "progress.starsTotal": increment(deltaStars),
+      "progress.xpTotal":    increment(deltaStars * xpPerStar),
+      "progress.xpToday":    increment(deltaStars * xpPerStar),
+      "progress.updatedAt":  serverTimestamp()
+    });
+
+   if (diffDays === 1) {
+    await updateDoc(ref, { "progress.streakDays" : increment(1)});
+   } else if (diffDays > 1) {
+    await updateDoc(ref, {"progress.streakDays": 1});
+   } 
+   
+   // petit feedback visuel si dispo
+    try { if (typeof popLastEarnedStar === "function") popLastEarnedStar(); } catch {}
+  };
+
+  // Rafraîchit l’UI depuis Firestore après un gain d’XP
+  async function refreshProgress(){
+    // Si ta page expose déjà une fonction pour recharger les widgets, on la réutilise
+    if (typeof window.__refreshProgressFromFirestore === "function") {
+      await window.__refreshProgressFromFirestore();
       return;
     }
+    // sinon on force un reload simple
+    location.reload();
+  }
+
+  // Branche le bouton de test (si présent)
+  document.getElementById('btnSimLesson')?.addEventListener('click', async () => {
+    try{
+      await window.awardStars?.(3, 10); // 3 étoiles → +30 XP
+      if (typeof popLastEarnedStar === "function") popLastEarnedStar();
+      await refreshProgress();
+    }catch(e){
+      console.warn('awardStars error', e);
+      alert("Impossible d’ajouter les étoiles (test).");
+    }
+  });
+  const byId = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) { window.location.href = "login.html"; return; }
+
     try {
-      const snap = await getDoc(doc(db, "users", user.uid));
-      if (snap.exists()) {
-        const data = snap.data();
-        const name = data.displayName || "invité";
+      const ref  = doc(db, "users", user.uid);
+      const snap = await getDoc(ref);
+      if (!snap.exists()) return; // ⬅️ si pas de doc, on sort
 
-        const h = document.getElementById("dashWelcome");
-        if (h) { h.textContent = `Bienvenue sur ton espace, ${name} !`; h.style.display = "block"; }
+      const data = snap.data();
+      const name = data.displayName || "invité";
 
-        const sub = document.getElementById("dashSub");
-        if (sub) sub.style.display = "block";
+      const h = document.getElementById("dashWelcome");
+      if (h) { h.textContent = `Bienvenue sur ton espace, ${name} !`; h.style.display = "block"; }
+      const sub = document.getElementById("dashSub");
+      if (sub) sub.style.display = "block";
 
-        const byId = (id,val)=>{ const el=document.getElementById(id); if(el) el.textContent = val; };
-        byId("profName", name);
-        byId("profMail", data.email || "—");
-        byId("profXp",   data.xp ?? 0);
-        byId("profCreated", data.createdAt?.toDate?.().toLocaleDateString("fr-FR") || "—");
-      }
-    } catch(e){ console.warn("Firestore load error", e); }
+      byId("profName", name);
+      byId("profMail", data.email || "—");
+      byId("profXp",   data.progress?.xpTotal ?? 0);
+      byId("profCreated", data.createdAt?.toDate?.().toLocaleDateString("fr-FR") || "—");
+
+      // Rendu des widgets si tes fonctions existent
+      const xpToday  = data.progress?.xpToday  ?? 0;
+      const xpTarget = data.progress?.xpTarget ?? 50;
+      if (typeof renderXpStars === "function") renderXpStars(xpToday, xpTarget);
+
+      const streak = data.progress?.streakDays ?? 0;
+      if (typeof updateStreak === "function") updateStreak(streak);
+
+    } catch (e) {
+      console.warn("Firestore load error", e);
+    }
   });
 </script>
 </body>

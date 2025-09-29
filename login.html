@@ -133,11 +133,9 @@
 
   // --- Actions (avec état "busy" pour éviter le double-clic)
   function setBusy(b){
-    document.querySelectorAll('.auth-box button').forEach(btn => { 
-      btn.disabled = b; 
-    });
+    document.querySelectorAll('.auth-box button').forEach(btn => { btn.disabled = b; });
     const err = document.getElementById('authError');
-    if (err && b) err.textContent = ""; // nettoie L'erreur au nouveau try
+    if (err && b) err.textContent = ""; 
     }
 
   window.signup = async function () {
@@ -150,16 +148,29 @@
     setBusy(true);
     try {
       const cred = await createUserWithEmailAndPassword(auth, email, password);
+
       if (displayName) {
-        await updateProfile(cred.user, { displayName });
+      try { await updateProfile(cred.user, { displayName: displayName || "" }); } catch(_) {}
       }
+
       try { await sendEmailVerification(cred.user); } catch(_) {}
+
        await setDoc(doc(db, "users", cred.user.uid), {
-  displayName: displayName || null,
-  email: email,
-  xp: 0,
-  createdAt: new Date()
-});
+         displayName: displayName || null,
+         email: email,
+         createdAt: serverTimestamp(),
+         progress: {
+         started: false,
+         lastLessonId: null, 
+         xpToday: 0,
+         xpTotal: 0,
+         xpTarget: 50,
+         streakDays: 0,
+         starsTotal: 0,
+         lastXpDate: new Date().toISOString().slice(0,10),
+         updatedAt: serverTimestamp()
+  }
+}, { merge: true });
      
      window.location.href = "verify.html";
     } catch (err) { 
@@ -178,30 +189,35 @@
     try { 
      const cred = await signInWithEmailAndPassword(auth, email, password);
      await cred.user.reload();
-     if (cred.user.emailVerified) {
 
+     if (cred.user.emailVerified) {
       const docRef = doc(db, "users", cred.user.uid);
       const snap = await getDoc(docRef);
 
       if (snap.exists()) {
        const data = snap.data();
        localStorage.setItem("hp_profile", JSON.stringify(data));
-
-  console.log("Profil Firestore:", data);
-  // Tu peux stocker ça dans localStorage pour le dashboard
-  localStorage.setItem("hp_profile", JSON.stringify(data));
 } else {
-
-  const data = {
+    const data = {
     displayName: cred.user.displayName || null,
     email: cred.user.email || email,
-    xp: 0,
-    createdAt: new Date ()
+    createdAt: new Date (),
+    progress: {
+    started: false,
+    lastLessonId: null,
+    xpToday: 0,
+    xpTotal: 0,
+    xpTarget: 50,
+    streakDays: 0,
+    starsTotal: 0,
+    updatedAt: new Date()
+  }
 };
    await setDoc(docRef, data, { merge: true});
    localStorage.setItem("hp_profile", JSON.stringify(data));
 }
-       window.location.href = "dashboard.html";
+      
+      window.location.href = "dashboard.html";
     } else { 
       window.location.href = "verify.html";
     }
